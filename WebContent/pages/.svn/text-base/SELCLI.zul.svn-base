@@ -1,0 +1,35 @@
+<zk>
+	<window border="normal" width="400px" apply="administration.action.SelCliAction" mode="modal">
+
+
+		<div id="loginDiv" visible="${empty user}">
+			<grid>
+				<rows>
+					
+					<row>
+						 Secteur d'activité :
+						
+						<combobox  id="sec_activite"     />
+					</row>
+					
+					<row>
+						Client :
+						<combobox id="client"  />
+					</row>
+					
+					<row>
+						Base de données :
+						<label id="database_name"   />
+					</row>
+				</rows>
+			</grid>			
+			<hbox pack="center" width="100%">
+				<button id="valider" label="OK" />
+			</hbox>
+			
+		</div>
+			<div>
+				<label id="msg" style="color:red"/>
+			</div>
+	</window>
+</zk>

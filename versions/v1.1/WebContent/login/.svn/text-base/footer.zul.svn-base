@@ -1,0 +1,48 @@
+<zk>
+
+   <hbox pack="center" width="100%">
+   
+	<html><![CDATA[
+	
+	<body onLoad="load_img()">
+	<label  style="font-size:8pt; color:#009ED6;" for="b">Testez votre débit internet</label>
+		<input title ="Testez votre débit internet" type="text" STYLE="font-weight: bold; font-size: 10px;" id="vitesse" size="12" readonly="readonly"/><input id="image" type="image" src="./image/Refresh_32.gif"  width="20" height="20"  onClick="javascript:start_test_vitesse();" title="Tester votre connexion internet" />
+		
+	</body>			
+	]]></html>
+	</hbox>
+
+ <script type="text/javascript" >
+				var image = './image/image.png';
+			            var size = 158298;
+			            var time1 = 0;
+			            var time2 = 0;
+			            function start_test_vitesse()
+			            {
+			                
+			                time1 = new Date();
+			                time1 = time1.getTime();
+			                var img = new Image();
+			                img.src = image+'?'+time1;
+			                img.onload=end_test_vitesse;
+			            }
+			            function end_test_vitesse()
+			            {
+			                var time2 = new Date();
+			                time2 = time2.getTime();
+			                var ms = time2-time1;
+			                var vitesse = Math.round(size/ms*100)/100;
+			                document.getElementById('vitesse').value=vitesse+' ko/s';
+			                if (vitesse > 100){document.getElementById('vitesse').style.background='green';}
+			                else {document.getElementById('vitesse').style.background='green'; }
+			               
+			            }
+			            
+			             function load_img() {
+                         document.getElementById('image').src="./image/Refresh_32.gif";
+   						}
+				</script>
+				
+
+
+</zk>

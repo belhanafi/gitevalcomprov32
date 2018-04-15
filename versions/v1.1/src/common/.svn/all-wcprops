@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common
+END
+EnterpriseObject.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/EnterpriseObject.java
+END
+InitContext.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/InitContext.java
+END
+CreateDatabaseCon.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/CreateDatabaseCon.java
+END
+ApplicationFacade.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/ApplicationFacade.java
+END
+log4j.properties
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/log4j.properties
+END
+resources.properties
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/resources.properties
+END
+DemoWindowComposer.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/DemoWindowComposer.java
+END
+Contantes.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/Contantes.java
+END
+AbstractEnterpriseObject.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/AbstractEnterpriseObject.java
+END
+PwdCrypt.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/src/common/PwdCrypt.java
+END

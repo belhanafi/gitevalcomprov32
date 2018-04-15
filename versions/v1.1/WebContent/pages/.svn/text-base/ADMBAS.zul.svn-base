@@ -1,0 +1,144 @@
+<window  id="win" title="Administration des bases de données" apply="administration.action.DatabaseManagementAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+ 
+ <style>
+.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight: ;
+}
+</style>
+
+
+	<tabbox id="tb" width="100%" height="100%"  >
+		<tabs id="tbtabs" >
+			<tab id="defBase" label="Paramétrage des bases de données"  />
+			<tab id="baseClient" label="Rattachement base de données au client" />
+			
+    	</tabs>
+		<tabpanels id="tbpanels" height="100%">
+           	<tabpanel id="ecranDefBase" >
+           	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
+		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		
+		    <listheader label="id database" width="0px" sort="auto" align="center"  visible="false"  />
+			<listheader label="Nom base de données" width="250px" sort="auto" align="center" />
+			<listheader label="login" width="250px" sort="auto" align="center" />
+			<listheader label="Mot de passe" width="180px" align="center" />
+			<listheader label="Adresse IP" width="180px" align="center" />
+			<listheader label="Nom instance" width="180px" align="center" />
+			
+	
+		</listhead>
+		<listitem self="@{each=listcompagne}">
+		    <listcell label="@{listcompagne.database_id}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.nom_base}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.login}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.pwd}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"   />
+			<listcell label="@{listcompagne.adresse_ip}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.nom_instance}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			
+			
+		</listitem>
+	</listbox>
+	<grid span="true" sizedByContent="true" width="100%" height="130px">
+        <auxhead>
+            <auxheader colspan="5" class="topic">Edition des données</auxheader>
+        </auxhead>
+        <columns sizable="true">
+            
+            <column label="id database"  align="center" width="0px" visible="false"/>
+            <column label="Nom base de données"  align="center" width="250px"/>
+            <column label="login"  align="center" width="250px"/>
+            <column label="Mot de passe" align="center" width="100px"  />
+            <column label="Adresse IP" align="center" width="100px"/>
+            <column label="Nom instance" align="center" width="100px"/>
+           
+        </columns>
+        <rows>
+            <row>
+
+				 <textbox id="database_id"  width="0px" sclass="textboxdetail"  value="@{winCtrl.selected.database_id,save-when=none}"   visible="false"/>
+                 <textbox id="nom_base"  width="250px" sclass="textboxdetail"  value="@{winCtrl.selected.nom_base,save-when=none}" />
+                 <textbox id="login"  width="250px"  sclass="textboxdetail" value="@{winCtrl.selected.login,save-when=none}" />
+                 <textbox id="pwd"   type="password" width="100px"  sclass="textboxdetail" value="@{winCtrl.selected.pwd,save-when=none}" />
+                 <textbox id="adresse_ip"   width="100px" sclass="textboxdetail" value="@{winCtrl.selected.adresse_ip,save-when=none}" />
+                 <textbox id="nom_instance"  width="100px" sclass="textboxdetail" value="@{winCtrl.selected.nom_instance,save-when=none}" />
+                 
+                
+            </row>
+        </rows>
+    </grid>
+           	</tabpanel>
+           	
+           	<tabpanel id="ecranBaseClient"  >
+        <listbox id="admincomptelb1" rows="1" model="@{winCtrl.model1}"  selectedItem="@{winCtrl.selected1}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		
+		    <listheader label="id client" width="0px" sort="auto" align="center"  visible="false"  />
+			<listheader label="Nom Client" width="250px" sort="auto" align="center" />
+			<listheader label="id secteur" width="0px" sort="auto" align="center"  visible="false"  />
+			<listheader label="Secteur d'activité" width="250px" sort="auto" align="center" />
+			<listheader label="Nom base de données" width="180px" align="center" />
+			
+	
+		</listhead>
+		<listitem self="@{each=listcompagne1}">
+		    <listcell label="@{listcompagne1.client_id}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne1.nom_client}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne1.secteur_id}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne1.nom_secteur}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"   />
+			<listcell label="@{listcompagne1.nom_base}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			
+			
+			
+		</listitem>
+	</listbox>
+	<grid span="true" sizedByContent="true" width="100%" height="130px">
+        <auxhead>
+            <auxheader colspan="5" class="topic">Edition des données</auxheader>
+        </auxhead>
+        <columns sizable="true">
+            
+            <column label="id client"  align="center" width="0px" visible="false"/>
+            <column label="Nom Client"  align="center" width="150px"/>
+            <column label="id secteur"  align="center" width="150px" visible="false" />
+            <column label="Secteur d'activité" align="center" width="100px"  />
+            <column label="Nom base de données" align="center" width="100px"/>
+           
+        </columns>
+        <rows>
+            <row>
+
+				 <textbox id="client_id"  width="0px" sclass="textboxdetail"  value="@{winCtrl.selected1.client_id,save-when=none}"   visible="false"/>
+                 <textbox id="nom_client"  width="200px" sclass="textboxdetail"  value="@{winCtrl.selected1.nom_client,save-when=none}" />
+                 <textbox id="secteur_id"  width="200px"  sclass="textboxdetail" value="@{winCtrl.selected1.secteur_id,save-when=none}"   visible="false"/>
+                 <textbox id="nom_secteur"  width="200px"  sclass="textboxdetail" value="@{winCtrl.selected1.nom_secteur,save-when=none}" />
+                 <listbox id="base_donnee"   width="100px" sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected1.nom_base,save-when=none}" />
+                 
+                
+            </row>
+        </rows>
+    </grid>
+           	
+           	</tabpanel>
+        </tabpanels>
+     	</tabbox>                      
+	
+	
+
+	<hbox pack="center" width="100%" spacing="20">
+		<div>
+			<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter une compagne"/>
+			<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
+			<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier une compagne"/>
+			<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer une compagne"/>
+			<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner a la selection"/>
+		</div>
+		<div>
+
+			
+		</div>
+
+		
+	</hbox>
+</window>

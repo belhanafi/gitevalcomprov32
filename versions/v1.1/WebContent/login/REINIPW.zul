@@ -1,0 +1,49 @@
+<zk>
+<style>
+ body { 
+          <!-- background image -->
+           background: #084B8A;
+           background-repeat:repeat-x; 
+ }	
+</style>          
+	<window border="normal" width="400px"  apply="administration.action.ReinitPwdAction" mode="modal">
+
+
+		<div id="loginDiv" visible="${empty user}">
+			<grid>
+				<rows>
+					<row>
+						Utilisateur :
+						<textbox id="user" width="200px" value="" />
+					</row>
+					<row>
+						 E-MAIL   :
+						<textbox id="email" width="200px"
+							value="" />
+					</row>
+				</rows>
+				
+			</grid>	
+			<grid  zclass="none">
+			<columns>	
+				<column>		
+					<hbox pack="center" width="100%">
+						<button id="login" label="Envoyer" />
+					</hbox>
+				</column>
+				<column>		
+					<hbox pack="center" width="100%">
+						<button id="cancel" label="Annuler" />
+					</hbox>
+				</column>
+				
+		</columns>
+			</grid>
+			
+			<div>
+				<label id="msg" style="color:red"/>
+			</div>
+		</div>
+		
+	</window>
+</zk>

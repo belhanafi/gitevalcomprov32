@@ -1,0 +1,54 @@
+<zk>
+
+<style dynamic="true"> 
+
+<!-- Make Plain Grid --> 
+.GridLayoutNoBorder tr.z-row td.z-row-inner, tr.z-row .z-cell,div.z-grid 
+{ 
+border: none; 
+overflow: hidden; 
+zoom: 1; 
+background: white; 
+border-top: none; 
+border-left: none; 
+border-right: none; 
+border-bottom: none; 
+} 
+
+</style> 
+	<window border="none" width="400px" apply="administration.action.SelCliAction" position="center" mode="overlapped"  >
+
+
+		<div id="loginDiv" visible="${empty user}">
+			<grid  sclass="GridLayoutNoBorder">
+				<rows>
+					
+					<row>
+						 <!--Secteur d'activité :-->
+						 Environement :
+						 <combobox  id="sec_activite"  />
+						 
+					</row>
+					
+					<row>
+						<!--Client :-->
+						Vague :
+						<combobox id="client"  />
+					</row>
+					
+					<row>
+						Base de données :
+						<label id="database_name"   />
+					</row>
+				</rows>
+			</grid>			
+			<hbox pack="center" width="100%">
+				<button id="valider" label="OK" />
+			</hbox>
+			
+		</div>
+			<div>
+				<label id="msg" style="color:red"/>
+			</div>
+	</window>
+</zk>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+
+	<window id="win" border="normal" width="100%"
+		apply="kpi.action.SynthGlobalPge1Action">
+
+
+
+
+		<tabbox id="tb" width="100%">
+			<tabs id="tbtabs">
+				<tab id="page1" label="Page 1" />
+				<tab id="page2" label="Page 2 " />
+			</tabs>
+
+
+
+			<tabpanels id="tbpanels" height="100%">
+				<tabpanel id="page1tab">
+
+
+					<borderlayout width="1200px" height="600px">
+						<north autoscroll="true" maxsize="100" size="25%"
+							splittable="true" collapsible="true">
+
+							<borderlayout>
+								<west size="10%" flex="true" maxsize="250" border="0">
+
+									<div style="background:#FFFFFF">
+
+									</div>
+								</west>
+								<north height="2000px" size="8%" border="0" />
+								<center border="0">
+									<div style="background:#FFFFFF">
+										<hlayout>
+											<listbox id="listVaguelb" model="@{winCtrl.model}"
+												height="120px" rows="10" selectedItem="@{winCtrl.selected}"
+												width="700px" mold="paging" pageSize="30" nonselectableTags="*">
+												<listhead sizable="true">
+													<listheader label="" height="5px" width="40px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+													<listheader label="Vague" height="5px" width="120px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="Libellé Campagne" height="5px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="idcompagne" visible="false" />
+													<listheader label="nominstance" visible="false" />
+
+												</listhead>
+
+												<listitem self="@{each=listevaluateur}">
+
+													<listcell id="listcheckbox">
+														<checkbox id="checkbox_id" value="@{listevaluateur.nombase}"
+															context="@{listevaluateur.compagne_id}" name="@{listevaluateur.nominstance}"
+															forward="onCheck=onModifyCheckedBox, onCreate=onCreation" />
+
+													</listcell>
+
+													<listcell label="@{listevaluateur.nombase}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.libelle_compagne}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.compagne_id}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.nominstance}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+												</listitem>
+											</listbox>
+
+											<button id="executer" label="Ok" />
+										</hlayout>
+									</div>
+
+
+								</center>
+								<east size="10%" border="0">
+
+								</east>
+							</borderlayout>
+						</north>
+
+						<center autoscroll="true">
+
+
+							<hlayout>
+								<!-- progressmeter id="progressid" value="50" width="200px" / -->
+								<include id="iframe" width="200%" height="300%" />
+								<include id="iframeWord" width="200%" height="300%"
+									visible="false" />
+							</hlayout>
+
+						</center>
+
+						<south>
+							<hlayout spacing="120px">
+								<label visible="false"></label>
+								<label visible="false"></label>
+								<label visible="false"></label>
+								<label visible="false"></label>
+
+								<div height="40px">
+									<button id="btReport" image="/image/word-icon32.png" />
+								</div>
+							</hlayout>
+						</south>
+
+					</borderlayout>
+
+
+
+				</tabpanel>
+
+
+				<tabpanel id="page2tab">
+
+
+					<borderlayout width="1200px" height="600px">
+						<north autoscroll="true" maxsize="100" size="25%"
+							splittable="true" collapsible="true">
+
+							<borderlayout>
+								<west size="10%" flex="true" maxsize="250" border="0">
+
+									<div style="background:#FFFFFF">
+
+									</div>
+								</west>
+								<north height="2000px" size="8%" border="0" />
+								<center border="0">
+									<div style="background:#FFFFFF">
+										<hlayout>
+											<listbox id="listVaguelbpg2" model="@{winCtrl.model}"
+												height="120px" rows="10" selectedItem="@{winCtrl.selected}"
+												width="700px" mold="paging" pageSize="30" nonselectableTags="*">
+												<listhead sizable="true">
+													<listheader label="" height="5px" width="40px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+													<listheader label="Vague" height="5px" width="120px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="Libellé Campagne" height="5px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="idcompagne" visible="false" />
+													<listheader label="nominstance" visible="false" />
+
+												</listhead>
+
+												<listitem self="@{each=listevaluateur}">
+
+													<listcell id="listradiopg2">
+														<radio value="@{listevaluateur.nombase}" context="@{listevaluateur.compagne_id}"
+															sclass="@{listevaluateur.nominstance}" forward="onCheck=onModifyRadio, onCreate=onCreation" />
+
+													</listcell>
+
+													<listcell label="@{listevaluateur.nombase}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.libelle_compagne}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.compagne_id}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.nominstance}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+												</listitem>
+											</listbox>
+
+											<button id="executerpg2" label="Ok" />
+										</hlayout>
+									</div>
+
+
+								</center>
+								<east size="10%" border="0">
+
+								</east>
+							</borderlayout>
+						</north>
+
+						<center autoscroll="true">
+
+
+						<hlayout>
+							<!-- progressmeter id="progressid" value="50" width="200px" / -->
+
+							<include id="iframepg2" width="200%" height="300%" />
+							<include id="iframepg2Word" width="200%" height="300%"
+								visible="false" />
+						</hlayout>
+
+
+
+						</center>
+
+						<south>
+							<hlayout spacing="120px">
+								<label visible="false"></label>
+								<label visible="false"></label>
+								<label visible="false"></label>
+								<label visible="false"></label>
+								<div height="40px">
+									<button id="btReportpg2" image="/image/word-icon32.png" />
+								</div>
+							</hlayout>
+
+						</south>
+
+					</borderlayout>
+
+
+
+				</tabpanel>
+
+
+			</tabpanels>
+		</tabbox>
+
+
+
+
+	</window>
+
+
+
+
+
+
+
+</zk>

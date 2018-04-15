@@ -1,0 +1,17 @@
+
+<zk>
+
+<style >
+body{
+background-image:url('../image/fond-site_new.jpg'); background-repeat:no-repeat;  
+}
+
+</style>
+
+<window width="80%" title="Déconnexion automatique" border="normal">
+	<vbox>
+<a href="/login/login.zul" sclass="edition-field" label="Cliquer ici pour vous reconnecter à l'application !" style="font-size:9pt;"/>
+	</vbox>
+</window>
+
+</zk>

@@ -1,0 +1,79 @@
+
+
+<zk>
+<style dynamic="true">
+body{
+background-image:url('image/fond-site_new.jpg'); background-repeat:no-repeat;  
+}
+</style>
+
+<window  border="none"  apply="administration.action.Login" sclass="error"  position="center" mode="overlapped"  >
+	
+
+
+
+<style>
+
+.myCaption .z-caption-l
+{ 
+     font-size:7pt;
+      color: blue;
+      text-align:center;
+} 
+
+</style>
+
+<style dynamic="true"> 
+
+<!-- Make Plain Grid --> 
+.GridLayoutNoBorder tr.z-row td.z-row-inner, tr.z-row .z-cell,div.z-grid 
+{ 
+border: none; 
+overflow: hidden; 
+zoom: 1; 
+background: white; 
+border-top: none; 
+border-left: none; 
+border-right: none; 
+border-bottom: none; 
+} 
+
+</style> 
+
+ 	
+		 <div align="left"> <image src="/image/Logo.png"  /></div>
+			
+			   
+		 <div id="loginDiv"  visible="${empty user}" sclass="my-grid"  align="left">
+			     <grid  width="320px" height="130px"  sclass="GridLayoutNoBorder" >
+					<rows>
+					  
+						<row>
+							Utilisateur :
+							<textbox id="usertb" width="100px" value="" />
+						</row>
+						<row>
+							 Mot de passe   :
+							<textbox id="pwdtb" width="100px" 	type="password"  value=""/>
+						</row>
+						
+					  <row>
+						<a href="/login/REINIPW.zul" sclass="edition-field" label=" Mot de passe oublie?" style="font-size:7pt;color:#009ED6;font-weight: bold;"/>
+						<button id="login" label="Connecter" />
+				     </row>	
+				     
+				     <row>
+				     <label id="msg" style="color:red" />
+				     </row>
+						
+					</rows>
+				
+			</grid>	
+				
+		</div>
+		
+		  
+			
+  	</window>	   
+  	
+</zk>

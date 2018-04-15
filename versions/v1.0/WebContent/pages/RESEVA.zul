@@ -1,0 +1,42 @@
+<window  id="win" title="Résultat des campagnes d'évaluation" apply="compagne.action.ResultatEvaluationAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto" closable="true"  onClose="self.visible = false; event.stopPropagation();">
+	<style>
+	.count { font-weight: bold; font-size: 16px; } 
+	
+	.z-combobox ,.z-combobox-inp ,.z-comboitem-text, .z-combobox-rounded-pp
+		.z-comboitem-btn, .z-combobox-pp .z-comboitem-text,
+		.z-combobox-pp .z-comboitem-btn {
+		font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight:;}
+	
+	
+	</style>
+	
+	<groupbox id="gb1" mold="3d" width="100%" height="350">
+        			<caption label="Sélection d'une campagne d'evaluation" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>    
+        			<hlayout spacing="20px"> 
+        			 	<label  value="Campagnes" width="100%" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+        			 	<combobox id="nomCompagne" autodrop="true" mold="rounded" buttonVisible="true" readonly="true" width="400px" />
+        			</hlayout>	   
+     </groupbox>  
+     
+     	<tabbox id="tb" width="100%" height="350px"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;">
+		<tabs id="tbtabs"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;">
+						
+    	</tabs>
+		<tabpanels id="tbpanels" height="100%" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;">
+   	 		<tabpanel  >
+           					 	
+       		</tabpanel>
+   		</tabpanels>
+   	</tabbox>
+     
+
+	<hbox pack="center" width="100%" spacing="40">
+		<div>
+			<button id="exporter"  label= "Exporter" tooltiptext="Exporter le rapport d'evaluation dans un fichier excel" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>			
+		</div>
+		
+
+	</hbox>      			
+
+</window>

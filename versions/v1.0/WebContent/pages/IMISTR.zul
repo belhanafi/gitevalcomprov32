@@ -1,0 +1,140 @@
+<window  id="win" title="Cotation et IMI Vs Stratégie" apply="administration.action.CotationIMIvsStrategieAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+ 
+ <style>
+.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight: ;
+}
+</style>
+
+
+	<tabbox id="tb" width="100%"  >
+		<tabs id="tbtabs" >
+			<tab id="defBase" label="Définition cotation"  />
+			<tab id="baseClient" label="Rattachement IMI Vs Stratégies" />
+			
+    	</tabs>
+		<tabpanels id="tbpanels" height="100%">
+           	<tabpanel id="ecranDefBase" >
+           	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
+		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		
+		
+		    <listheader label="id_cotation" width="0px" sort="auto" align="center"  visible="false"  />
+			<listheader label="Label cotation" width="250px" sort="auto" align="center" />
+			<listheader label="Définition cotation" width="250px" sort="auto" align="center" />
+			<listheader label="Valeur" width="100px" align="center" />
+			
+	
+		</listhead>
+		<listitem self="@{each=listcompagne}">
+		    <listcell label="@{listcompagne.id_cotation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.label_cotation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.definition_cotation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.valeur_cotation}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"   />
+			
+		</listitem>
+	</listbox>
+	
+	<groupbox id="gb" mold="3d" width="100%" contentStyle="overflow:auto">
+        <caption label="Edition des données" />
+        
+        <vbox spacing ="100">
+                 
+        
+          <hbox spacing ="100">
+                <!-- Selected contributor's title value is same as title model's data-->
+                 
+                       
+		                 <textbox id="id_cotation" value="@{winCtrl.selected.id_cotation,save-when=none}" sclass="textboxdetail"  visible="false"/>
+		     
+		          <hlayout spacing ="25px">
+		                 <label id=" lbl_cotation"  value="Label cotation:"  sclass="textboxdetail"/>
+		                 <textbox id="label_cotation" width="250px"  value="@{winCtrl.selected.label_cotation,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		                 
+		                   <label id="lbl_def_cotation"  value="Définition cotation :"  sclass="textboxdetail"/>
+		                   <textbox id="definition_cotation"  tabbable="true" width="400px" rows="2" value="@{winCtrl.selected.definition_cotation,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		                   
+		                     <label id="lbl_valeur_cotation"  value="Valeur :"  sclass="textboxdetail"/>
+		          	         <listbox id="valeur_cotation" mold="select" selectedItem="@{winCtrl.selected.valeur_cotation,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		          </hlayout>
+		        
+		              
+		              
+	                 </hbox>
+	              
+        </vbox>
+   </groupbox>
+   
+
+           	</tabpanel>
+           	
+           	<tabpanel id="ecranBaseClient"  >
+        <listbox id="admincomptelb1" rows="1" model="@{winCtrl.model1}"  selectedItem="@{winCtrl.selected1}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		                        
+		    <listheader label="id id_imi_startegie" width="0px" sort="auto" align="center"  visible="false"  />
+			<listheader label="IMI borne inferieure " width="250px" sort="auto" align="center" />
+  		    <listheader label="MI borne superieur " width="250px" sort="auto" align="center" />
+			<listheader label="Besoin developpement" width="180px" align="center" />
+			<listheader label="Strategie" width="180px" align="center" />
+			
+	
+		</listhead>
+		<listitem self="@{each=listcompagne1}">
+		    <listcell label="@{listcompagne1.id_imi_startegie}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne1.imi_borne_inf}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne1.imi_borne_sup}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne1.besoin_developpement}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"   />
+			<listcell label="@{listcompagne1.startegie}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			
+			
+			
+		</listitem>
+	</listbox>
+	<groupbox id="gb1" mold="3d" width="100%" height="100%"  contentStyle="overflow:auto">
+        <caption label="Edition des données" />
+     
+          <hbox spacing ="100">
+                   <textbox id="id_imi_startegie" value="@{winCtrl.selected1.id_imi_startegie,save-when=none}" sclass="textboxdetail"  visible="false"/>
+		          <hlayout spacing ="25px">
+		                  <label id=" lbl_imi_borne_inf"  value="IMI Borne inferieure:"  sclass="textboxdetail"/>
+		                   <listbox id="imi_borne_inf"    mold="select" selectedItem="@{winCtrl.selected1.imi_borne_inf,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		                   <label id=" lbl_imi_borne_sup"  value="IMI Borne inferieure:"  sclass="textboxdetail"/>
+		                   <listbox id="imi_borne_sup"    mold="select" selectedItem="@{winCtrl.selected1.imi_borne_sup,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		                   <label id="lbl_startegie"  value="Besoin de développement cotation :"  sclass="textboxdetail"/>
+		                   <textbox id="startegie"  tabbable="true" width="200px" rows="2" value="@{winCtrl.selected1.besoin_developpement,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		             </hlayout>
+		  </hbox>
+  		  <hbox >
+		               <hlayout spacing ="5px">       
+		                    <label id="lbl_besoin_developpement"  value="Besoin de développement cotation :"  sclass="textboxdetail"/>
+		                   <textbox id="besoin_developpement"  tabbable="true" width="200px" rows="2" value="@{winCtrl.selected1.startegie,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		               </hlayout>
+		              
+		   </hbox>
+	 
+   </groupbox>
+ </tabpanel>
+</tabpanels>
+</tabbox>                      
+	
+	
+
+	<hbox pack="center" width="100%" spacing="20">
+		<div>
+			<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter IMI vs strategie"/>
+			<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
+			<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier IMI vs strategie"/>
+			<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer IMI vs strategie"/>
+			<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner a la selection"/>
+		</div>
+		<div>
+
+			
+		</div>
+
+		
+	</hbox>
+</window>

@@ -1,0 +1,122 @@
+<window  id="win" title="Répertoire des compétences" apply="administration.action.RepCompetenceAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+ 
+<style>
+.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight: ;
+}
+</style>
+	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
+		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		
+			<listheader label="code famille" width="80px" sort="auto" align="center" />
+			<listheader label="Famille" width="100px" align="center" />
+			<listheader label="code groupe" width="80px" align="center" />
+			<listheader label="Groupe" width="100px" align="center" />
+			<listheader label="Code compétence" width="80px" align="center" />
+			<listheader label="Libellé compétence" width="130px" align="left" />
+			<listheader label="Définition compétence" width="130px" align="left" />
+			<listheader label="Aptitude observable" width="130px" align="left" />
+			<listheader label="Affichable" width="80px" align="center" />
+			<listheader label="id repertoire competence" width="100px" align="center" visible="false" />
+
+	
+		</listhead>
+		<listitem self="@{each=listcomp}" >
+			<listcell label="@{listcomp.code_famille}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.famille}"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.code_groupe}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.groupe}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.code_competence}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.libelle_competence}"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+			<listcell label="@{listcomp.definition_competence}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.aptitude_observable}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.affichable}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.id_repertoire_competence}" visible="false" />
+			
+		</listitem>
+	</listbox>
+	
+ <groupbox id="gb" mold="3d" width="100%" contentStyle="overflow:auto">
+        <caption label="Edition des données" />
+        
+        <vbox spacing ="100">
+                 
+        
+          <hbox spacing ="100">
+                <!-- Selected contributor's title value is same as title model's data-->
+                 <hlayout spacing ="60px">
+                         <label id="code_famille_lbl"  value="Code famille:"  sclass="textboxdetail"/>
+		                 <textbox id="code_famille" value="@{winCtrl.selected.code_famille,save-when=none}" sclass="textboxdetail" />
+		          </hlayout> 
+		          <hlayout spacing ="90px">
+		                 <label id="famille_lbl"  value="Famille:"  sclass="textboxdetail"/>
+		                 <textbox id="famille" value="@{winCtrl.selected.famille,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		          </hlayout>
+		          <hlayout spacing ="35px">
+		                 <label id="cdegroupe_lbl"  value="Code groupe :"  sclass="textboxdetail"/>
+		          
+		                <textbox id="code_groupe" value="@{winCtrl.selected.code_groupe,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		               </hlayout>
+		                <label id="groupe_lbl"  value="Groupe :"  sclass="textboxdetail"/>
+		          
+		                <textbox id="groupe" value="@{winCtrl.selected.groupe,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		              
+	                 </hbox>
+	                  <hbox>
+	                  <hlayout spacing ="30px">
+	                   <label id="codecomp_lbl"  value=" Code compétence:"  sclass="textboxdetail"/>
+			          <textbox id="code_competence" value="@{winCtrl.selected.code_competence,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			         </hlayout>
+			           <label id="aff_lbl"  value=" Compétence affichable:"  sclass="textboxdetail"/>
+			          <hlayout spacing ="85px">
+		                 <listbox id="affichable" mold="select" selectedItem="@{winCtrl.selected.affichable,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		                 <label id="comp_lbl"  value=" Libellé compétence:"  sclass="textboxdetail"/>
+		              </hlayout>
+				       <textbox id="libelle_competence"  width="200px"  value="@{winCtrl.selected.libelle_competence,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				        
+				      </hbox>
+				      
+				      <hbox>
+				      <hlayout spacing ="5px">
+				       <label id="defcomp_lbl"  value=" Définition  compétence:"  sclass="textboxdetail"/>
+			            <hbox> 
+			            <textbox id="definition_competence" tabbable="true" width="400px" rows="6"  value="@{winCtrl.selected.definition_competence,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			             </hbox>
+			           <label id="app_obs_lbl"  value=" Aptitude observable: "  sclass="textboxdetail"/>
+			          <textbox id="aptitude_observable" width="400px;" rows="5" cols="40"  value="@{winCtrl.selected.aptitude_observable,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			                        
+			            <textbox id="id_repertoire_competence" value="@{winCtrl.selected.id_repertoire_competence,save-when=none}" visible="false" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			         </hlayout>
+		              </hbox>
+		          
+         
+           
+        </vbox>
+  
+	
+   </groupbox>
+	<hbox pack="center" width="100%" spacing="20">
+	
+	
+			<div>
+			
+				<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter une compétence"/>
+				<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
+				<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier une compétence"/>
+				<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer une compétence"/>
+				<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner a la selection"/>
+			
+				<button id="upload" image="/image/upload1616.bmp" height="25px" width="50px" tooltiptext="Charger les données en base de données" />			
+				<button id="download" image="/image/download1616.gif" height="25px" width="50px" tooltiptext="Télécharger les données de la base de données"  />
+			
+		</div>
+			
+
+ 
+	</hbox>
+
+
+	
+</window>

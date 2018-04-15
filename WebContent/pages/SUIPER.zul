@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+	<style>
+		div.z-progressmeter {
+		background:#FFFFFF
+		}
+		span.z-progressmeter-img {
+		background:#00CC00
+		}
+
+		upm.z-progressmeter-img {
+		background:#FF0000
+		}
+
+		body
+		{
+		font-family: arial, helvetica, sans-serif ;
+		font-size: 8pt ;
+		color: black ;
+		background-color: #00CC00 ;
+		}
+	</style>
+
+
+	<window id="win" title="Suivi Valiation Plan Développement"
+		apply="kpi.action.SuiviActionDEVAction" width="100%" height="100%"
+		border="normal" contentStyle="overflow:auto" closable="true"
+		onClose="self.visible = false; event.stopPropagation();">
+		<div id="listboxpart" visible="${empty user}">
+
+			<groupbox width="100%" mold="3d">
+
+				<hbox>
+					<hbox pack="start" align="start" height="90%" width="100%">
+
+						<label value="Campagne: " width="50px" />
+						<listbox id="comp_list" mold="select" width="380px"
+							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<label />
+						<label />
+
+						<label value="  Structure Entreprise:" width="50px" />
+						<listbox id="comp_struct_ent_list" mold="select" width="200px"
+							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<label value="Poste de Travail:" width="50px" />
+						<listbox id="poste_travail" mold="select" width="200px"
+							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					</hbox>
+
+				</hbox>
+				<hbox pack="end" align="end" height="90%" width="100%">
+
+				</hbox>
+
+			</groupbox>
+
+
+		</div>
+
+		<div>
+			<listbox id="evaluateurlb" model="@{winCtrl.model}" multiple="true"
+				width="100%" mold="paging" pageSize="30" height="420px">
+				<listhead sizable="true">
+
+
+					<listheader label="Evalué" width="130px" sort="auto"
+						align="center" />
+					<listheader label="Progression % " width="180px" align="center" />
+					<!-- listheader label="Envoyer Alerte" width="100px" align="center" /-->
+
+
+				</listhead>
+
+				<listitem self="@{each=listevaluateur}">
+
+		
+						
+					<listcell label="@{listevaluateur.evalue}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+
+					<listcell label="@{listevaluateur.pourcentage}">
+						%
+						<progressmeter id="progressbar" value="@{listevaluateur.pourcentage}"
+							style="upm" />
+					</listcell>
+
+					
+
+				</listitem>
+			</listbox>
+
+
+		</div>
+
+
+
+
+
+		<div id="divupdown">
+			<grid zclass="none">
+				<columns>
+					<column>
+						<!-- button id="valider" label="Valider Compagne" tooltiptext="Valider 
+							la compagne" / -->
+					</column>
+					<column>
+						<hlayout spacing="50px">
+							<label visible="false"></label>
+							<label visible="false"></label>
+							<label visible="false"></label>
+							<label visible="false"></label>
+							<button id="sendmail" image="/image/email.gif" height="30px"
+								width="50px" tooltiptext="Envoyer alerte" visible="true" />
+						</hlayout>
+					</column>
+					<column>
+						<!--label id="msg" style="font-family: arial, helvetica, sans-serif 
+							;font-size: 8pt ;color: black ;background-color: #00CC00 ;" visible="false" 
+							/ -->
+					</column>
+					<column>
+						<!--button id="executeexp" image="/image/excel_32.png" visible="true" 
+							tooltiptext="Exporter rapport de compagne" / -->
+					</column>
+
+				</columns>
+			</grid>
+		</div>
+
+	
+	</window>
+</zk>

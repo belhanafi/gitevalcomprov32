@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk>
+
+	<window id="win" title="Campagne d'évaluation" apply="compagne.action.CompagneCreationAction"
+		width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+		closable="true" onClose="self.visible = false; event.stopPropagation();">
+
+		<style>
+			.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+			font-size: 10px;font-weight: ;
+			}
+		</style>
+
+
+		<tabbox id="tb" width="100%">
+			<tabs id="tbtabs">
+				<tab id="compagne_tb" label="Création des campagnes d'évaluation" />
+				<tab id="compvsPoste_tb" label="Association campagne Vs poste de travail" />
+				<tab id="mix_tb" label="Mix Ideal par campagne" />
+			</tabs>
+
+			<tabpanels id="tbpanels" height="100%">
+				<tabpanel id="compagne">
+					<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
+						selectedItem="@{winCtrl.selected}" width="100%" mold="paging"
+						pageSize="8" height="300px">
+						<listhead sizable="true">
+
+							<listheader label="id compagne" width="0px" sort="auto"
+								align="center" visible="false" />
+							<listheader label="Nom campagne" width="250px" sort="auto"
+								align="center" />
+							<listheader label="Type campagne" width="250px" sort="auto"
+								align="center" />
+							<listheader label="Date debut campagne" width="180px"
+								align="center" />
+							<listheader label="Date fin campagne" width="180px"
+								align="center" />
+							<listheader label="id compate type " width="0px"
+								align="center" visible="false" />
+
+
+						</listhead>
+						<listitem self="@{each=listcompagne}">
+							<listcell label="@{listcompagne.id_compagne}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							<listcell label="@{listcompagne.nom_compagne}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							<listcell label="@{listcompagne.type_compagne}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							<listcell label="@{listcompagne.date_deb_comp}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							<listcell label="@{listcompagne.date_fin_comp}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							<listcell label="@{listcompagne.id_compagne_type}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+
+						</listitem>
+					</listbox>
+					<grid span="true" sizedByContent="true" width="100%" height="130px">
+						<auxhead>
+							<auxheader colspan="4" class="topic">Edition des données
+							</auxheader>
+						</auxhead>
+						<columns sizable="true">
+
+							<column label="id compagne" align="center" width="0px"
+								visible="false" />
+							<column label="Nom campagne" align="center" width="250px" />
+							<column label="Type campagne" align="center" width="250px" />
+							<column label="Date debut campagne" align="center" width="100px" />
+							<column label="Date fin campagne" align="center" width="100px" />
+							<column label="id  compagne" align="center" width="0px"
+								visible="false" />
+
+
+
+						</columns>
+						<rows>
+							<row>
+
+								<textbox id="idcompagne" width="0px" sclass="textboxdetail"
+									value="@{winCtrl.selected.id_compagne,save-when=none}" visible="false" />
+								<textbox id="nom" width="250px" sclass="textboxdetail"
+									value="@{winCtrl.selected.nom_compagne,save-when=none}" />
+								<listbox id="type_compagne" width="250px" sclass="textboxdetail"
+									mold="select" selectedItem="@{winCtrl.selected.type_compagne,save-when=none}" />
+								<datebox id="date_deb_comp" cols="8" sclass="textboxdetail"
+									value="@{winCtrl.selected.date_deb_comp,save-when=none}"
+									format="yyyy/MM/dd" />
+								<datebox id="date_fin_comp" cols="8" sclass="textboxdetail"
+									value="@{winCtrl.selected.date_fin_comp,save-when=none}"
+									format="yyyy/MM/dd" />
+								<textbox id="id_compagne_type" width="0px" sclass="textboxdetail"
+									value="@{winCtrl.selected.id_compagne_type,save-when=none}"
+									visible="false" />
+
+							</row>
+						</rows>
+					</grid>
+
+
+					<hbox pack="center" width="100%" spacing="20">
+						<div>
+							<button id="add" image="/image/DITEnabled.gif" height="25px"
+								width="50px" tooltiptext="Ajouter une campagne" />
+							<button id="okAdd" image="/image/OkEnabled.gif" height="25px"
+								width="50px" tooltiptext="Valider" />
+							<button id="update" image="/image/EDITREDOEnabled.gif"
+								height="25px" width="50px" tooltiptext="Modifier une campagne" />
+							<button id="delete" image="/image/DeleteEnabled.gif"
+								height="25px" width="50px" tooltiptext="Supprimer une campagne" />
+							<button id="effacer" image="/image/CancelEnabled.gif"
+								height="25px" width="50px" tooltiptext="Retourner a la selection" />
+							<button id="dupliquer" image="/image/dupliquer.png"
+								height="25px" width="50px"
+								tooltiptext="Dupliquer les informations suivantes  planning,rattachement poste vs campagne et Mix Ideal" />
+
+						</div>
+						<div>
+
+
+						</div>
+
+
+					</hbox>
+
+				</tabpanel>
+				<tabpanel id="compvsPoste">
+					<div id="gb1" height="100%">
+						<hlayout spacing="5px">
+							<label value="Campagne:   " sclass="textboxdetail" />
+							<combobox id="compagne_cb" autodrop="true" width="400px"
+								readonly="true" />
+						</hlayout>
+					</div>
+
+					<div vflex="50" hflex="1"></div>
+					<div>
+						<hlayout spacing="30px">
+							<listbox id="admincomptelb1" rows="1" model="@{winCtrl.model1}"
+								selectedItem="@{winCtrl.selected1}" width="100%" mold="paging"
+								pageSize="8" height="300px">
+
+								<listhead sizable="true">
+
+									<listheader label="intitulé du poste de travail"
+										width="180px" sort="auto" align="center" />
+									<listheader label="Ajouté" width="100px" align="center" />
+
+
+								</listhead>
+
+								<listitem self="@{each=listcompagne1}">
+
+									<listcell label="@{listcompagne1.libelle_poste}"
+										style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+									<listcell>
+
+
+										<checkbox name="@{listcompagne1.map_stat}" value="@{listcompagne1.code_poste}"
+											forward="onCheck=onModifyCheckedBox, onCreate=onCreation" />
+
+									</listcell>
+
+								</listitem>
+							</listbox>
+						</hlayout>
+
+					</div>
+					<hbox pack="center" width="100%" spacing="20">
+						<div>
+							<button id="valider" label="Valider" height="25px" width="75px"
+								tooltiptext="Valider" />
+
+						</div>
+
+					</hbox>
+				</tabpanel>
+
+				<tabpanel id="mix">
+					<listbox id="mixlb" rows="1" model="@{winCtrl.model_mix}"
+						selectedItem="@{winCtrl.selectedmix}" width="100%" mold="paging"
+						pageSize="8" height="300px">
+						<listhead sizable="true">
+
+							<listheader label="id compagne" width="0px" sort="auto"
+								align="center" visible="false" />
+							<listheader label="Nom campagne" width="250px" sort="auto"
+								align="center" />
+								
+									<listheader label="Date Debut" width="100px" sort="auto"
+								align="center" />
+								
+									<listheader label="Date fin" width="100px" sort="auto"
+								align="center" />
+								
+							<listheader label="Niveau Maitrise" width="250px"
+								sort="auto" align="center" />
+							<listheader label="Objectif" width="180px" align="center" />
+
+
+						</listhead>
+						<listitem self="@{each=mixlist}">
+							<listcell label="@{mixlist.id_compagne}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							<listcell label="@{mixlist.libelle_compagne}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+								
+								<listcell label="@{mixlist.date_debut}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							
+							<listcell label="@{mixlist.date_fin}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							
+								
+							<listcell label="@{mixlist.libelle_niveau_maitrise}"
+								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							<listcell >
+							<textbox id="surname" value ="@{mixlist.objectif}" disabled="false"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							</listcell>
+
+
+						</listitem>
+					</listbox>
+					<grid span="true" sizedByContent="true" width="100%" height="130px">
+						<auxhead>
+							<auxheader colspan="4" class="topic">Edition des données
+							</auxheader>
+						</auxhead>
+						<columns sizable="true" visible="false">
+
+							<column label="id compagne" align="center" width="0px"
+								visible="false" />
+							<column label="Nom campagne" align="center" width="250px" />
+							<column label="Date Debut" align="center" width="100px" />
+							<column label="Date Fin" align="center" width="100px" />
+							<column label="Niveau Maitrise" align="center" width="100px" />
+							<column label="Objectif" align="center" width="100px" />
+
+
+
+						</columns>
+						<rows visible="false">
+							<row>
+
+								<textbox id="idcompagne_mix" width="0px" sclass="textboxdetail"
+									value="@{winCtrl.selectedmix.id_compagne,save-when=none}"
+									visible="false" />
+								<listbox id="nomcompagne" width="250px" sclass="textboxdetail"
+									mold="select" selectedItem="@{winCtrl.selectedmix.libelle_compagne,save-when=none}" />
+									
+								<textbox id="datedebut" width="200px" sclass="textboxdetail"
+									value="@{winCtrl.selectedmix.date_debut,save-when=none}" />
+									
+									<textbox id="datefin" width="200px" sclass="textboxdetail"
+									value="@{winCtrl.selectedmix.date_fin,save-when=none}" />
+									
+									
+								<textbox id="niveaumaitise" width="200px" sclass="textboxdetail"
+									value="@{winCtrl.selectedmix.libelle_niveau_maitrise,save-when=none}" />
+								<textbox id="objectif" width="200px" sclass="textboxdetail"
+									value="@{winCtrl.selectedmix.objectif,save-when=none}" />
+
+
+							</row>
+						</rows>
+					</grid>
+
+
+					<hbox pack="center" width="100%" spacing="20">
+						<div>
+							<!-- tton id="add_mix" image="/image/DITEnabled.gif" height="25px"
+								width="50px" tooltiptext="Ajouter une compagne" />
+							<button id="okAdd_mix" image="/image/OkEnabled.gif"
+								height="25px" width="50px" tooltiptext="Valider" />
+							
+							<button id="delete_mix" image="/image/DeleteEnabled.gif"
+								height="25px" width="50px" tooltiptext="Supprimer une compagne" />
+							<button id="effacer_mix" image="/image/CancelEnabled.gif"
+								height="25px" width="50px" tooltiptext="Retourner a la selection" />
+							<button id="dupliquer_mix" image="/image/dupliquer.png"
+								height="25px" width="50px"
+								tooltiptext="Dupliquer le planning de la derniere compagne validée" /-->
+								<button id="update_mix" image="/image/EDITREDOEnabled.gif"
+								height="25px" width="50px" tooltiptext="Modifier une campagne" />
+								
+								<button id="delete_mix" image="/image/DeleteEnabled.gif"
+								height="25px" width="50px" tooltiptext="Supprimer une campagne" />
+								
+						</div>
+						<div>
+
+
+						</div>
+
+
+					</hbox>
+
+				</tabpanel>
+
+			</tabpanels>
+		</tabbox>
+	</window>
+</zk>

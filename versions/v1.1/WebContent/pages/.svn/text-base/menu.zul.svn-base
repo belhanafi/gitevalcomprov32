@@ -1,0 +1,70 @@
+<zk>
+<style dynamic="true">
+
+.GridLayoutNoBorder {
+border: none;
+overflow: hidden;
+zoom: 1;
+background: #009ED6;
+border-top: none;
+border-left: none;
+border-right: none;
+border-bottom: none;
+}
+
+</style> 
+	<window id="main" width="100%" height="100%" apply="common.view.TabComposer">
+		<borderlayout>
+			<north size="70px">
+				<grid  zclass="GridLayoutNoBorder"  >
+				
+				<columns>
+					 <column width="960px">
+							<html><![CDATA[
+		                       
+								<h2 style="color:#FFFFFF;margin-left:10px" align="center">Evalcom Professionnel</h2>
+							]]>
+							
+							</html>
+						</column>
+						
+						<column >
+						 <label id="firstname_welcome"   />
+						</column>
+						
+						<column width="70px">
+						 <button id="exit" image="/image/WAYOUT.gif" height="27px" width="30px" tooltiptext="Quitter l'application"/>
+						</column>
+					</columns>
+				</grid>
+				
+			</north>
+			
+			
+			<west size="200px" splittable="true" flex="true" collapsible="true" title="Menu"> 
+				<tabbox id="tb" width="500px" height="360px" mold="accordion">
+					<tabs id="tbtabs" >
+						
+    				</tabs>
+					<tabpanels id="tbpanels" height="100%">
+        				<tabpanel  >
+           					 	
+       					 </tabpanel>
+   		 			</tabpanels>
+   		 		</tabbox>
+			</west>
+			<center autoscroll="true" flex="true">
+				<div id="contentDiv" >
+					
+				</div>
+			</center>
+			<south size="20px">
+				<hbox pack="center" width="100%">
+					<html><![CDATA[
+						<span style="color:#0C7A9A;font-size:7pt;">©2011 EVALCOMPLUS. All Rights Reserved. Powered by Soft Solutions </span>
+					]]></html>
+				</hbox>
+			</south>
+		</borderlayout>
+	</window>
+</zk>

@@ -1,0 +1,14 @@
+<zk>
+	<window id="rejectedData" title="Données rejetées" border="normal" width="460px" xmlns:c="client"
+	closable="true"  action="show: slideDown;hide: slideUp" apply="administration.action.StructureEntreprise" >
+
+		<vlayout>
+    		<div style="width:375px;text-align:right;padding:0;">
+      	  <textbox id="intro" rows="10" width="460px;"  multiline="true"  readonly="true" value ="${arg.rejet}">
+      	  
+         		
+        	 </textbox>
+        	 </div>
+    	</vlayout>
+	</window>
+	</zk>

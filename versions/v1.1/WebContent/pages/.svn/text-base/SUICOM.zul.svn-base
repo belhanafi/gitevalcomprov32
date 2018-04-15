@@ -1,0 +1,82 @@
+<zk>
+<style   >
+div.z-progressmeter {
+background:#FFFFFF
+}
+span.z-progressmeter-img {
+background:#00CC00
+}
+
+upm.z-progressmeter-img {
+background:#FF0000
+}
+
+body
+{
+font-family: arial, helvetica, sans-serif ;
+font-size: 8pt ;
+color: black ;
+background-color: #00CC00 ;
+}
+</style>  	
+	
+       
+<window  id="win" title="Suivi des compagnes d'évaluation" apply="compagne.action.SuiviCompagneAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+<div id="listboxpart"  visible="${empty user}">
+ <grid zclass="none">
+      <columns>	
+		  	
+				 <column>	Compagne :  <listbox id="comp_list" mold="select" width="250px"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" /> </column>	
+				 <column>	<label id="msg" style="font-family: arial, helvetica, sans-serif ;font-size: 8pt ;color: black ;background-color: #00CC00 ;" visible="false"/> </column>
+				 		   	
+	   </columns>		
+ </grid>
+</div>
+
+ <div>
+ <listbox id="evaluateurlb"  model="@{winCtrl.model}"
+		multiple="true"  width="100%" mold="paging" pageSize="8" height="300px" >
+	<listhead sizable="true">
+		
+			<listheader label="Evaluateur" width="130px" sort="auto" align="center" />
+			<listheader label="Etat d'avancement en % " width="180px" align="center" />
+			<listheader label="Envoyer alerte" width="100px" align="center" />
+	</listhead>
+		<listitem  self="@{each=listevaluateur}">
+
+       
+			<listcell label="@{listevaluateur.evaluateur}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listevaluateur.pourcentage}" >%
+	
+	        <progressmeter  id="progressbar" value="@{listevaluateur.pourcentage}"  style="upm"/>
+   		
+			</listcell>		
+			<listcell id="listcheckbox" >
+			<checkbox  value="@{listevaluateur.id_employe}" name="@{listevaluateur.pourcentage}"  context="@{listevaluateur.email}" forward="onCheck=onModifyCheckedBox, onCreate=onCreation"/>
+			
+			</listcell>
+
+			
+		</listitem>
+	</listbox>
+ 
+
+ </div>
+
+
+
+
+
+<div id="divupdown">
+<grid zclass="none">
+      <columns>
+	  <column><button id="valider" label="Valider Compagne"  tooltiptext="Valider la compagne" /> </column>			
+	  <column><button id="sendmail" image="/image/email.gif" height="30px" width="50px" tooltiptext="Envoyer alerte"  /></column>		
+	 </columns>
+ </grid>
+ </div>
+
+
+</window>
+</zk>

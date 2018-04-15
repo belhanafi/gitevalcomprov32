@@ -1,0 +1,78 @@
+<zk>
+
+<style>
+    body { padding: 0 0; /* 0 padding on top and bottom and 0 padding on right and left */
+           <!-- background image -->
+           background: #7A6A46;
+           background-repeat:repeat-x; 
+          }		
+          
+          img_logo {
+           <!-- background image -->
+            background-image : url('/image/logo_rsmanagement.png');
+           background-repeat:repeat-x; 
+          }	
+          
+         
+</style>
+
+
+	<window border="normal" width="400px" apply="administration.action.Login" mode="modal" sclass="img_logo">
+		<div height="100px" >
+             <image src="/image/Logo.gif" width="500px" height="100px" align="top"/>
+        </div>
+
+		<div id="loginDiv"  visible="${empty user}">
+			<grid>
+				<rows>
+					<row>
+						Utilisateur :
+						<textbox id="usertb" width="200px" value="" />
+					</row>
+					<row>
+						 Mot de passe   :
+						<textbox id="pwdtb" width="200px"
+							type="password"  value=""/>
+					</row>
+				</rows>
+				
+			</grid>	
+			<grid >
+			<rows>	
+				<row>		
+					<hbox pack="center" width="100%">
+						<button id="login" label="Connecter" />
+					</hbox>
+				</row>
+				<row>
+				
+					<a href="/login/REINIPW.zul" sclass="edition-field" label=" Mot de passe oublié?" style="font-size:7pt;"/>
+				   
+			    </row>
+		</rows>
+			</grid>
+			
+			<div>
+				<label id="msg" style="color:red"/>
+			</div>
+		</div>
+		<div id="userDiv" visible="${!empty user}">
+			<hbox pack="center" align="center" width="100%">
+			<div width="100%">
+				Welcome :
+				<label id="userName" value="${user}" />
+			</div>
+				<button label="Logout" onClick="doLogout()"/>
+			</hbox>
+		</div>
+		
+		<div  >
+		
+		                       
+		
+		
+		       
+       
+         </div>
+	</window>
+</zk>

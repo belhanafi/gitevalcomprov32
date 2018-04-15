@@ -1,0 +1,33 @@
+<?page title="Integrating ActuateBIRTViewer and ZK"?>
+<zk>
+<window border="none" width="100%" height="100%" apply="ru.ufa.zkbirt.MainController">
+	<borderlayout>
+	<west id="west" title="List of reports" collapsible="true" splittable="true" size="22%" autoscroll="true">
+		 <vlayout hflex="1" vflex="1" style="margin: 5px;" >
+		 <tree id="treeReports" zclass="z-tree" height="410px">
+	          <treechildren>
+	            <treeitem>
+	              <treerow>
+	                <treecell label="Reports" />
+	              </treerow>
+	              <treechildren>
+		              <treeitem value="/report/report.zul" label="Sales Dashboard Report"/>	
+	              </treechildren>
+	             </treeitem>
+	          </treechildren>
+	     </tree>
+	        <separator></separator>
+	        <div align="right">
+				<button id="viewReport" label="To generate a report" />
+			</div>
+	     </vlayout>
+	 </west>
+	<center  >
+		<tabbox id="mainTabs" vflex="1" tabscroll="true">
+	            <tabs />
+	            <tabpanels />
+	    </tabbox>
+	</center>
+	</borderlayout>
+</window>
+</zk>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk>
+<window  id="win" title="Planning des évaluations" apply="compagne.action.PlanningCompagneAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+ 
+<style>
+.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight: ;
+ 
+ }
+ 
+ .z-combobox ,.z-combobox-inp ,.z-comboitem-text, .z-combobox-rounded-pp
+		.z-comboitem-btn, .z-combobox-pp .z-comboitem-text,
+		.z-combobox-pp .z-comboitem-btn {
+		font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight:;}
+ 
+</style>
+
+<groupbox width="100%" mold="3d">
+     <caption label="Filtre de recherche"/>
+     
+     <vbox>
+     
+   
+      
+     <hbox>  
+		<hbox  pack="start" align="start" height="90%" width="100%">
+		
+		
+		      <listbox id="filtre_compagne" mold="select" width="380px"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		
+		   
+	       	<label value="Nom évaluateur" width="50px" />
+	        <textbox id="nomEvaluateurFiltre"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+	        
+	        <label value="Nom évalué" width="50px" />
+	        <textbox id="nomEvaleFiltre"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+	        
+	         <button id= "buttonReinitialiser" image="/image/undo.png" height="30px" width="40px" tooltiptext="Afficher la liste complete"  />
+		     <button id= "buttonRechercher"  image="/image/search.png" height="30px" width="40px"  tooltiptext="Rechercher l'évaluateur ou l'évalué"  />
+		     
+	     </hbox>     
+                
+		</hbox>
+		<hbox  pack="end" align="end" height="90%" width="100%">
+			
+	     </hbox>
+     </vbox> 
+ </groupbox>
+ 
+	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
+		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		
+		    <listheader label="id planing" width="200px" sort="auto" align="center"  visible="false"  />
+			<listheader label="Nom campagne" width="120px" sort="auto" align="center"   />
+			<listheader label="Nom évaluateur" width="180px" sort="auto" align="center"   />
+			<listheader label="Poste de travail évalué" width="120px" sort="auto" align="center"   />
+			<listheader label="Nom évalué" width="180px" sort="auto" align="center"   />
+			<listheader label="Structure entreprise" width="130px" sort="auto" align="center"   />
+			<listheader label="Date de l'évaluation" width="180px" align="center"  />
+			<listheader label="Heure début" width="80px" align="center"   />
+			<listheader label="Date fin évaluation" width="180px" align="center"  />
+			<listheader label="Heure fin" width="80px" align="center"   />
+			<listheader label="Lieu" width="100px" align="center"   />
+			<listheader label="Personne ressource" width="125px" align="center"  />
+	         
+		</listhead>
+		<listitem self="@{each=listcompagne}">
+		    <listcell label="@{listcompagne.id_planning_evaluation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.libelle_compagne}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.evaluateur}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.intitule_poste}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.evalue}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.libelle_structure}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.date_evaluation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.heure_debut_evaluation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"   />
+			<listcell label="@{listcompagne.date_fin_evaluation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.heure_fin_evaluation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.lieu}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.personne_ressources}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+		</listitem>
+	</listbox>
+	<grid span="true" sizedByContent="false" width="100%" height="130px">
+        <auxhead>
+            <auxheader colspan="10" class="topic">Edition des données</auxheader>
+        </auxhead>
+        <columns sizable="true">
+        
+            <column label="id planing" width="0px" sort="auto" align="center"  visible="false"  />
+			<column label="Nom campagne" width="260px" sort="auto" align="center" />
+			<column label="Nom évaluateur" width="200px" sort="auto" align="center" />
+			<column label="Poste de travail évalué" width="200px" sort="auto" align="center" />
+			<column label="Nom évalué" width="200px" sort="auto" align="center" />
+			<column label="Structure " width="100px" sort="auto" align="center" />
+			<column label="Date de l'évaluation" width="150px" align="est" />
+			<column label="Heure début" width="100px" align="center"   />
+			<column label="Date fin évaluation" width="150px" align="est" />
+			<column label="Heure fin" width="100px" align="center"  />
+			<column label="Lieu" width="100px" align="center"  />
+			<column label="Personne ressource" width="150px" align="center"  />
+                   
+           
+        </columns>
+        <rows>
+            <row>
+
+				 <textbox id="id_planning"  width="0px"  sclass="textboxdetail" value="@{winCtrl.selected.id_planning_evaluation,save-when=none}"   visible="false"/>
+                 <listbox id="nom_compagne"  width="250px"  sclass="textboxdetail"  mold="select" selectedItem="@{winCtrl.selected.libelle_compagne,save-when=none}" />
+                 
+                
+				 
+                 <listbox id="Evaluateur"  width="180px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.evaluateur,save-when=none}" />
+				 
+		 
+                 <listbox id="code_poste"  width="150px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.intitule_poste,save-when=none}" />
+                 
+				 
+                
+				<listbox id="Evalue" fixedLayout="true"   width="180px" sclass="textboxdetail"  mold="select" model="@{win$composer.listModel}"   >
+						<listitem self="@{each=map}" value="@{map.id_employe}" label="@{ map.nom_employe }"/>
+				 </listbox>  
+
+
+
+                 
+                   <listbox id="structure"  width="180px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.libelle_structure,save-when=none}"  />
+                 <datebox id="date_evaluation"  sclass="textboxdetail" value="@{winCtrl.selected.date_evaluation,save-when=none}" format="yyyy/MM/dd"/>
+                 <listbox id="heure_debut_evaluation" sclass="textboxdetail"  width="80px" mold="select" selectedItem="@{winCtrl.selected.heure_debut_evaluation,save-when=none}"  />
+                 <datebox id="date_fin_evaluation"  sclass="textboxdetail" value="@{winCtrl.selected.date_fin_evaluation,save-when=none}" format="yyyy/MM/dd"/>
+                 <listbox id="heure_fin_evaluation"  sclass="textboxdetail" width="80px"  mold="select" selectedItem="@{winCtrl.selected.heure_fin_evaluation,save-when=none}"  />
+                 <textbox id="lieu" width="100px"  sclass="textboxdetail" value="@{winCtrl.selected.lieu,save-when=none}"  />
+                 <textbox id="personne_ressources" sclass="textboxdetail" width="150px"  value="@{winCtrl.selected.personne_ressources,save-when=none}"  />
+                
+            </row>
+        </rows>
+    </grid>
+	<popup id="pp_sel_evaluateur">
+	
+			<groupbox id="gb" mold="3d" width="100%" height="500">
+		        <caption label="Envoi planning évaluation" />
+		        <vlayout spacing="5px">
+		           <!--hlayout spacing ="5px">
+						<label value="Envoi Planning compagne au DRH:   "  sclass="textboxdetail"/> 				       	
+					    <checkbox  id="chbox_drh"  forward="onCheck=onModifyChbox_drh, onCreate=onCreation_chbox_drh"/>
+				   </hlayout-->
+				 </vlayout>
+				  <vlayout spacing=" 50px"> 
+				   <hlayout spacing ="15px">
+						<label value="Planning campagne validée par le DRH:   "  sclass="textboxdetail"/> 				       	
+					    <checkbox  id="chbox_plan_val"  forward="onCheck=onModifyChbox_val_drh, onCreate=onCreation_chbox_drh"/>
+				   </hlayout>
+				   </vlayout>
+					
+					
+		        	<vlayout spacing="5px">
+		         		<hlayout spacing ="10px">
+							<label id="comp_list_label" value="Compagne d'évaluation:   "  sclass="textboxdetail" visible="false"/> 				       	
+							<combobox id="comp_list"  autodrop="true"  width="500px"  visible="false" /> 		
+						</hlayout>
+					
+		        	</vlayout>
+		        	
+		            <vlayout  spacing="45px">
+		            
+		            <hlayout spacing ="50px">
+			            
+			           <listbox id="evaluateurlb"  model="@{winCtrl.model1}" visible="false">
+			                <listhead sizable="true">
+		
+							    <listheader label="Evaluateur" width="180px" align="center"   />
+								<listheader label="Envoyer le planning aux évaluateurs" width="350px"  align="center"   />
+								
+							</listhead>
+							
+					               	<listitem  self="@{each=listevaluateur}">
+
+												<listcell label="@{listevaluateur.evaluateur}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+												<listcell> 
+												          <checkbox  value="@{listevaluateur.id_evaluateur}"  forward="onCheck=onModifyCheckedBox, onCreate=onCreation"/>
+												</listcell>
+				
+							        </listitem>
+						</listbox>
+					</hlayout>
+					
+					
+					
+					<hlayout spacing ="35px">
+				 		 <button id="sendemail1"  Label="Envoyer" height="25px" width="60px" tooltiptext="Envoyer les planning aux évaluateurs selectionnés"  />		
+		 	       		 <button id="fermer"  Label="Fermer" height="25px" width="60px" tooltiptext="Fermer la fenÃªtre"  />
+		 	       	</hlayout>
+		   	        </vlayout>
+		    </groupbox>
+	 
+   </popup>
+
+
+	<hbox pack="center" width="100%" spacing="20">
+		<div>
+			<button id="add"    image="/image/DITEnabled.gif" height="30px" width="50px" tooltiptext="Ajouter un planning"/>
+			<button id="okAdd"  image="/image/OkEnabled.gif" height="30px" width="50px" tooltiptext="Valider"/>
+			<!--button id="update" image="/image/EDITREDOEnabled.gif" height="30px" width="50px" tooltiptext="Modifier un planning"/-->
+			<button id="delete"  image="/image/DeleteEnabled.gif" height="30px" width="50px" tooltiptext="Supprimer un planning"/>
+			<button id="effacer"  image="/image/CancelEnabled.gif" height="30px" width="50px" tooltiptext="Retourner a la selection"/>
+			<button id="sendmail" image="/image/email.gif" height="30px" width="50px" tooltiptext="Envoyer planning aux évaluateurs"  />
+			<button id="reinit" image="/image/open.gif" height="30px" width="50px" tooltiptext="Réouvrir une fiche d'évaluation déja validée"  />		
+					
+			
+		</div>
+		<div>
+
+			
+		</div>
+
+		
+	</hbox>
+</window>
+</zk>

@@ -1,0 +1,140 @@
+<window  id="win" title="Profils et droits d'acces" apply="administration.action.ProfileDroitsAccesAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+ 
+<style>
+.textboxdetail  {font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight: ;
+}
+
+.z-combobox ,.z-combobox-inp ,.z-comboitem-text, .z-combobox-rounded-pp
+		.z-comboitem-btn, .z-combobox-pp .z-comboitem-text,
+		.z-combobox-pp .z-comboitem-btn {
+		font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight:;}
+
+</style>
+
+
+	<tabbox id="tb" width="100%"  >
+		<tabs id="tbtabs" >
+			<tab id="defBase" label="Profils"  />
+			<tab id="baseClient" label="Droits d'acces" />
+			
+    	</tabs>
+		<tabpanels id="tbpanels" height="100%">
+           	<tabpanel id="ecranDefBase" >
+           	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}" 	selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		    <listhead sizable="true">
+		 
+		    <listheader label="Profil id" width="100px" sort="auto" align="center"  visible="true"  />
+			<listheader label="Libelle profil" width="250px" sort="auto" align="center" />
+		
+	
+		</listhead>
+		<listitem self="@{each=listcompagne}">
+		    <listcell label="@{listcompagne.id_profile}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.libelle_profile}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+		
+			
+		</listitem>
+	</listbox>
+	
+	<groupbox id="gb" mold="3d" width="100%" contentStyle="overflow:auto">
+        <caption label="Edition des données" />
+        
+        <vbox spacing ="100">
+                 
+        
+          <hbox spacing ="100">
+                <!-- Selected contributor's title value is same as title model's data-->
+                 
+                       
+		               
+		     
+		          <hlayout spacing ="25px">
+		                 <label id="lbl_id_profile"  value="Identifiant profil:"  sclass="textboxdetail"/>
+		                 <textbox id="id_profile" width="50px"  value="@{winCtrl.selected.id_profile,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		                 
+		                   <label id="lbl_libelle_profile"  value="Labelle profil :"  sclass="textboxdetail"/>
+		                   <textbox id="libelle_profile"   width="250px"  value="@{winCtrl.selected.libelle_profile,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		                  
+		          </hlayout>
+	        </hbox>
+	              
+        </vbox>
+   </groupbox>
+			   <hbox pack="center" width="100%" spacing="20">
+					<div>
+						<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter un profil"/>
+						<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
+						<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier un profil"/>
+						<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer un profil"/>
+						<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner a la selection"/>
+					</div>
+					<div>
+			
+						
+					</div>
+					
+				</hbox>
+
+           	</tabpanel>
+           	
+        <tabpanel id="ecranBaseClient"  >
+        <div id="gb1"  height="40px">
+        		<hlayout spacing ="5px">
+        			<label value="Profile:   "  sclass="textboxdetail"/>
+ 					<combobox id="profile"  autodrop="true"   width="250px"  readonly="true" />
+ 				</hlayout>	
+ 		</div>	
+ 				
+        <listbox id="admincomptelb1" rows="1" model="@{winCtrl.model1}"  selectedItem="@{winCtrl.selected1}"  width="100%" mold="paging" pageSize="8" height="300px" >
+        
+			<listhead sizable="true">
+				        			                        
+				    <listheader label="Code ecran" width="80px" sort="auto" align="center"   />
+					<listheader label="Libelle menu" width="250px" sort="auto" align="center" />
+		  		    <listheader label="Libelle ecran" width="250px" sort="auto" align="left" />
+					<listheader label="Caché" width="80px" align="center" />
+					<listheader label="Ecriture" width="80px" align="center"  visible="false" />
+					<listheader label="Lecture" width="80px" align="center" visible="false"  />
+					
+			</listhead>
+		
+		    <listitem self="@{each=listcompagne1}">
+			
+				    <listcell label="@{listcompagne1.code_ecran}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listcompagne1.libelle_menu}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listcompagne1.libelle_ecran}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+					<listcell  >
+				     	<checkbox  name="hide"  value="@{listcompagne1.code_ecran}"  forward="onCheck=onModifyCheckedBox, onCreate=onCreation" />   
+					  
+			    	</listcell>
+			    	
+					<listcell  visible="false"  >
+			            <checkbox  name="ecriture" value="@{listcompagne1.code_ecran}"  forward="onCheck=onModifyCheckedBox, onCreate=onCreation"/>
+					</listcell>
+					
+					<listcell visible="false"  >
+			            <checkbox  name="lecture" value="@{listcompagne1.code_ecran}"  forward="onCheck=onModifyCheckedBox, onCreate=onCreation"/>
+					</listcell>
+			
+				
+			</listitem>
+	  </listbox>
+	<hbox pack="center" width="100%" spacing="20">
+		<div>
+			<button id="valider"    label="Valider" height="25px" width="75px" tooltiptext="Valider"/>
+		
+		</div>
+			
+	</hbox>
+   </tabpanel>
+ </tabpanels>
+</tabbox>                      
+	
+	
+
+	
+</window>

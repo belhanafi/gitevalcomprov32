@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+	<window id="win" title="Génération automatique des rapports de compagne"
+		apply="kpi.action.GenAutoRapportAction" width="100%" height="100%"
+		border="normal" contentStyle="overflow:auto" closable="true"
+		onClose="self.visible = false; event.stopPropagation();">
+		<style>
+			.count { font-weight: bold; font-size: 16px; }
+
+			.z-combobox
+			,.z-combobox-inp ,.z-comboitem-text, .z-combobox-rounded-pp
+			.z-comboitem-btn, .z-combobox-pp .z-comboitem-text,
+			.z-combobox-pp
+			.z-comboitem-btn {
+			font-family: Verdana, Arial,Helvetica,sans-serif;
+			font-size: 10px;font-weight:;}
+
+
+		</style>
+
+
+
+		<html>
+ 
+<![CDATA[
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+      
+
+<div id="container"  style="min-width: 310px; max-width: 800px; height: 400px;margin: 0 auto"></div>
+<script type="text/javascript">
+function pie(test) {
+
+alert("ddddd");   
+var data=test;
+// Highcharts requires the y option to be set
+$.each(data, function (i, point) {
+    point.y = point.data;
+  });
+
+
+var chart = new Highcharts.Chart({
+
+    chart: {
+        renderTo: 'container',
+        type: 'pie'
+    },
+
+    series: [{
+        data:data
+    }]
+
+});
+};
+
+function Bar(test) {
+
+
+           
+var data=test;
+alert("ddddd");
+
+var processed_json = new Array();
+var name_json=new Array();
+var color_json=['#f7a35c','#7cb5ec','#90ed7d'];
+  for (i = 0; i < data.length; i++) {
+  alert(data[i].name);
+  
+   processed_json.push([parseInt(data[i].data), 'color: '#FF0000']);
+   name_json.push([data[i].name]);
+   color_json.push([Highcharts.getOptions().colors[i]]);
+  }
+
+
+var chart = new Highcharts.Chart({
+
+   
+
+    chart: {
+        renderTo: 'container',
+        type: 'column'
+    },
+   
+    xAxis: {
+            categories: name_json,
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Population (millions)',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+
+    series: [{
+       
+        data:processed_json
+       
+        
+    }]
+
+});
+
+
+};
+            </script>
+ ]]>
+
+		</html>
+
+		<button id="btnExecPie" label="Pie !" />
+		<button id="btnExecBar" label="Bar !" />
+
+
+
+	<div id="listboxpart"  visible="${empty user}">
+
+	<groupbox width="100%" mold="3d">
+	 <caption label="Population  a  Ã©valuer par  tranche age " />
+	
+          
+    	 <hbox>  
+			<hbox  pack="start" align="start" height="90%" width="100%">
+		   
+	       	        
+	        <label value="  Structure Entreprise:" width="50px" />
+			<listbox id="comp_struct_ent_list" mold="select" width="200px"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />	        
+	     </hbox>     
+	     
+	          <hbox>  </hbox>    <hbox>  </hbox> 
+         <hbox  pack="start" align="start" height="90%" width="100%">         
+	        <label id="label_poste" value=" Poste de Travail:" width="50px" />
+			<listbox id="comp_poste_list" mold="select" width="200px"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />	        
+			</hbox>
+                
+		</hbox>
+		<hbox  pack="end" align="end" height="90%" width="100%">
+			
+	     </hbox>
+       <hbox  pack="end" align="end" height="90%" width="100%">
+			
+	     </hbox>
+ 	</groupbox>
+ 	</div>
+	
+	<div id="listboxpart1"  visible="${empty user}">
+	
+	<vbox>
+	
+		<label id="message" visible="false" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 16px;font-weight:bold ;" />
+	
+		<chart id="mychart" title="RÃ©partition de la population Ã  Ã©valuer par tranche d'Ã¢ge" width="800" if="true" 
+			height="400" type="bar"  fgAlpha="128" model="${model}" context="editPopup"/>
+			
+		<menupopup id="editPopup">      
+        	<menuitem id= "downloadimage" label="Enregistrer l'image..." />
+    	</menupopup>
+			
+	</vbox>
+  </div>
+
+	</window>
+	
+	
+	
+	
+
+</zk>

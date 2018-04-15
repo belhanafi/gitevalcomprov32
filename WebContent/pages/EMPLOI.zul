@@ -1,0 +1,132 @@
+<window  id="win" title="Liste employés" apply="compagne.action.GestionEmployesAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+ 
+<style>
+.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight: ;
+}
+</style>
+     
+ <groupbox width="100%" mold="3d">
+     <caption label="Filtre de recherche"/>
+      
+     <hbox>  
+		<hbox  pack="start" align="start" height="90%" width="100%">
+		   
+	       	<label value="Compte utilisateur" width="50px" />
+	        <textbox id="compteUtilisateurFiltre"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+	       
+	         <button id= "buttonReinitialiser" image="/image/undo.png" height="30px" width="40px" tooltiptext="Afficher la liste complete"  />
+		     <button id= "buttonRechercher"  image="/image/search.png" height="30px" width="40px"  tooltiptext="Rechercher un employé"  />
+		     
+	     </hbox>     
+                
+		</hbox>
+		<hbox  pack="end" align="end" height="90%" width="100%">
+			
+	     </hbox>
+    
+ </groupbox>
+ 
+	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
+		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		
+	        <listheader label="Compte utilisateur" width="200px" sort="auto" align="center"  /> 	
+		    <listheader label="id employe" width="10px" sort="auto" align="center"  visible="false"  />
+			<listheader label="Sexe " width="100px" sort="auto" align="center"   />
+			<listheader label="Type Contrat" width="100px" sort="auto" align="center"   />
+			<listheader label="Date de naissance" width="180px" sort="auto" align="center"   />
+			<listheader label="Date de recrutement" width="180px" sort="auto" align="center"   />
+			<listheader label="Libelle formation" width="180px" sort="auto" align="center"   />
+			<listheader label="Intitule poste" width="180px" align="center"  />
+			<listheader label="Email" width="80px" align="center"   />
+			<listheader label="Evaluateur" width="80px" align="center"   />
+			<listheader label="Responsable RH" width="80px" align="center"   />
+			<listheader label="Structure Entreprise" width="180px" align="center"    />
+	         
+		</listhead>
+		<listitem self="@{each=listcompagne}">
+		    
+		    <listcell label="@{listcompagne.nom_complet}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		    <listcell label="@{listcompagne.id_employe}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.sexe}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.type_contrat}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.date_naissance}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.date_recrutement}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.libelle_formation}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.intitule_poste}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.email}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"   />
+			<listcell label="@{listcompagne.est_evaluateur}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.est_responsable_rh}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcompagne.libelle_structure}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			
+			
+			
+		</listitem>
+	</listbox>
+	<grid span="true" sizedByContent="true" width="100%" height="130px">
+        <auxhead>
+            <auxheader colspan="13" class="topic">Edition des données</auxheader>
+        </auxhead>
+        <columns sizable="true">
+        
+            <column label="Compte utilisateur" width="200px" sort="auto" align="center"   />
+   		    <column label="id employe" width="10px" sort="auto" align="center"  visible="false"  />
+			<column label="Sexe" width="150px" sort="auto" align="center"   />
+			<column label="Type Contrat" width="160px" sort="auto" align="center"   />
+			<column label="Date de naissance" width="180px" sort="auto" align="center"   />
+			<column label="Date de recrutement" width="180px" sort="auto" align="center"   />
+			<column label="Libelle formation" width="230px" sort="auto" align="center"   />
+			<column label="Intitule poste" width="200px" align="center"  />
+			<column label="Email" width="180px" align="center"   />
+			<column label="Evaluateur" width="80px" align="center"   />
+			<column label="Responsable RH" width="100px" align="center"   />
+			<column label="Structure" width="180px" align="center"     />
+                   
+           
+        </columns>
+        <rows>
+            <row>
+
+                  <listbox id="id_compte"  width="200 px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.nom_complet,save-when=none}"   />
+				  <textbox id="id_employe"  width="10px"  sclass="textboxdetail" value="@{winCtrl.selected.id_employe,save-when=none}"   visible="false"/>
+				  
+				   <listbox id="sexe"  width="150px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.sexe,save-when=none}" />
+                  <listbox id="type_contrat"  width="160px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.type_contrat,save-when=none}" />
+                  
+				  <!-- textbox id="nom"  width="180px"  sclass="textboxdetail" value="@{winCtrl.selected.nom,save-when=none}"   /-->
+				  <!-- textbox id="prenom"  width="180px"  sclass="textboxdetail" value="@{winCtrl.selected.prenom,save-when=none}"   /-->
+				  <datebox id="date_naissance"  cols="8"  sclass="textboxdetail" value="@{winCtrl.selected.date_naissance,save-when=none}" format="yyyy/MM/dd"/>
+				  <datebox id="date_recrutement"  cols="8"  sclass="textboxdetail" value="@{winCtrl.selected.date_recrutement,save-when=none}" format="yyyy/MM/dd"/>
+                  <listbox id="formation"  width="200px" sclass="textboxdetail"  mold="select" selectedItem="@{winCtrl.selected.libelle_formation,save-when=none}" />
+                  <listbox id="poste"  width="180px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.intitule_poste,save-when=none}" />
+                  <textbox id="email"  width="180px"  sclass="textboxdetail" value="@{winCtrl.selected.email,save-when=none}"   />
+                  <listbox id="est_evaluateur"  width="50px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.est_evaluateur,save-when=none}" />
+                  <listbox id="est_responsable_rh"  width="50px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.est_responsable_rh,save-when=none}" />
+                   <listbox id="structure"  width="180px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.libelle_structure,save-when=none}"  />
+            </row>
+            <row>
+             <!-- label  id="structure_lbl" width="400px" sclass="textboxdetail" /-->
+            </row>
+        </rows>
+    </grid>
+	
+
+	<hbox pack="center" width="100%" spacing="20">
+		<div>
+			<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter un employé"/>
+			<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
+			<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier un employé"/>
+			<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer un employé "/>
+			<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner à la selection"/>
+
+		</div>
+		<div>
+
+			
+		</div>
+
+		
+	</hbox>
+</window>

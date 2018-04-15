@@ -1,0 +1,68 @@
+
+
+<zk>
+
+  
+	<window border="normal" width="400px" apply="administration.action.Login" mode="modal" sclass="error" >
+
+<style>
+
+.myCaption .z-caption-l
+{ 
+     font-size:7pt;
+      color: blue;
+      text-align:center;
+} 
+
+</style>
+
+ 
+
+
+
+		<div height="100px" >
+             <image src="/image/Logo.png" width="100%" height="100px" align="top"/>
+        </div>
+
+		<div id="loginDiv"  visible="${empty user}">
+			<grid>
+					<rows>
+						<row>
+							Utilisateur :
+							<textbox id="usertb" width="200px" value="" />
+						</row>
+						<row>
+							 Mot de passe   :
+							<textbox id="pwdtb" width="200px"
+								type="password"  value=""/>
+						</row>
+					</rows>
+				
+			</grid>	
+			<grid >
+				<rows>	
+					<row>		
+						<hbox pack="center" width="100%">
+							<button id="login" label="Connecter" />
+						</hbox>
+					</row>
+					<row>
+						<a href="/login/REINIPW.zul" sclass="edition-field" label=" Mot de passe oublié?" style="font-size:7pt;color:#009ED6;font-weight: bold;;"/>
+				    </row>
+		      </rows>
+			</grid>
+			
+			<div>
+				<label id="msg" style="color:red"/>
+			</div>
+		</div>
+		
+		   
+		   <groupbox id="gb" mold="3d" width="100%" open="false"  >
+		   <caption image="/image/fleche_bas.png"  tooltiptext="Testez votre débit internet"  sclass="myCaption"/>
+		   <include src="footer.zul"/>
+		   </groupbox>
+			
+  	</window>	   
+  	
+</zk>

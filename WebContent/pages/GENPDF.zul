@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+
+	<window id="win" border="normal" width="100%"
+		apply="kpi.action.EditionRapportWordAction">
+
+
+		<borderlayout width="1200px" height="550px">
+			<north height="2000px" size="60%" border="0">
+
+				<borderlayout>
+				
+				<north height="2000px" size="10%" border="0"/>
+					<west size="10%" flex="true" maxsize="250" border="0">
+
+						<div style="background:#FFFFFF">
+
+						</div>
+					</west>
+					<center border="0">
+						<div style="background:#FFFFFF" height="800px">
+							<vlayout>
+								<hlayout>
+									<listbox id="listVaguelb1" model="@{winCtrl.model}"
+										height="250px" rows="10" selectedItem="@{winCtrl.selected}"
+										width="700px" mold="paging" pageSize="30">
+										<listhead sizable="true">
+											<listheader label="" height="5px" width="40px"
+												style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+											<listheader label="Vague" height="5px" width="120px"
+												style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+											<listheader label="Libellé Compagne" height="5px"
+												style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+											<listheader label="idcompagne" visible="false" />
+											<listheader label="nominstance" visible="false" />
+
+										</listhead>
+
+										<listitem self="@{each=listevaluateur}">
+
+											<listcell id="listcheckbox1">
+												<radio id="@{listevaluateur.nominstance}" value="@{listevaluateur.nombase}"
+													context="@{listevaluateur.compagne_id}" forward="onCheck=onModifyRadio, onCreate=onCreation" />
+
+											</listcell>
+
+											<listcell label="@{listevaluateur.nombase}"
+												style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+											<listcell label="@{listevaluateur.libelle_compagne}"
+												style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+											<listcell label="@{listevaluateur.compagne_id}"
+												visible="false"
+												style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+											<listcell label="@{listevaluateur.nominstance}"
+												visible="false"
+												style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+										</listitem>
+									</listbox>
+									<vlayout>
+										<label value="Poste de travail:" />
+										<listbox id="poste_travail" mold="select" width="300px"
+											style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+										<hlayout>
+
+
+											<label value="Analyses de Synthèse:" />
+											<checkbox id="compagne_synthese" name="Analyses de Synthèse"
+												value="" forward="onCheck=onModifyCheckedBox, onCreate=onCreation" />
+
+											<label value="Analyses de Compagne:" />
+											<checkbox id="compagne_analyse" name="Analyses de Compagne"
+												value="" forward="onCheck=onModifyCheckedBox, onCreate=onCreation" />
+										</hlayout>
+									</vlayout>
+
+								</hlayout>
+
+								<hlayout>
+
+									<div style="background:#FFFFFF" width="200px">
+
+						           </div>
+									<button id="executer" label="Export Rapport Compagne" />
+
+								</hlayout>
+							</vlayout>
+						</div>
+
+
+					</center>
+
+
+
+
+
+
+				</borderlayout>
+			</north>
+
+
+
+			<center border="0">
+				<borderlayout>
+
+					<center border="0">
+
+						<div>
+
+							<vlayout>
+
+								<hlayout>
+
+
+								</hlayout>
+								<hlayout>
+
+
+
+								</hlayout>
+							</vlayout>
+
+						</div>
+
+					</center>
+
+
+
+					<west size="10%" flex="true" maxsize="250" border="0">
+
+						<div style="background:#FFFFFF">
+
+						</div>
+					</west>
+				</borderlayout>
+			</center>
+		</borderlayout>
+
+
+
+
+
+
+
+	</window>
+
+
+
+
+
+
+
+</zk>

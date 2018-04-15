@@ -1,0 +1,85 @@
+<?page title="Reinitialisation Mot de Passe" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+<style >
+body{
+background-image:url('../image/fond-site_new.jpg'); background-repeat:no-repeat;  
+}
+	
+</style>          
+
+	<window border="none" width="400px"  sclass="body" apply="administration.action.ReinitPwdAction" position="center" mode="overlapped">
+	
+<style dynamic="true"> 
+
+<!-- Make Plain Grid --> 
+.GridLayoutNoBorder tr.z-row td.z-row-inner, tr.z-row .z-cell,div.z-grid 
+{ 
+border: none; 
+overflow: hidden; 
+zoom: 1; 
+background: white; 
+border-top: none; 
+border-left: none; 
+border-right: none; 
+border-bottom: none; 
+} 
+
+</style> 
+
+
+		<div id="loginDiv"   align="left">
+			<grid sclass="GridLayoutNoBorder"  width="400px" height="230px">
+				<rows>
+					<row>
+						Utilisateur :
+						<textbox id="user" width="100px" value="" />
+					</row>
+					<row>
+						 Ancien Mot de passe   :
+						<textbox id="ancienPwd"  width="100px"  maxlength="8"  type="password"  value="" /> <button id="aide" image="/image/help.gif" tooltiptext="Contacter votre administrateur" />
+					</row>
+					
+					<row>
+						 Nouveau Mot de passe   :
+						<textbox id="nouveauPwd"  width="100px" maxlength="8"   type="password"  value=""   /> <button id="aide1" image="/image/help.gif" tooltiptext="Mot de passe doit avoir 8 caracteres" />
+					</row>
+					
+					<row>
+						 Confirmer nouveau Mot de passe   :
+						<textbox id="confnouveauPwd"  width="100px" maxlength="8"   type="password"  value="" />
+					</row>
+					
+					<row><label></label></row> <row></row> <row></row>
+					<row>
+					
+						<button id="login" label="Modifier" /> <button id="cancel" label="Annuler" />
+					
+					</row>
+					
+					<row>
+					<label id="msg" style="color:red;width:400px"/>
+					</row>
+					
+					
+				</rows>
+				
+			</grid>	
+			
+		</div>
+		
+		
+		<popup id="info_admin">
+	
+		<label  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight:bold ;"> Si vous n'avez pas ou oublié votre mot de passe, merci de contacter votre administrateur a la DRH </label>	
+	  
+       </popup>
+       
+       <popup id="info_admin1">
+	
+		<label  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight:bold ;"> Le mot de passe doit avoir 8 caractéres </label>	
+	  
+       </popup>
+		
+	</window>
+</zk>

@@ -1,0 +1,64 @@
+<?page title="Reinitialisation Mot de Passe" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+<style >
+body{
+background-image:url('../image/fond-site_new.jpg'); background-repeat:no-repeat;  
+}
+	
+</style>          
+
+	<window border="none" width="400px"  sclass="body" apply="administration.action.ReinitPwdAction" position="center" mode="overlapped">
+	
+<style dynamic="true"> 
+
+<!-- Make Plain Grid --> 
+.GridLayoutNoBorder tr.z-row td.z-row-inner, tr.z-row .z-cell,div.z-grid 
+{ 
+border: none; 
+overflow: hidden; 
+zoom: 1; 
+background: white; 
+border-top: none; 
+border-left: none; 
+border-right: none; 
+border-bottom: none; 
+} 
+
+</style> 
+
+
+		<div id="loginDiv"   width="400px"  align="left">
+			<grid sclass="GridLayoutNoBorder"  width="400px" height="130px">
+				<rows>
+					<row>
+						Utilisateur :
+						<textbox id="user" width="150px" value="" />
+					</row>
+					<row>
+						 E-MAIL   :
+						<textbox id="email" width="200px"
+							value="" />
+					</row>
+					
+					<row>
+					
+						<label/><button id="login" label="Envoyer" />
+					
+						<button id="cancel" label="Annuler" />
+					
+					</row>
+					
+					<row>
+					<label id="msg" style="color:red;width:200px"/>
+					</row>
+					
+					
+				</rows>
+				
+			</grid>	
+			
+		</div>
+		
+	</window>
+</zk>

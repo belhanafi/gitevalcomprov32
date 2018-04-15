@@ -1,0 +1,66 @@
+
+<window title="include demo" border="normal" width="300px">
+<zk xmlns:h="native">
+   
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <script src="https://code.highcharts.com/highcharts.js"></script>
+   
+   <script type="text/javascript">
+         function mychart() {
+          
+                var processed_json = new Array();   
+                $.getJSON('http://localhost:8080/zkevalcom/rest/hello/999', function(data) {
+                
+              	  $.each(data, function (idx, item) {
+    				 
+   					 $.each(item, function (i, item) {
+   					     alert(item.key);
+   					     processed_json.push([item.key, parseInt(item.value)]);
+   					    
+   				 		})
+				   })              
+                   var chart = new Highcharts.Chart({
+                    chart: {
+                    	renderTo: 'container1',
+                        type: 'bar'
+                    },
+                    title: {
+                        text: "Student data"
+                    },
+                    xAxis: {
+                        allowDecimals: false,
+                        title: {
+                            text: "Branch of studies"
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: "Number of students"
+                        }
+                    },
+                    series: [{
+                        data: processed_json
+                    }]
+                }); 
+            });
+        }
+        
+    </script>
+
+
+<a label="Click" xmlns:w="http://www.zkoss.org/2005/zk/client" w:onClick="mychart();"/>
+
+<script type="text/javascript">
+    function createPopUp(url)
+    {
+        var w = 600;
+        var h = 500;
+        var left = (screen.width/2)-(w/2);
+        var top = (screen.height/2)-(h/2);
+        window.open(url,'name','scrollbars=yes,width='+w+', height='+h+', top='+top+', left='+left);
+    }
+</script>
+<h:div id="container1" style="height: 400px"></h:div>
+
+</zk>
+</window>

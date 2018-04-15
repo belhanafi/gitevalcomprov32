@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+
+	<window id="win" border="normal" width="100%"
+		apply="kpi.action.AnalyseSyntheseAction">
+
+		<tabbox id="tb" width="100%">
+			<tabs id="tbtabs">
+				<tab id="syntheseCompagne" label="Synthèse Campagnes" />
+				<tab id="imi_mix_ideal" label="Analyse par IMI " />
+				<tab id="imi_age" label="Corrélation IMI , Age et Expérience" />
+				<tab id="imi_duree" label="Durée Moyenne Evaluation" />
+
+			</tabs>
+
+
+
+			<tabpanels id="tbpanels" height="100%">
+				<tabpanel id="syntheseCompagneEcran">
+
+
+					<borderlayout width="1200px" height="550px">
+						<north autoscroll="true" maxsize="100" size="25%"
+							splittable="true" collapsible="true">
+
+							<borderlayout>
+								<west size="10%" flex="true" maxsize="250" border="0">
+
+									<div style="background:#FFFFFF">
+
+									</div>
+								</west>
+								<north height="2000px" size="8%" border="0" />
+								<center border="0">
+									<div style="background:#FFFFFF">
+										<hlayout>
+											<listbox id="listVaguelb" model="@{winCtrl.model}"
+												height="120px" rows="10" selectedItem="@{winCtrl.selected}"
+												width="700px" mold="paging" pageSize="30"   nonselectableTags="*" >
+												<listhead sizable="true">
+													<listheader label="" height="5px" width="40px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+													<listheader label="Vague" height="5px" width="120px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="Libellé Compagne" height="5px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="idcompagne" visible="false" />
+													<listheader label="nominstance" visible="false" />
+
+												</listhead>
+
+												<listitem self="@{each=listevaluateur}">
+
+													<listcell id="listcheckbox">
+														<checkbox  value="@{listevaluateur.nombase}"
+															context="@{listevaluateur.compagne_id}" name="@{listevaluateur.nominstance}"
+															forward="onCheck=onModifyCheckedBox, onCreate=onCreation" />
+
+													</listcell>
+
+													<listcell label="@{listevaluateur.nombase}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.libelle_compagne}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.compagne_id}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.nominstance}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+												</listitem>
+											</listbox>
+
+											<button id="executer" label="Ok" />
+										</hlayout>
+									</div>
+
+
+								</center>
+								<east size="10%" border="0">
+
+								</east>
+							</borderlayout>
+						</north>
+
+
+
+						<center border="0">
+							<borderlayout>
+
+
+								<east title="Taux de couverture des Campagnes" size="30%"
+									flex="true" collapsible="true" width="595px">
+									<div style="background:#FFFFFF">
+										<zhighcharts id="chartComp3" visible="true"
+											context="chartComp3" />
+									</div>
+								</east>
+
+								<west title="Répartition par Métier" size="30%" flex="true"
+									collapsible="true" width="600px">
+									<div style="background:#FFFFFF">
+										<zhighcharts id="chartComp2" visible="true"
+											context="chartComp2" />
+									</div>
+								</west>
+							</borderlayout>
+						</center>
+					</borderlayout>
+
+
+				</tabpanel>
+
+				<tabpanel id="Mesure des Performances">
+
+					<borderlayout width="1200px" height="550px">
+						<north autoscroll="true" maxsize="100" size="25%"
+							splittable="true" collapsible="true">
+
+							<borderlayout>
+								<west size="10%" flex="true" maxsize="250" border="0">
+
+									<div style="background:#FFFFFF">
+
+									</div>
+								</west>
+								<north height="2000px" size="8%" border="0" />
+								<center border="0">
+									<div style="background:#FFFFFF">
+										<hlayout>
+											<listbox id="listVaguelb1" model="@{winCtrl.model}"
+												height="120px" rows="10" selectedItem="@{winCtrl.selected}"
+												width="700px" mold="paging" pageSize="30" nonselectableTags="*">
+												<listhead sizable="true">
+													<listheader label="" height="5px" width="40px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+													<listheader label="Vague" height="5px" width="120px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="Libellé Compagne" height="5px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="idcompagne" visible="false" />
+													<listheader label="nominstance" visible="false" />
+
+												</listhead>
+
+												<listitem self="@{each=listevaluateur}">
+
+													<listcell id="listcheckbox1">
+
+														<radio value="@{listevaluateur.nombase}" context="@{listevaluateur.compagne_id}"
+															sclass="@{listevaluateur.nominstance}" forward="onCheck=onModifyRadio, onCreate=onCreation" />
+
+													</listcell>
+
+													<listcell label="@{listevaluateur.nombase}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.libelle_compagne}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.compagne_id}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.nominstance}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+												</listitem>
+											</listbox>
+
+											<button id="executer1" label="Ok" />
+										</hlayout>
+									</div>
+
+
+								</center>
+								<east size="10%" border="0">
+
+								</east>
+							</borderlayout>
+						</north>
+
+
+
+						<center border="0">
+							<borderlayout>
+
+
+								<west title="IMI Vs Mix Idéal" flex="true"
+									collapsible="true" width="400px">
+									<div style="background:#FFFFFF">
+										<zhighcharts id="chartComp4" visible="true"
+											context="chartComp4" />
+									</div>
+								</west>
+
+								<east title=" Analyse IMI par Postes de Travail" 
+									flex="true" collapsible="true" width="800px">
+									<borderlayout>
+										<north border="0">
+
+											<hlayout spacing="10px">
+											   <label value="          " />
+												<label value=" Poste de travail:" />
+												<listbox id="poste_travail" mold="select" width="380px"
+													style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+											</hlayout>
+
+
+										</north>
+										<center border="0">
+											<div style="background:#FFFFFF">
+												<zhighcharts id="chartComp5" visible="true"
+													context="chartComp5" />
+											</div>
+										</center>
+									</borderlayout>
+								</east>
+							</borderlayout>
+						</center>
+					</borderlayout>
+				</tabpanel>
+
+				<tabpanel id="IMIAge">
+
+					<borderlayout width="1300px" height="550px">
+						<north autoscroll="true" maxsize="100" size="25%"
+							splittable="true" collapsible="true">
+
+							<borderlayout>
+								<west size="10%" flex="true" maxsize="250" border="0">
+
+									<div style="background:#FFFFFF">
+
+									</div>
+								</west>
+								<north height="2000px" size="8%" border="0" />
+								<center border="0">
+									<div style="background:#FFFFFF" width="1200px">
+										<vlayout>
+											<hlayout>
+												<listbox id="listVaguelb2" model="@{winCtrl.model}"
+													height="120px" rows="10" selectedItem="@{winCtrl.selected}"
+													width="700px" mold="paging" pageSize="30" nonselectableTags="*">
+													<listhead sizable="true">
+														<listheader label="" height="5px" width="40px"
+															style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+														<listheader label="Vague" height="5px" width="120px"
+															style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+														<listheader label="Libellé Compagne" height="5px"
+															style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+														<listheader label="idcompagne" visible="false" />
+														<listheader label="nominstance" visible="false" />
+
+													</listhead>
+
+													<listitem self="@{each=listevaluateur}">
+
+														<listcell id="listcheckbox2">
+															<radio value="@{listevaluateur.nombase}" context="@{listevaluateur.compagne_id}"
+																sclass="@{listevaluateur.nominstance}"
+																forward="onCheck=onModifyRadioIMIAge, onCreate=onCreation" />
+
+														</listcell>
+
+														<listcell label="@{listevaluateur.nombase}"
+															style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+														<listcell label="@{listevaluateur.libelle_compagne}"
+															style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+														<listcell label="@{listevaluateur.compagne_id}"
+															visible="false"
+															style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+														<listcell label="@{listevaluateur.nominstance}"
+															visible="false"
+															style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													</listitem>
+												</listbox>
+
+												<vlayout>
+													<hlayout>
+														<label value="Poste de travail:" />
+														<listbox id="poste_travail1" mold="select" width="220px"
+															style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+
+														<!-- button id="executer2" label="Ok" / -->
+													</hlayout>
+												</vlayout>
+
+											</hlayout>
+
+											<hlayout>
+
+
+
+
+											</hlayout>
+										</vlayout>
+
+
+
+									</div>
+
+
+								</center>
+								<east size="10%" border="0">
+
+								</east>
+							</borderlayout>
+						</north>
+
+
+						<center border="0" autoscroll="true">
+							<borderlayout id="chartbrd">
+								<center>
+									<div style="background:#FFFFFF">
+										<zhighcharts id="chartComp6" visible="true"
+											context="chartComp6" />
+									</div>
+								</center>
+								<east width="700px" size="30%" flex="true" splittable="true"
+									collapsible="true">
+									<div style="background:#FFFFFF">
+										<zhighcharts id="chartAgeExpIMIScattered" visible="true"
+											context="chartAgeExpIMIScattered" />
+									</div>
+								</east>
+								<west width="600px" size="33%" flex="true" collapsible="true">
+
+									<div style="background:#FFFFFF">
+										<zhighcharts id="chartComp7" visible="true"
+											context="chartComp7" />
+									</div>
+
+								</west>
+							</borderlayout>
+						</center>
+
+					</borderlayout>
+				</tabpanel>
+				<tabpanel id='Duree moyenne'>
+
+					<borderlayout width="1200px" height="550px">
+						<north autoscroll="true" maxsize="100" size="25%"
+							splittable="true" collapsible="true">
+
+							<borderlayout>
+								<west size="10%" flex="true" maxsize="250" border="0">
+
+									<div style="background:#FFFFFF">
+
+									</div>
+								</west>
+								<north height="2000px" size="8%" border="0" />
+								<center border="0">
+									<div style="background:#FFFFFF">
+										<hlayout>
+											<listbox id="listVaguelb3" model="@{winCtrl.model}"
+												height="120px" rows="10" selectedItem="@{winCtrl.selected}"
+												width="700px" mold="paging" pageSize="30" nonselectableTags="*">
+												<listhead sizable="true">
+													<listheader label="" height="5px" width="40px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+													<listheader label="Vague" height="5px" width="120px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="Libellé Compagne" height="5px"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listheader label="idcompagne" visible="false" />
+													<listheader label="nominstance" visible="false" />
+
+												</listhead>
+
+												<listitem self="@{each=listevaluateur}">
+
+													<listcell id="listcheckbox3">
+														<checkbox  value="@{listevaluateur.nombase}"
+															context="@{listevaluateur.compagne_id}" name="@{listevaluateur.nominstance}"
+															forward="onCheck=onModifyCheckedBoxCotat, onCreate=onCreation" />
+
+													</listcell>
+
+													<listcell label="@{listevaluateur.nombase}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.libelle_compagne}"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.compagne_id}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+													<listcell label="@{listevaluateur.nominstance}"
+														visible="false"
+														style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+												</listitem>
+											</listbox>
+
+											<button id="executer3" label="Ok" />
+										</hlayout>
+									</div>
+
+
+								</center>
+								<east size="10%" border="0">
+
+								</east>
+							</borderlayout>
+						</north>
+
+
+						<center border="0" autoscroll="true">
+
+
+
+							<zhighcharts id="chartdureeMoyenne" visible="true"
+								context="chartdureeMoyenne" />
+
+
+						</center>
+
+
+						<south border="0" autoscroll="true">
+							<hlayout spacing="250px">
+								<label visible="false" />
+								<label visible="false" />
+								<label visible="false" />
+								<label visible="false" />
+								<div height="40px">
+
+									<button id="executeexp" image="/image/excel_32.png"
+										visible="true" tooltiptext="Exporter la liste  cotations de durée courte" />
+								</div>
+							</hlayout>
+						</south>
+					</borderlayout>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+
+
+
+
+	</window>
+
+
+
+
+
+
+
+</zk>

@@ -1,0 +1,14 @@
+<window id="winGraph2" border="normal" height="100%" apply="Statistique.action.StatPopNivInstr" contentStyle="overflow:auto">
+	
+	
+	
+	<vbox>
+		<chart id="mychart" title="Répartition de la population à évaluer par niveau d'instruction" width="800" if="true" 
+			height="400" type="pie" threeD="true" fgAlpha="128" model="${model}" context="editPopup"/>
+			
+		<menupopup id="editPopup">      
+        	<menuitem id= "downloadimage" label="Enregistrer l'image..." />
+    	</menupopup>
+	</vbox>
+
+</window>

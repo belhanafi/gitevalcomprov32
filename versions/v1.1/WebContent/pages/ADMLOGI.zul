@@ -1,0 +1,93 @@
+<window  id="win" title="Administration des utilisateurs" apply="administration.action.AdministrationLoginAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+
+
+ 
+	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
+		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		
+			<listheader label="Nom" width="130px" sort="auto" align="center" />
+			<listheader label="Prénom" width="130px" align="center" />
+			<listheader label="Login" width="100px" align="center" />
+			<listheader label="Mot de passe" width="130px" align="center" />
+			<listheader label="Profil" width="100px" align="center" />
+			<listheader label="Base de données" width="130px" align="center" />
+			<listheader label="Date debut validité" width="130px" align="center" />
+			<listheader label="Date fin validité" width="130px" align="center" />
+			<listheader label="Date Modification mot de passe" width="100px" align="center" />
+			<listheader label="id compte" width="100px" align="center" visible="false" />
+	
+	
+		</listhead>
+		<listitem self="@{each=listlogin}">
+			<listcell label="@{listlogin.nom}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listlogin.prenom}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listlogin.login}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listlogin.motdepasse}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listlogin.profile}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listlogin.basedonnee}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listlogin.date_deb_val}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listlogin.date_fin_val}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listlogin.datemodifpwd}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listlogin.id_compte}" visible="false"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			
+		</listitem>
+	</listbox>
+	<grid span="true" sizedByContent="true" width="100%" height="130px">
+        <auxhead>
+            <auxheader colspan="13" class="topic">Edition des données</auxheader>
+        </auxhead>
+        <columns sizable="true">
+            
+            <column label="Nom"  align="center" width="100px"/>
+            <column label="Prénom"  align="center" width="100px"/>
+             <column label="Login"  align="center" width="100px"/>
+            <column label="Mot de passe" align="center" width="100px"/>
+            <column label="Profil" align="center" width="160px"/>
+            <column label="Base de données" align="center" width="100px"/>
+            <column label="Date debut validité" align="center" width="100px"/>
+            <column label="Date fin validité" align="center" width="100px"/>
+            <column label="Date Modification mot de passe" align="center" width="100px"/>
+            <column label="id compte" align="center" width="100px" visible="false"/>
+            
+           
+        </columns>
+        <rows>
+            <row>
+
+                <!-- Selected contributor's title value is same as title model's data-->
+                <textbox id="nom" value="@{winCtrl.selected.nom,save-when=none}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+                <textbox id="prenom" value="@{winCtrl.selected.prenom,save-when=none}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+                <textbox id="login" value="@{winCtrl.selected.login,save-when=none}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+                <textbox id="motdepasse" value="@{winCtrl.selected.motdepasse,save-when=none}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+                <listbox id="profile" mold="select" selectedItem="@{winCtrl.selected.profile,save-when=none}"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+	            <listbox id="basedonnee" mold="select" selectedItem="@{winCtrl.selected.basedonnee,save-when=none}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+                <!-- textbox id="date_deb_val" value="@{winCtrl.selected.date_deb_val,save-when=none}" /-->
+                <datebox id="date_deb_val"  cols="8"  value="@{winCtrl.selected.date_deb_val,save-when=none}" format="yyyy/MM/dd"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+                <!-- textbox id="date_fin_val" value="@{winCtrl.selected.date_fin_val,save-when=none}" /-->
+                <datebox id="date_fin_val" cols="8" value="@{winCtrl.selected.date_fin_val,save-when=none}" format="yyyy/MM/dd"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+                <textbox id="datemodifpwd" value="@{winCtrl.selected.datemodifpwd,save-when=none}" Readonly="true"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+                <textbox id="id_compte" value="@{winCtrl.selected.id_compte,save-when=none}" visible="false"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+                
+            </row>
+        </rows>
+    </grid>
+	
+
+	<hbox pack="center" width="100%" spacing="20">
+		<div>
+			<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter un utilisateur"/>
+			<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
+			<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier un utilisateur"/>
+			<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer un utilisateur "/>
+			<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner a la selection"/>
+		</div>
+		<div>
+
+			
+		</div>
+
+		
+	</hbox>
+</window>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+<window  id="win" title="Fiche poste de travail" apply="administration.action.FichePosteAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+ closable="true"  onClose="self.visible = false; event.stopPropagation();">
+ 
+<style>
+.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+ font-size: 10px;font-weight: ;
+}
+</style>
+	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
+		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
+		<listhead sizable="true">
+		
+			<listheader label="code Poste" width="80px" sort="auto" align="center" />
+			<listheader label="Intitulé Poste" width="100px" align="left" />
+			<listheader label="Sommaire Poste" width="200px" align="left" />
+			<listheader label="Tâche et responsabilité " width="200px" align="left" />
+			<listheader label="Environement et Perspectifs " width="200px" align="left" />
+			<listheader label="Formation Génerale" width="200px" align="left" />
+			<listheader label="Formation professionnelle" width="200px" align="left" />
+			<listheader label="Experience" width="200px" align="left" />
+			<listheader label="Profil poste" width="300px" align="left" />
+			<listheader label="Poste hiearchique" width="120px" align="left" />
+			<listheader label="Structure" width="80px" align="center" />
+			<listheader label="Date Maj Poste" width="100px" align="center" />
+			<listheader label="GSP" width="50px" align="center" />
+		
+	
+		</listhead>
+		<listitem self="@{each=listcomp}" >
+			<listcell label="@{listcomp.code_poste}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.intitule_poste}"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.sommaire_poste}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.tache_responsabilite}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.environement_perspectif}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.formation_general}"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+			<listcell label="@{listcomp.formation_professionnelle}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.experience}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.profile_poste}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.libelle_poste}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.libelle_structure}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.date_maj_poste}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<listcell label="@{listcomp.is_cadre}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			
+			
+		</listitem>
+	</listbox>
+	
+ <groupbox id="gb" mold="3d" width="100%" contentStyle="overflow:auto">
+        <caption label="Edition des données" />
+        
+        <vbox spacing ="100">
+                 
+        
+          <hbox spacing ="100">
+                <!-- Selected contributor's title value is same as title model's data-->
+                 <hlayout >
+                         <label id="code_poste_lbl"  value="Code poste:"  sclass="textboxdetail"/>
+		                 <textbox id="code_poste" value="@{winCtrl.selected.code_poste,save-when=none}" sclass="textboxdetail" />
+		          </hlayout>       
+		                 <label id="intitule_poste_lbl"  value="Intitule poste:"  sclass="textboxdetail"/>
+		                 <textbox id="intitule_poste" value="@{winCtrl.selected.intitule_poste,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		           <hlayout spacing="10px" > 
+		                 <label id="formation_general_lbl"  value="Formation Générale :"  sclass="textboxdetail"/>
+		                 <listbox id="formation_general" mold="select" selectedItem="@{winCtrl.selected.formation_general,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		           </hlayout > 
+		            <hlayout spacing="10px">
+		                <label id="code_structure_lbl"  value="Structure de rattachement:"  sclass="textboxdetail"/>
+           
+		                <listbox id="structure"  width="180px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.libelle_structure,save-when=none}"  />
+		                
+				    </hlayout>
+					<hlayout spacing="10px" >               
+		                <label id="formation_professionnelle_lbl"  value="Formation Professionnelle :"  sclass="textboxdetail"/>
+		                <textbox id="formation_professionnelle" value="@{winCtrl.selected.formation_professionnelle,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		            </hlayout >
+		              
+		                
+		   </hbox>
+		   
+		   <hbox>	
+		   <hlayout spacing="10px">	  
+		   			
+		            <hlayout >
+						<label id="experience_lbl"  value="Experience :"  sclass="textboxdetail"/>
+		                <textbox id="experience" value="@{winCtrl.selected.experience,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+		             </hlayout >
+		                             
+		                <label id="code_poste_hierarchie_lbl"  value="Poste hierarchique :"  sclass="textboxdetail"/>
+		              <hlayout spacing ="95px">
+		                <listbox id="code_poste_hierarchie" mold="select" selectedItem="@{winCtrl.selected.libelle_poste,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					  <hlayout spacing ="10px">	
+						<label id="date_maj_poste_lbl"  value="Date derniere maj:"  sclass="textboxdetail"/>
+					</hlayout>
+		                <datebox id="date_maj_poste"  cols="8"  sclass="textboxdetail" value="@{winCtrl.selected.date_maj_poste,save-when=none}" format="yyyy/MM/dd"/>
+		             </hlayout>
+			</hlayout>	        		                
+		                		                
+	       </hbox>
+	                				      
+			<hbox>
+			<hlayout spacing="65px">	  
+   				        <label id="sommaire_poste_lbl"  value=" Sommaire poste:"  sclass="textboxdetail"/>
+			            <textbox id="sommaire_poste" tabbable="true" width="300px" rows="5"  value="@{winCtrl.selected.sommaire_poste,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			</hlayout>
+			<hlayout spacing="15px">	  
+		                <label id="tache_responsabilite_lbl"  value="Tâches et responsabilités:"  sclass="textboxdetail"/>
+			          	<textbox id="tache_responsabilite" tabbable="true" width="400px;" rows="5"  value="@{winCtrl.selected.tache_responsabilite,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			</hlayout>	           
+		   </hbox>
+		   <hbox>
+			<hlayout spacing="90px">			
+		                 <label id="profile_poste_lbl"  value="Profil Poste:"  sclass="textboxdetail"/>
+		                <textbox id="profile_poste" tabbable="true" width="300px" rows="5" value="@{winCtrl.selected.profile_poste,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			</hlayout >	
+			<hlayout spacing="1px">	
+						<label id="environement_perspectif_lbl"  value=" Environement et  perspectifs: "  sclass="textboxdetail"/>
+  	   		            <textbox id="environement_perspectif" tabbable="true" width="350px;" rows="5"  value="@{winCtrl.selected.environement_perspectif,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+  	   		</hlayout >           
+  	   		            <label id="cadre"  value="Groupe Socio Professionnelle:"  sclass="textboxdetail"/>
+		                <listbox id="is_cadre" mold="select" selectedItem="@{winCtrl.selected.is_cadre,save-when=none}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+  	   		              
+			           	
+		     </hbox>
+		     
+	       
+           
+        </vbox>
+  
+	
+   </groupbox>
+	<hbox pack="center" width="100%" spacing="20">
+	
+	
+			<div>
+			
+				<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter un poste"/>
+				<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
+				<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier un poste"/>
+				<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer un poste"/>
+				<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner a la selection"/>
+			
+				<!--button id="upload" image="/image/upload1616.gif" height="25px" width="50px" tooltiptext="Charger les données en base de données" /-->			
+				<!--button id="download" image="/image/download1616.gif" height="25px" width="50px" tooltiptext="Télécharger les données de la base de données"  /-->
+			
+		</div>
+			
+
+ 
+	</hbox>
+
+
+	
+</window>
+</zk>

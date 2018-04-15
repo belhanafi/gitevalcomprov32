@@ -1,0 +1,41 @@
+<window id="winGraph2" border="normal" height="100%" apply="Statistique.action.StatPopPosteTravail" contentStyle="overflow:auto">
+	
+	<div id="listboxpart"  visible="${empty user}">
+
+	<groupbox width="100%" mold="3d">
+    <caption label="Population a évaluer par catégorie de poste " />
+	
+          
+    	 <hbox>  
+			<hbox  pack="start" align="start" height="90%" width="100%">
+	      <label value="  Structure Entreprise:" width="50px" />
+			<listbox id="comp_struct_ent_list" mold="select" width="200px"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />	        
+	     </hbox>     
+             <hbox>  </hbox>    <hbox>  </hbox> 
+         <hbox  pack="start" align="start" height="90%" width="100%">         
+	        <label id="label_poste" value=" Poste de Travail:" width="50px" />
+			<listbox id="comp_poste_list" mold="select" width="200px"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />	        
+			</hbox>
+		</hbox>  
+       <hbox  pack="end" align="end" height="90%" width="100%">
+			
+	     </hbox>
+ 	</groupbox>
+ 	</div>
+ 	 	
+	<div id="listboxpart1"  visible="${empty user}">
+	<vbox>
+	
+		<label id="message" visible="false" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 16px;font-weight:bold ;" />
+	
+		<chart id="mychart" title="Répartition de la population par catégorie socio professionnelle  " width="800" if="true" 
+			height="400" type="pie"  fgAlpha="128" model="${model}" context="editPopup"/>
+			
+		<menupopup id="editPopup">      
+        	<menuitem id= "downloadimage" label="Enregistrer l'image..." />
+    	</menupopup>
+			
+	</vbox>
+  </div>
+
+</window>

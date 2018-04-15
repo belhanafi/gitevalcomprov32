@@ -1,0 +1,99 @@
+<?page title="ReportPage" contentType="text/html;charset=UTF-8"?>
+<?script src="http://localhost:8081/ActuateBIRTViewer/jsapi" ?>
+<zk>
+<style>
+    .block_image {
+      display: block;
+    }
+    .bttn:hover {
+      cursor: pointer;
+      background-color: #c3c3c3;
+    }
+    .bttn {
+      padding: 5px 4px;
+    }
+    
+</style>
+<script> 
+	zk.afterMount(function() {
+        init();    
+ 	});
+</script>
+ <n:script xmlns:n="native">
+ <![CDATA[
+          
+		function init(){
+			actuate.load("viewer");
+			actuate.initialize("http://localhost:8081/ActuateBIRTViewer", null, null, null, null);
+		}
+		function runReportI(jsonElements)    {
+			var countOfElements = jsonElements.elements.length;
+     	    for (var i = 0; i < countOfElements; i++) {
+		        var year = jsonElements.elements[i].year;
+		    }
+			var viewer = new actuate.Viewer("viewer1");
+			viewer.setReportName("/salesDashboard.rptdesign");
+			viewer.setParameters({Year:year}); 
+			var options2 = new actuate.viewer.UIOptions( );
+				options2.enableToolBar(true);
+				options2.enableMainMenu(false);
+				viewer.setUIOptions( options2 );
+			viewer.setSize(1100,800);
+			viewer.submit();
+		}
+		
+		function runReportXLS() {
+			var viewer = new actuate.Viewer("viewer1");
+			viewer.downloadReport("xls", null, null);
+		}
+		
+		function runReportPDF() {
+			var viewer = new actuate.Viewer("viewer1");
+			viewer.downloadReport("pdf", null, null);
+		}
+		
+		function printReport() {
+			var viewer = new actuate.Viewer("viewer1");
+			viewer.showPrintDialog( );	
+		}
+
+]]>
+</n:script>
+<window width="100%" height="100%" apply="ru.ufa.zkbirt.ViewReportController">
+<borderlayout>
+
+<center  autoscroll="true"> 
+	<html ><![CDATA[
+	<div id="viewer1">
+	</div>        
+	]]>
+	</html>
+</center>
+
+<east title="Configuring report" collapsible="true" splittable="true" minsize="300" size="25%" open="true">
+	<div>
+	<separator></separator>
+	<groupbox vflex="1" closable="false">
+		<caption label="Report parameters" ><image src="/report/parameter.gif" width="30px" height="30px"/></caption>
+		<hbox>	
+		<textbox id="year"/><label value="Write one of the values (2011, 2012, 2013)" />
+		</hbox>				
+		<separator/>
+	</groupbox>
+	<groupbox vflex="1" closable="false"><caption label="View report"><image src="/report/view.gif" width="30px" height="30px"/></caption>
+        <div id="showReport" align="center" sclass="bttn" ><image sclass="block_image" src="/report/search.png"/>View report</div>
+    </groupbox>
+    <groupbox hflex="1" closable="false"><caption label="Export"><image src="/report/export.gif" width="30px" height="30px"/></caption> 
+         <div align="center">
+          <hbox>
+          <div align="center" sclass="bttn" xmlns:w="client" w:onClick="runReportXLS()"><image sclass="block_image" src="/report/excel.png"/>Export to XLS</div>
+          <div align="center" sclass="bttn" xmlns:w="client" w:onClick="runReportPDF()"><image sclass="block_image" src="/report/pdf.png"/>Export to PDF</div>
+          <div align="center" sclass="bttn" xmlns:w="client" w:onClick="printReport()"><image sclass="block_image" src="/report/printer.png"/>Print report</div>
+          </hbox>
+          </div> 
+   </groupbox>
+	</div>	
+</east >
+</borderlayout>
+</window>
+</zk>

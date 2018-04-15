@@ -1,0 +1,263 @@
+<window  id="win" title="Chargement des données en masse"  vflex="1" apply="administration.action.ChargementMasseAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto">
+
+<style>
+	.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+ 	font-size: 10px;font-weight: ;
+	}
+</style>
+<tabbox id="tb" width="100%" height="100%"  vflex="1">
+    <tabs id="tbtabs" >
+			<tab id="StructureEntreprise" label="structure entreprise"  />
+			<tab id="listPosteTravail" label="liste postes travail" />
+			<tab id="listEmploye" label="liste employés" />
+			<tab id="compagneCharg" label="Compagne évaluation" />
+			<tab id="planningEval" label="Planning Evaluation" />
+			<tab id="aptitudePostTravRattachement" label="Rattachement poste de travail Vs aptitudes observables" />
+			
+    	</tabs>
+    <tabpanels>
+        <tabpanel style="color:#336699;overflow:auto" > 
+        
+        		<listbox id="structureEntrepriselb" rows="15" model="@{winCtrl.model}"
+				  width="100%" mold="paging" pageSize="22" height="800px">
+				<listhead sizable="true">
+		
+				<listheader label="Code structure" width="100px" sort="auto" align="center" />
+				<listheader label="Code division" width="100px" sort="auto" align="center" />
+				<listheader label="Nom division" width="100px" align="center" />
+				<listheader label="Code direction" width="100px" align="center" />
+				<listheader label="Nom direction" width="100px" align="center" />
+				<listheader label="Code unité" width="100px" align="center" />
+				<listheader label="Nom unité" width="100px" align="center" />
+				<listheader label="Code sous direction" width="100px" align="center" />
+				<listheader label="Nom sous direction"  width="100px" align="center" />
+				<listheader label="Code département" width="100px" align="center" />
+				<listheader label="Nom département" width="100px" align="center" />
+				<listheader label="Code service" width="100px" align="center" />
+				<listheader label="Nom service" width="100px" align="center" />
+				<listheader label="Code section" width="100px" align="center" />
+				<listheader label="Nom section" width="100px" align="center" />
+			</listhead>
+			<listitem self="@{each=structureEntrepriseBean}">
+				<listcell label="@{structureEntrepriseBean.codestructure}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.codeDivision}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.libelleDivision}"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{structureEntrepriseBean.codeDirection}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.libelleDirection}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.codeUnite}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.libelleUnite}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.codeSousDirection}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.libelleSousDirection}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.codeDepartement}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.libelleDepartement}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.codeService}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.libelleService}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.codesection}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				<listcell label="@{structureEntrepriseBean.libelleSection}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			</listitem>
+		</listbox>
+
+        
+        </tabpanel>
+        <tabpanel style="color:#333399;">
+        
+        	<listbox id="postetravaillb" rows="1" model="@{winCtrl.model2}"
+				 width="100%" mold="paging" pageSize="8" height="400px" >
+			<listhead sizable="true">
+		
+				<listheader label="code Poste" width="80px" sort="auto" align="center" />
+				<listheader label="Intitulé Poste" width="100px" align="left" />
+				<listheader label="Sommaire Poste" width="200px" align="left" />
+				<listheader label="Tâche et responsabilités " width="200px" align="left" />
+				<listheader label="Environement et Perspectifs " width="200px" align="left" />
+				<listheader label="Code Formation" width="200px" align="left" />
+				<listheader label="Formation professionnelle" width="200px" align="left" />
+				<listheader label="Experience" width="200px" align="left" />
+				<listheader label="Profil poste" width="300px" align="left" />
+				<listheader label="Code poste hiearchique" width="120px" align="left" />
+				<listheader label="Code structure" width="80px" align="center" />
+				
+				<listheader label="GSP" width="50px" align="center" />
+		
+	
+			</listhead>
+			<listitem self="@{each=listcomp}" >
+				<listcell label="@{listcomp.code_poste}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcomp.intitule_poste}"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcomp.sommaire_poste}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcomp.tache_responsabilite}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcomp.environement_perspectif}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcomp.formation_general}"  style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+				<listcell label="@{listcomp.formation_professionnelle}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcomp.experience}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcomp.profile_poste}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcomp.poste_hierarchie}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell id="cellcodeStruct" label="@{listcomp.code_structure}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				
+				<listcell label="@{listcomp.code_gsp}" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			
+			
+			</listitem>
+		</listbox>
+        
+        </tabpanel>
+        <tabpanel style="color:#663366;">
+        
+        	<listbox id="compteuserlb" rows="1" model="@{winCtrl.model3}"
+				  width="100%" mold="paging" pageSize="13" height="400px" >
+				<listhead sizable="true">
+		
+	        		<!--listheader label="Compte utilisateur" width="200px" sort="auto" align="center"  /--> 	
+				    <!--listheader label="id employe" width="10px" sort="auto" align="center"  visible="false"  /-->
+				    <listheader label="Matricule/Login " width="100px" sort="auto" align="center"   />
+				    <listheader label="Nom " width="180px" sort="auto" align="center"   />
+					<listheader label="Prénom" width="180px" sort="auto" align="center"   />
+					<listheader label="Profil" width="180px" sort="auto" align="center"   />
+					<listheader label="date début validité" width="180px" sort="auto" align="center"   />
+					<listheader label="Date fin validité" width="180px" sort="auto" align="center"   />
+					<listheader label="Date de naissance" width="180px" sort="auto" align="center"   />
+					<listheader label="Date de recrutement" width="180px" sort="auto" align="center"   />
+					<listheader label="Code formation" width="180px" sort="auto" align="center"   />
+					<listheader label="Code poste" width="180px" align="center"  />
+					<listheader label="Email" width="80px" align="center"   />
+					<listheader label="Est evaluateur" width="80px" align="center"   />
+					<listheader label="Est responsable RH" width="80px" align="center"   />
+					<listheader label="Code structure" width="100px" align="center"    />
+	         
+				</listhead>
+				<listitem self="@{each=listcompagne}">
+		    
+		    		<!--listcell label="@{listcompagne.nom_complet}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" /-->
+				    <!--listcell label="@{listcompagne.id_employe}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" /-->
+				    <listcell label="@{listcompagne.login}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				    <listcell label="@{listcompagne.nom}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listcompagne.prenom}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listcompagne.profile}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listcompagne.val_date_deb}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listcompagne.val_date_fin}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />				
+					<listcell label="@{listcompagne.date_naissance}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listcompagne.date_recrutement}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listcompagne.libelle_formation}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listcompagne.intitule_poste}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+					
+					<listcell label="@{listcompagne.email}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"   />
+					<listcell label="@{listcompagne.est_evaluateur}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listcompagne.code_est_responsable_rh}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listcompagne.code_structure}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+				</listitem>
+			</listbox>
+        
+        
+        </tabpanel>
+        
+      <tabpanel style="color:#663366;">
+        
+        	<listbox id="compagnelb" rows="1" model="@{winCtrl.model5}"
+				  width="100%" mold="paging" pageSize="13" height="400px" >
+				<listhead sizable="true">
+		
+					<listheader label="Date debut " width="100px" sort="auto" align="center"   />
+					<listheader label="Date fin " width="100px" sort="auto" align="center"   />
+					<listheader label="libelle compagne" width="100px" sort="auto" align="center"   />
+					<listheader label="Compagne Type" width="100px" sort="auto" align="center"   />
+				
+					
+	         
+				</listhead>
+				<listitem self="@{each=listcompcharg}">
+
+					<listcell label="@{listcompcharg.dateDebut}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listcompcharg.dateFin}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listcompcharg.libelleCompagne}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listcompcharg.compagneType}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					
+					
+			</listitem>
+			</listbox>
+        
+        
+ </tabpanel>
+        <tabpanel style="color:#663366;">
+        
+        	<listbox id="planninglb" rows="1" model="@{winCtrl.model4}"
+				  width="100%" mold="paging" pageSize="13" height="400px" >
+				<listhead sizable="true">
+		
+					<listheader label="Structure " width="100px" sort="auto" align="center"   />
+					<listheader label="Evaluateur " width="100px" sort="auto" align="center"   />
+					<listheader label="Evalue" width="100px" sort="auto" align="center"   />
+					<listheader label="Code Poste" width="100px" sort="auto" align="center"   />
+					<listheader label="Date Evaluation" width="100px" sort="auto" align="center"   />
+					<listheader label="Heure debut Evaluation" width="100px" sort="auto" align="center"   />
+					<listheader label="Date fin Evaluation" width="100px" sort="auto" align="center"   />
+					<listheader label="Heure fin Evaluation" width="100px" sort="auto" align="center"   />
+					<listheader label="Lieu" width="100px" sort="auto" align="center"   />
+					<listheader label="Personne ressource" width="100px" sort="auto" align="center"   />
+					
+	         
+				</listhead>
+				<listitem self="@{each=listplanning}">
+
+					<listcell label="@{listplanning.structure}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listplanning.evaluateur}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listplanning.evalue}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listplanning.code_poste}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listplanning.date_evaluation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />				
+					<listcell label="@{listplanning.heure_debut_eval}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listplanning.date_fin_evaluation}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />				
+					<listcell label="@{listplanning.heure_fin_eval}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listplanning.lieu}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listplanning.personne_ressource}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+			</listitem>
+			</listbox>
+        
+        
+ </tabpanel>
+ 
+ 
+  <tabpanel style="color:#663366;">
+        
+        	<listbox id="posteAptlb" rows="1" model="@{winCtrl.model6}"
+				  width="100%" mold="paging" pageSize="13" height="400px" >
+				<listhead sizable="true">
+		
+					<listheader label="Id Repertoire de Competence " width="100px" sort="auto" align="center"   />
+					<listheader label="Code Competence " width="100px" sort="auto" align="center"   />
+					<listheader label="Code Poste " width="100px" sort="auto" align="center"   />
+				
+					
+	         
+				</listhead>
+				<listitem self="@{each=listposteApt}">
+
+					<listcell label="@{listposteApt.idRepCompetence}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					<listcell label="@{listposteApt.code_competence}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listposteApt.code_poste}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					
+					
+			</listitem>
+			</listbox>
+        
+        
+ </tabpanel>
+ 
+       
+    </tabpanels>
+</tabbox>
+
+
+	<hbox pack="center" width="100%" spacing="20">	
+	
+			<div>
+				<button id="upload" image="/image/upload1616.gif" height="25px" width="50px" tooltiptext="Charger les données en base de données" />			
+				<button id="download" image="/image/download1616.gif" height="25px" width="50px" tooltiptext="Télécharger les données de la base de données"  />
+				<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider" visible="false"/>
+				<button id="annuler"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Valider" visible="false"/>
+			
+		</div> 
+	</hbox>
+	
+	
+</window>

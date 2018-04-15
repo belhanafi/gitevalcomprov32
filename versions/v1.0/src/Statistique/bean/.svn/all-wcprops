@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean
+END
+CompagneStatBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/CompagneStatBean.java
+END
+StatIndiceMoyPosteBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/StatIndiceMoyPosteBean.java
+END
+EmployeFormationBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/EmployeFormationBean.java
+END
+StatMoyFamillePosteBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/StatMoyFamillePosteBean.java
+END
+StatTrancheAgePosteBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/StatTrancheAgePosteBean.java
+END
+StatCotationEmployeBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/StatCotationEmployeBean.java
+END
+StatEvolIMIEmployeBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/StatEvolIMIEmployeBean.java
+END
+EmployeCadreBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/EmployeCadreBean.java
+END
+EmployeMoyFamBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/EmployeMoyFamBean.java
+END
+StatEvolIMGBean.java
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/464/trunk/%20evalcompro/versions/v1.0/src/Statistique/bean/StatEvolIMGBean.java
+END

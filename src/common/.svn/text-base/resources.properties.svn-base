@@ -1,0 +1,33 @@
+#Param�tres de connexion MySQL.
+###########################################################
+jdbc.driverClassName=com.mysql.jdbc.Driver
+#jdbc.url=jdbc:mysql://ec2-174-129-9-255.compute-1.amazonaws.com:3306/single_evalcom_db
+jdbc.url=jdbc:mysql://localhost:3306/single_evalcom_db
+jdbc.username=root
+jdbc.password=root
+####################################################
+#1 multibase 0 single_base
+#############################
+jdbc.dbType=0
+
+####################################################
+#SMTP configuration
+##################################################
+
+smtp.user=nabil.behlouli@gmail.com
+smtp.password=kamido000
+smtp.host=smtp.gmail.com
+smtp.port=465
+#smtp.socketFactory.port=465
+smtp.from=Administrateur_EvalcomPro@gmail.com
+smtp.to=nabil.behlouli@gmail.com
+smtp.text=Message généré automatiquement. Ne pas répondre. 
+smtp.subject=Réinitialisation mot de passe
+alert.subject=Alerte état d'avancement compagne d'évaluation
+smtp.cc=rsaichi@yahoo.fr
+
+
+####################################################
+#evaluation time configuration
+##################################################
+timer.value=60

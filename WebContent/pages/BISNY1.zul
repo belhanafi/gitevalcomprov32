@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk>
+<window title="BIRT and ZKOSS" border="normal" id="main"
+    use="kpi.action.ViewReportController" width="900px"   height="550px">
+ 
+    <vbox width="100%" height="100%">     
+        <include id="iframe" width="800px" height="100%" />
+        <button id="btReport" label="Telecharger Rapport" />      
+        <button id="btView" label="Voir Rapport" />
+
+    </vbox>
+ 
+</window>
+</zk>

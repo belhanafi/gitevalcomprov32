@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<zk>
+
+	<style>
+		.textboxdetail {font-family: Verdana,
+		Arial,Helvetica,sans-serif;
+		font-size: 10px;font-weight: ;
+		}
+	</style>
+	<window id="win" title="Perspectives  de Déveleppement" apply="kpi.action.PerspectiveDevAction"
+		width="100%" height="100%" border="normal" contentStyle="overflow:auto"
+		closable="true" onClose="self.visible = false; event.stopPropagation();">
+
+		<borderlayout width="1200px" height="550px">
+			<north autoscroll="true" maxsize="100" size="25%" splittable="true"
+				collapsible="true">
+
+				<borderlayout>
+					<west size="10%" flex="true" maxsize="250" border="0">
+
+						<div style="background:#FFFFFF">
+
+						</div>
+					</west>
+					<center border="0">
+						<div style="background:#FFFFFF">
+							<hlayout>
+								<listbox id="listVaguelb" model="@{winCtrl.model}"
+									height="120px" rows="10" selectedItem="@{winCtrl.selected}"
+									width="700px" mold="paging" pageSize="30">
+									<listhead sizable="true">
+										<listheader label="" height="5px" width="40px"
+											style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+										<listheader label="Vague" height="5px" width="120px"
+											style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+										<listheader label="Libellé Compagne" height="5px"
+											style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+										<listheader label="idcompagne" visible="false" />
+										<listheader label="nominstance" visible="false" />
+
+									</listhead>
+
+									<listitem self="@{each=listevaluateur}">
+
+										<listcell id="listcheckbox2">
+											<radio value="@{listevaluateur.nombase}" context="@{listevaluateur.compagne_id}"
+												sclass="@{listevaluateur.nominstance}" forward="onCheck=onModifyRadio1, onCreate=onCreation" />
+
+										</listcell>
+
+										<listcell label="@{listevaluateur.nombase}"
+											style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+										<listcell label="@{listevaluateur.libelle_compagne}"
+											style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+										<listcell label="@{listevaluateur.compagne_id}"
+											visible="false"
+											style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+										<listcell label="@{listevaluateur.nominstance}"
+											visible="false"
+											style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+									</listitem>
+								</listbox>
+
+
+
+								<label value="IMI Inf:" />
+								<textbox id="imi_inf" width="30px" sclass="textboxdetail"
+									value=""  />
+								<label value="IMI Sup" />
+								<textbox id="imi_sup" width="30px" sclass="textboxdetail"
+									value=""  />
+								<button id="executer2" label="Ok" />
+
+
+							</hlayout>
+
+						</div>
+
+					</center>
+
+				</borderlayout>
+
+			</north>
+			<center>
+				<grid id="gridperspective" sclass="grid-spreadsheet" width="100%"
+					height="373px">
+
+					<columns sizable="true" id="compcolumn">
+
+						<!-- <column sclass="header" label="Compétences Critiques Ciblées" 
+							width="90px" /> <column sclass="header last" label="Objectifs de Développement" 
+							width="100px" /> <column sclass="header" label="Dernière Cotation" width="90px" 
+							/> -->
+						<column sclass="header last" label="Dernière Visée" width="100px" />
+						<column sclass="header" label="Actions Correctives" width="90px" />
+						<column sclass="header last" label="Actions Préventive"
+							width="100px" />
+					</columns>
+
+					<rows id="lignes">
+
+
+					</rows>
+				</grid>
+			</center>
+
+		</borderlayout>
+	</window>
+</zk>
+
+
+
+<!-- zk> <zscript><![CDATA[ List products = new ArrayList(); for (int i = 
+	1; i <= 5; i++) { products.add("Product #" + i); } ]]></zscript> <listbox 
+	id="listbox" width="100%" nonselectableTags="" checkmark="true" multiple="true"> 
+	<auxhead> <auxheader colspan="4">Quality Assurance</auxheader> </auxhead> 
+	<listhead> <listheader label="Product" width="100px" /> <listheader label="Quality" 
+	width="100px"/> <listheader label="Comment" /> <listheader label="Confirm" 
+	width="80px"/> </listhead> <zk forEach="${products}"> <listitem> <listcell 
+	label="${each}"></listcell> <listcell> <listbox mold="select" hflex="1"> 
+	<listitem label="Perfect" /> <listitem label="High" /> <listitem label="Medium" 
+	selected="true"/> <listitem label="Low" /> <listitem label="Poor" /> </listbox> 
+	</listcell> <listcell> <textbox rows="2" hflex="1" /> </listcell> <listcell> 
+	<button label="confirm" hflex="1"> <attribute name="onClick"><![CDATA[ self.setDisabled(true); 
+	]]></attribute> </button> </listcell> </listitem> </zk> </listbox> </zk -->

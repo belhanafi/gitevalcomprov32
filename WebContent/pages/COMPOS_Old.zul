@@ -1,0 +1,51 @@
+<window  id="win" title="Association Compétence vs Poste de travail" apply="administration.action.CompetencePosteTravailAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto">
+<zk>
+    <style src="/widgets/grid/spreadsheet_functionalities/css/demo.css.dsp"/>
+ <zscript><![CDATA[
+        String[] days = new String[31];
+       
+
+    ]]></zscript>
+    
+    
+    	<groupbox id="gb" mold="3d" width="100%" height="500">
+
+        
+        <hbox spacing ="100">
+        	<label value="Famille :   "  sclass="textboxdetail" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+        	
+			<combobox id="nom_famille" autodrop="true" mold="rounded" buttonVisible="true" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+
+    	</hbox>
+    </groupbox>
+    
+    <grid id="competencePostetravailgd" sclass="grid-spreadsheet" width="100%"   height="373px"  >
+        <frozen style="background: #DFDED8" columns="2">
+            <div style="padding: 0 10px;" />
+        </frozen>
+        <columns  sizable="true" id="compcolumn">
+
+            <column sclass="header" label="Groupe" width="90px" />
+            <column sclass="header last" label="Compétence" width="100px" />
+
+        </columns>
+        
+        <rows  id="lignes">
+           
+
+                             
+        </rows>
+    </grid>
+</zk>
+
+<hbox pack="center" width="100%" spacing="40">
+		<div>
+			<button id="valider" image="/image/OkEnabled.bmp" height="25px" width="50px"  tooltiptext="Valider les modifications"/>
+			<button id="annuler" image="/image/CancelEnabled.bmp" height="25px" width="50px" tooltiptext="Annuler les modifications"/>
+			
+			
+		</div>
+		
+
+	</hbox>
+</window>

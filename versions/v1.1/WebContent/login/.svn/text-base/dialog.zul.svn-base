@@ -1,0 +1,10 @@
+<?page title="page under construction" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="User" border="normal" >
+	<label value="Name:" />
+	<textbox value="${arg.name}"/>
+	<separator/>
+	<label value="Age:" />
+	<intbox value="${arg.age}"/>
+</window>
+</zk>

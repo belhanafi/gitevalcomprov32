@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/build/classes/common
+END
+CreateDatabaseCon.class
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/build/classes/common/CreateDatabaseCon.class
+END
+log4j.properties
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/build/classes/common/log4j.properties
+END
+InitContext.class
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/build/classes/common/InitContext.class
+END
+resources.properties
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/build/classes/common/resources.properties
+END
+DemoWindowComposer.class
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svn/!svn/ver/603/trunk/%20evalcompro/versions/v1.1/build/classes/common/DemoWindowComposer.class
+END
