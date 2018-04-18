@@ -492,9 +492,6 @@ public class ProfileDroitsAccesAction extends GenericForwardComposer {
 		Iterator<String>iterator=listselected.iterator();
 		iterator=listselected.iterator();
 
-
-
-
 		while (iterator.hasNext())
 		{
 
