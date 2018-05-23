@@ -37,17 +37,17 @@ border-bottom: none;
 					</row>
 					<row>
 						 Ancien Mot de passe   :
-						<textbox id="ancienPwd"  width="100px"  maxlength="8"  type="password"  value="" /> <button id="aide" image="/image/help.gif" tooltiptext="Contacter votre administrateur" />
+						<textbox id="ancienPwd"  width="100px"  maxlength="10"  type="password"  value="" /> <button id="aide" image="/image/help.gif" tooltiptext="Contacter votre administrateur" />
 					</row>
 					
 					<row>
 						 Nouveau Mot de passe   :
-						<textbox id="nouveauPwd"  width="100px" maxlength="8"   type="password"  value=""   /> <button id="aide1" image="/image/help.gif" tooltiptext="Mot de passe doit avoir 8 caracteres" />
+						<textbox id="nouveauPwd"  width="100px" maxlength="10"   type="password"  value=""   /> <button id="aide1" image="/image/help.gif" tooltiptext="Mot de passe doit avoir 8 caracteres" />
 					</row>
 					
 					<row>
 						 Confirmer nouveau Mot de passe   :
-						<textbox id="confnouveauPwd"  width="100px" maxlength="8"   type="password"  value="" />
+						<textbox id="confnouveauPwd"  width="100px" maxlength="10"   type="password"  value="" />
 					</row>
 					
 					<row><label></label></row> <row></row> <row></row>

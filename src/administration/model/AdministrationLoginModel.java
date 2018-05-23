@@ -411,7 +411,7 @@ private ListModel strset =null;
 			
 			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-			int pwd = Integer.parseInt(addedData.getMotdepasse());
+			//int pwd = Integer.parseInt(addedData.getMotdepasse());
 			
 			
 			DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
@@ -433,13 +433,13 @@ private ListModel strset =null;
 						Messagebox.show("La taille du champ login ne doit pas dépasser 10 caractères", "Erreur",Messagebox.OK, Messagebox.ERROR);
 						return false;
 					}
-					else
+					/*else
 						 
-						if(addedData.getMotdepasse().length()!=8)
+						if(addedData.getMotdepasse().length()<=10)
 						{
-							Messagebox.show("La taille du mot de passe doit contenir 8 entiers Exemple 01012001", "Erreur",Messagebox.OK, Messagebox.ERROR);
+							Messagebox.show("La taille du mot de passe doit contenir au maximum 10 caractères", "Erreur",Messagebox.OK, Messagebox.ERROR);
 							return false;
-						}
+						}*/
 						else
 							if(addedData.getBasedonnee().length()>50)
 							{
@@ -466,7 +466,7 @@ private ListModel strset =null;
 		}
 		catch (NumberFormatException nfe)
 	    {
-			Messagebox.show("Le mot de passe doit être un entier composé de 8 chiffres Exemple 21012001", "Erreur",Messagebox.OK, Messagebox.ERROR);
+			Messagebox.show("La taille du mot de passe doit contenir maximum 10 caractères", "Erreur",Messagebox.OK, Messagebox.ERROR);
 			return false;
 	    }
 		
@@ -511,7 +511,7 @@ private ListModel strset =null;
 			retour=false;
 			try 
 			{
-				Messagebox.show("La modification n'a pas été prise en compte car il existe une donnée ayant le même code établissement", "Erreur",Messagebox.OK, Messagebox.ERROR);
+				Messagebox.show("La modification n'a pas été prise en compte. Merci de contacter votre administrateur ", "Erreur",Messagebox.OK, Messagebox.ERROR);
 			} 
 			catch (InterruptedException e1) {
 				// TODO Auto-generated catch block

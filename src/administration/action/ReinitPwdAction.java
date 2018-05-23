@@ -95,8 +95,8 @@ public class ReinitPwdAction extends GenericForwardComposer{
 		}
 
 		
-		else if(nouveauPwdStr.length()!=8|| confnouveauPwdStr.length()!=8 ){
-			msg.setValue("Merci de choisir un mot de passe avec 8 caractères");
+		else if(nouveauPwdStr.length()!=10|| confnouveauPwdStr.length()!=10 ){
+			msg.setValue("Merci de choisir un mot de passe avec 10 caractères");
 			return;
 		}
 

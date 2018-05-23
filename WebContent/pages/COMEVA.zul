@@ -7,7 +7,8 @@
 		closable="true" onClose="self.visible = false; event.stopPropagation();">
 
 		<style>
-			.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+			.textboxdetail {font-family: Verdana,
+			Arial,Helvetica,sans-serif;
 			font-size: 10px;font-weight: ;
 			}
 		</style>
@@ -139,8 +140,7 @@
 
 					<div vflex="50" hflex="1"></div>
 					<div>
-						<hlayout spacing="30px">
-							<listbox id="admincomptelb1" rows="1" model="@{winCtrl.model1}"
+							<listbox id="admincomptelb1" model="@{winCtrl.model1}"
 								selectedItem="@{winCtrl.selected1}" width="100%" mold="paging"
 								pageSize="8" height="300px">
 
@@ -168,7 +168,7 @@
 
 								</listitem>
 							</listbox>
-						</hlayout>
+						
 
 					</div>
 					<hbox pack="center" width="100%" spacing="20">
@@ -191,13 +191,13 @@
 								align="center" visible="false" />
 							<listheader label="Nom campagne" width="250px" sort="auto"
 								align="center" />
-								
-									<listheader label="Date Debut" width="100px" sort="auto"
+
+							<listheader label="Date Debut" width="100px" sort="auto"
 								align="center" />
-								
-									<listheader label="Date fin" width="100px" sort="auto"
+
+							<listheader label="Date fin" width="100px" sort="auto"
 								align="center" />
-								
+
 							<listheader label="Niveau Maitrise" width="250px"
 								sort="auto" align="center" />
 							<listheader label="Objectif" width="180px" align="center" />
@@ -209,18 +209,20 @@
 								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 							<listcell label="@{mixlist.libelle_compagne}"
 								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-								
-								<listcell label="@{mixlist.date_debut}"
+
+							<listcell label="@{mixlist.date_debut}"
 								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-							
+
 							<listcell label="@{mixlist.date_fin}"
 								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-							
-								
+
+
 							<listcell label="@{mixlist.libelle_niveau_maitrise}"
 								style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-							<listcell >
-							<textbox id="surname" value ="@{mixlist.objectif}" disabled="false"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							<listcell>
+								<textbox id="surname" value="@{mixlist.objectif}"
+									disabled="false"
+									style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 							</listcell>
 
 
@@ -252,14 +254,14 @@
 									visible="false" />
 								<listbox id="nomcompagne" width="250px" sclass="textboxdetail"
 									mold="select" selectedItem="@{winCtrl.selectedmix.libelle_compagne,save-when=none}" />
-									
+
 								<textbox id="datedebut" width="200px" sclass="textboxdetail"
 									value="@{winCtrl.selectedmix.date_debut,save-when=none}" />
-									
-									<textbox id="datefin" width="200px" sclass="textboxdetail"
+
+								<textbox id="datefin" width="200px" sclass="textboxdetail"
 									value="@{winCtrl.selectedmix.date_fin,save-when=none}" />
-									
-									
+
+
 								<textbox id="niveaumaitise" width="200px" sclass="textboxdetail"
 									value="@{winCtrl.selectedmix.libelle_niveau_maitrise,save-when=none}" />
 								<textbox id="objectif" width="200px" sclass="textboxdetail"
@@ -273,24 +275,21 @@
 
 					<hbox pack="center" width="100%" spacing="20">
 						<div>
-							<!-- tton id="add_mix" image="/image/DITEnabled.gif" height="25px"
-								width="50px" tooltiptext="Ajouter une compagne" />
-							<button id="okAdd_mix" image="/image/OkEnabled.gif"
-								height="25px" width="50px" tooltiptext="Valider" />
-							
-							<button id="delete_mix" image="/image/DeleteEnabled.gif"
-								height="25px" width="50px" tooltiptext="Supprimer une compagne" />
-							<button id="effacer_mix" image="/image/CancelEnabled.gif"
-								height="25px" width="50px" tooltiptext="Retourner a la selection" />
-							<button id="dupliquer_mix" image="/image/dupliquer.png"
-								height="25px" width="50px"
-								tooltiptext="Dupliquer le planning de la derniere compagne validée" /-->
-								<button id="update_mix" image="/image/EDITREDOEnabled.gif"
+							<!-- tton id="add_mix" image="/image/DITEnabled.gif" height="25px" 
+								width="50px" tooltiptext="Ajouter une compagne" /> <button id="okAdd_mix" 
+								image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider" 
+								/> <button id="delete_mix" image="/image/DeleteEnabled.gif" height="25px" 
+								width="50px" tooltiptext="Supprimer une compagne" /> <button id="effacer_mix" 
+								image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner 
+								a la selection" /> <button id="dupliquer_mix" image="/image/dupliquer.png" 
+								height="25px" width="50px" tooltiptext="Dupliquer le planning de la derniere 
+								compagne validée" / -->
+							<button id="update_mix" image="/image/EDITREDOEnabled.gif"
 								height="25px" width="50px" tooltiptext="Modifier une campagne" />
-								
-								<button id="delete_mix" image="/image/DeleteEnabled.gif"
+
+							<button id="delete_mix" image="/image/DeleteEnabled.gif"
 								height="25px" width="50px" tooltiptext="Supprimer une campagne" />
-								
+
 						</div>
 						<div>
 

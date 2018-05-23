@@ -1075,8 +1075,14 @@ public class CompetencePosteTravailModel {
 		{
 			stmt = (Statement) conn.createStatement();
 
-			String select_structure=" select code_poste, code_competence, id_repertoire_competence from poste_travail_comptence_aptitudeobservable where code_poste in(select distinct code_poste from compagne_poste_travail p, compagne_evaluation c" +
-					" where c.id_compagne=p.id_compagne and now()<=date_fin )";
+			/*String select_structure=" select code_poste, code_competence, id_repertoire_competence from poste_travail_comptence_aptitudeobservable where code_poste in(select distinct code_poste from compagne_poste_travail p, compagne_evaluation c" +
+					" where c.id_compagne=p.id_compagne and now()<=date_fin )";*/
+			
+			//afficher uniquement  les postes de travail sélectionnés pour la derniere campagne (ecran ratachhement poste travail campagne)
+			String select_structure=" select code_poste, code_competence, id_repertoire_competence from poste_travail_comptence_aptitudeobservable"
+					+ " where code_poste in(select distinct code_poste from compagne_poste_travail where id_compagne in ( select max(id_compagne)"
+					+ " from compagne_evaluation  ))";
+			
 			rs = (ResultSet) stmt.executeQuery(select_structure);
 
 

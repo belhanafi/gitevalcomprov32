@@ -54,7 +54,7 @@ border-bottom: none;
 						</row>
 						<row>
 							 Mot de passe   :
-							<textbox id="pwdtb" width="100px" maxlength="8"	type="password"  value=""/>
+							<textbox id="pwdtb" width="100px" maxlength="10"	type="password"  value=""/>
 						</row>
 					<row>
 						<a href="/login/REINIPW.zul" sclass="edition-field" label=" Modifier Mot de passe ?" style="font-size:7pt;color:#009ED6;font-weight: bold;"/>

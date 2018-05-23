@@ -35,12 +35,12 @@
 
  </groupbox>
 	<listbox id="admincomptelb" rows="1" model="@{winCtrl.model}"
-		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
-		<listhead sizable="true">
+		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="30" height="300px" >
+		<listhead >
 		
-			<listheader label="Nom" width="130px" sort="auto" align="center" />
-			<listheader label="Prénom" width="130px" align="center" />
-			<listheader label="Login-Matricule" width="100px" align="center" />
+			<listheader label="Nom" width="130px" sort="auto(nom)" align="center" sortDirection="ascending" />
+			<listheader label="Prénom" width="130px" align="center"  sort="auto(prenom)" />
+			<listheader label="Login-Matricule" width="100px" align="center" sort="auto(login)"  />
 			<listheader label="Mot de passe" width="130px" align="center" />
 			<listheader label="Profil" width="100px" align="center" />
 			<listheader label="Base de données" width="130px" align="center" />
