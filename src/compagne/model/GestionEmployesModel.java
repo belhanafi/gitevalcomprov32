@@ -66,7 +66,7 @@ public class GestionEmployesModel {
 			stmt = (Statement) conn.createStatement();
 			String sel_comp="";
 			String nom_table="";
-			String sql_query="select concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,"
+			String sql_query="select login,concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,"
 					+ "	CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur,"
 					+ " CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,"
 					+ " t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
@@ -114,6 +114,7 @@ public class GestionEmployesModel {
 				GestionEmployesBean bean=new GestionEmployesBean();
 
 				//bean.setId_compte((rs.getInt("id_compte")));
+				bean.setLogin(rs.getString("login"));
 				bean.setId_employe((rs.getInt("id_employe")));	
 				bean.setNom_complet(rs.getString("nom"));
 				//bean.setPrenom(rs.getString("prenom"));
@@ -1067,7 +1068,7 @@ public class GestionEmployesModel {
 	}	
 
 
-	public List  filtreEmployes(String filreCompteUtilisateur/*,String filtrelibelleFormation,String filtreIntitule*/) throws SQLException{
+	public List  filtreEmployes(String filreCompteUtilisateur,String filtrelogin/*String filtreIntitule*/) throws SQLException{
 
 
 		listcompagne = new ArrayList<GestionEmployesBean>();
@@ -1079,11 +1080,20 @@ public class GestionEmployesModel {
 		ResultSet rs=null;
 		try {
 			stmt = (Statement) conn.createStatement();
-			String whereClause="";
+			String whereClauseCombined="";
+			String whereClauseUtilisateur="";
+			String whereClauselogin="";
 			if(filreCompteUtilisateur!=null && !"".equals(filreCompteUtilisateur))
 			{
-				whereClause= " and upper(c.nom) like upper('"+filreCompteUtilisateur+"%')";
+				whereClauseUtilisateur= " and upper(c.nom) like upper('"+filreCompteUtilisateur+"%')";
 			}
+			
+			if(filtrelogin!=null && !"".equals(filtrelogin))
+			{
+				whereClauselogin= " and upper(c.login) like upper('"+filtrelogin+"%')";
+			}
+			
+			whereClauseCombined=whereClauseUtilisateur+" "+whereClauselogin;
 			//				if(filtrelibelleFormation!=null && !"".equals(filtrelibelleFormation))
 			//				{
 			//					whereClause= " and ( upper(d.niv_for_libelle) like upper('"+filtrelibelleFormation+"%')"+ " or upper(libelle_diplome) like upper('"+filtrelibelleFormation+"%')) ";
@@ -1102,7 +1112,7 @@ public class GestionEmployesModel {
 					"  where e.code_poste=p.code_poste and e.code_formation=f.code_formation" +
 					"  and   e.id_compte=c.id_compte and   d.niv_for_id=f.niv_for_id "+whereClause+" order by 1";*/
 			
-			sel_comp="select concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,  CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur,"
+			sel_comp="select login,concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,  CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur,"
 					+ "	 CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
 					+ "  from employe e ,sexe s, type_contrat t,poste_travail_description p,formation f,common_evalcom.compte c  , def_niv_formation d,"
 					+ "  (select code_structure, structure_ent from ("
@@ -1126,7 +1136,7 @@ public class GestionEmployesModel {
 					+ "  where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ "  and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise )t"
 					+ "  where e.code_poste=p.code_poste and e.code_formation=f.code_formation  and t.code_structure=e.code_structure"
-					+ "  and   e.id_compte=c.id_compte and  d.niv_for_id=f.niv_for_id and  e.code_contrat=t.code_contrat and e.code_sexe=s.code_sexe"+whereClause+" order by 1";
+					+ "  and   e.id_compte=c.id_compte and  d.niv_for_id=f.niv_for_id and  e.code_contrat=t.code_contrat and e.code_sexe=s.code_sexe"+whereClauseCombined+" order by 2";
 					  
 			
 			if (intctx.getDbtype().equalsIgnoreCase("1")){
@@ -1146,6 +1156,7 @@ public class GestionEmployesModel {
 				GestionEmployesBean bean=new GestionEmployesBean();
 
 				//bean.setId_compte((rs.getInt("id_compte")));
+				bean.setLogin(rs.getString("login"));
 				bean.setId_employe((rs.getInt("id_employe")));	
 				bean.setNom_complet(rs.getString("nom"));
 				//bean.setPrenom(rs.getString("prenom"));
@@ -1282,6 +1293,72 @@ public class GestionEmployesModel {
 	}
 	
 	
+	public String getLogin(int  id_compte) throws SQLException
+	{
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToPrincipalDB();
+		Statement stmt = null;
+		final InitContext intctx = new InitContext();
+		intctx.loadProperties();
+		HashMap map = new HashMap();
+		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
+		//TODO supprimer cette ligne ApplicationFacade
+		//int database_id=ApplicationFacade.getInstance().getClient_database_id();
+		int database_id=applicationSession.getClient_database_id();
+		
+		String login="";
+		ResultSet rs=null;
+		try 
+		{
+			stmt = (Statement) conn.createStatement();
+			String sql_query="";
+			if (intctx.getDbtype().equalsIgnoreCase("1")){
+				sql_query="select login from common_evalcom.compte where database_id=#database_id and id_compte="+id_compte;
+				sql_query = sql_query.replaceAll("#database_id", "'"+database_id+"'");
+			}
+			else{
+				sql_query="select login from compte where database_id=#database_id and id_compte="+id_compte;
+				sql_query = sql_query.replaceAll("#database_id", "'"+database_id+"'");
+			}
+
+			rs = (ResultSet) stmt.executeQuery(sql_query);
+
+
+			while(rs.next()){
+				login=rs.getString("login");
+			}
+			//stmt.close();conn.close();
+		} 
+		catch ( SQLException e ) {
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+
+		return login;
+
+
+	}	
 	
 	
 	

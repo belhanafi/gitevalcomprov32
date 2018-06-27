@@ -33,6 +33,8 @@ public class GestionEmployesBean implements Comparable {
 
 
 	private String libelle_structure;
+	
+	private String login;
 
 
 
@@ -256,5 +258,13 @@ public class GestionEmployesBean implements Comparable {
 		this.code_type_contrat = code_type_contrat;
 	}
 
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
 }

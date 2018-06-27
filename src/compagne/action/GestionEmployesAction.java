@@ -71,7 +71,10 @@ public class GestionEmployesAction extends GenericForwardComposer {
 	
 	Textbox libelleFormationFiltre;
 	Textbox compteUtilisateurFiltre;
+	Textbox matriculeFiltre;
 	Textbox intituleFiltre;
+	
+	Textbox login;
 	
 	Listbox sexe;
 	Listbox type_contrat;
@@ -112,10 +115,6 @@ public class GestionEmployesAction extends GenericForwardComposer {
 	}
 
 	
-
-	
-
-	
 	public GestionEmployesAction() {
 	}
 
@@ -125,6 +124,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		comp.setVariable(comp.getId() + "Ctrl", this, true);
 		okAdd.setVisible(false);
 		effacer.setVisible(false);
+		login.setDisabled(true);
 		GestionEmployesModel init= new GestionEmployesModel();
 		map_formation = new HashMap();
 		map_formation=init.getListFormation();
@@ -271,7 +271,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		sexe.setSelectedIndex(0);
 		type_contrat.setSelectedIndex(0);
 
-
+	
 		okAdd.setVisible(true);
 		effacer.setVisible(true);
 		add.setVisible(false);
@@ -308,6 +308,8 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		
 		addedData.setCode_type_contrat(getSelectTypeContrat());
 		addedData.setType_contrat(getTypecontrat_str());
+		addedData.setLogin(getSelectedLogin());
+		
 
 
 
@@ -441,7 +443,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 			compagne_model.deleteEmploye(selected);
 			model.remove(selected);
 			binder.loadAll();
-			selected=model.get(model.size()-1);
+			//selected=model.get(model.size()-1);
 			return;
 		}
 
@@ -628,13 +630,21 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		return name;
 	}
 
-	
+	private String getSelectedLogin() throws WrongValueException {
+		String name=login.getValue();
+		if (name==null) {
+			throw new WrongValueException(login, "Merci de saisir un  matricule valide!");
+		}
+		return name;
+	}
+
 	
 	
 
 	public void clearFields(){
 
 		email.setText("");
+		login.setText("");
 
 
 	}
@@ -746,10 +756,12 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		//String filtrelibelleFormation=libelleFormationFiltre.getValue();
 		String filreCompteUtilisateur=compteUtilisateurFiltre.getValue();  
 		//String filtreIntitule=intituleFiltre.getValue();  
+		
+		String filtrelogin=matriculeFiltre.getValue();
 		  
 		
 			//System.out.println("pressyes");
-		model=gestionEmployeModel.filtreEmployes(filreCompteUtilisateur/*,filtrelibelleFormation,filtreIntitule*/);
+		model=gestionEmployeModel.filtreEmployes(filreCompteUtilisateur,filtrelogin);
 		
 			selected = null;
 			binder.loadAll();
@@ -781,6 +793,14 @@ public class GestionEmployesAction extends GenericForwardComposer {
 
 	private String typecontrat_str;
 
+	
+	public void onSelect$id_compte() throws WrongValueException, SQLException {
+		
+		GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
+		int id_compte_int=(Integer)map_compte.get(id_compte.getSelectedItem().getLabel());
+		login.setText(gestionEmployeModel.getLogin(id_compte_int));
+		//System.out.println("id_compte_int>>>"+id_compte_int);
+	}
 
 
 

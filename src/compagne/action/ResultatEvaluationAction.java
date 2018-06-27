@@ -588,17 +588,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 				int nbToutesComp=getNbCompetenceAllFamille(mapFamilleCompetence);
 				//creation de l'entête du document excel
 
-				//cellule nom et prenom de l'evalué
-				HSSFRow row = sheet.createRow(0);
-				HSSFCell cell = row.createCell((short)0);
-
-
-
-				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,0,0));
-
-
-
-
+				
 
 				HSSFCellStyle cellStyle = null;
 				cellStyle = workBook.createCellStyle();
@@ -616,29 +606,85 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 
 				cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
 				cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-
+				
+				cellStyle.setFont(font1);
+				
+				
+				
+				
+				
+				
+				
+				HSSFRow row = sheet.createRow(0);
+				
+				//matricule
+				HSSFCell cellMatricule = row.createCell((short)0);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,0,0));
+				cellMatricule.setCellValue("Matricule");
+				cellMatricule.setCellStyle(cellStyle);
+				
+				//cellule nom et prenom de l'evalué
+				HSSFCell cell = row.createCell((short)1);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,1,1));
 				cell.setCellValue("Nom et Prénom de l'évalué");
 				cell.setCellStyle(cellStyle);
 
+				//direction
+				HSSFCell cell01 = row.createCell((short)2);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,2,2));
+				cell01.setCellValue("Direction");
+				cell01.setCellStyle(cellStyle);
+				
+				//Structure
+				HSSFCell cell02 = row.createCell((short)3);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,3,3));
+				cell02.setCellValue("Structure");
+				cell02.setCellStyle(cellStyle);
+				
+				//Poste de traviail
+				HSSFCell cell03 = row.createCell((short)4);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,4,4));
+				cell03.setCellValue("Poste de travail");
+				cell03.setCellStyle(cellStyle);
+				
+				//date de naissance
+				HSSFCell cell04 = row.createCell((short)5);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,5,5));
+				cell04.setCellValue("Date de naissance");
+				cell04.setCellStyle(cellStyle);
+				
+				//date de recrutement
+				HSSFCell cell05 = row.createCell((short)6);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,6,6));
+				cell05.setCellValue("Date de recrutement");
+				cell05.setCellStyle(cellStyle);
+				
+				
+				//formation
+				HSSFCell cell06 = row.createCell((short)7);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,7,7));
+				cell06.setCellValue("Formation");
+				cell06.setCellStyle(cellStyle);
 
+				int decalage=7;
 				//cellule critère d'evaluation qui doit regrouper toutes les familles
 
-				sheet.addMergedRegion(new CellRangeAddress(0,(short)0,1,(short)nbToutesComp));
-				HSSFCell cell1 = row.createCell((short)1);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)0,decalage+1,(short)nbToutesComp+decalage));
+				HSSFCell cell1 = row.createCell((short)decalage+1);
 				cell1.setCellValue("Critères d'évaluation");
-				cell1.setCellStyle(cellStyle);
+				cell1.setCellStyle(cellStyle10);
 
 
 				//cellule IMI 
-				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,nbToutesComp+1,(short)nbToutesComp+1));
-				HSSFCell cell2 = row.createCell((short)nbToutesComp+1);
+				sheet.addMergedRegion(new CellRangeAddress(0,(short)2,decalage+nbToutesComp+1,(short)nbToutesComp+1+decalage));
+				HSSFCell cell2 = row.createCell((short)decalage+nbToutesComp+1);
 				cell2.setCellValue("IMI");
 				cell2.setCellStyle(cellStyle);
 
 				Set<String> setFamilleCompetence=mapFamilleCompetence.keySet();
 				Iterator <String> iteratorFamilleCompetence=setFamilleCompetence.iterator();
 
-				int indexColonne=1;
+				int indexColonne=1+decalage;
 				HashMap<String, HSSFCellStyle> familleColor=new HashMap<String,HSSFCellStyle>();
 				HashMap<String, Short> familleColor2=new HashMap<String,Short>();
 				HSSFRow row1 = sheet.createRow(1);
@@ -704,7 +750,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 				HSSFRow row2 = sheet.createRow(2);
 				short longueur=18*256;
 				row2.setHeight(longueur);
-				indexColonne=1;
+				indexColonne=1+decalage;
 				while(iteratorFamilleCompetence.hasNext())
 				{
 					String clesfamille=iteratorFamilleCompetence.next();
@@ -716,23 +762,6 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 					while(iteratorCompetence.hasNext())
 					{
 						String libelle_competence=iteratorCompetence.next();
-						//		 			HSSFCellStyle cellStyle1 = null;
-						//					cellStyle1 = workBook.createCellStyle();
-						//		 			cellStyle1.setFillForegroundColor(couleur);
-						//		 			cellStyle1.setAlignment(CellStyle.ALIGN_CENTER);
-						//					cellStyle1.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-						//
-						//			        
-						//			        //specification des bordures des cellules
-						//			        cellStyle1.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-						//			        cellStyle1.setBottomBorderColor(HSSFColor.BLACK.index);
-						//			        cellStyle1.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-						//			        cellStyle1.setLeftBorderColor(HSSFColor.BLACK.index);
-						//			        cellStyle1.setBorderRight(HSSFCellStyle.BORDER_THIN);
-						//			        cellStyle1.setRightBorderColor(HSSFColor.BLACK.index);
-						//			        cellStyle1.setBorderTop(HSSFCellStyle.BORDER_THIN);
-						//			        cellStyle1.setTopBorderColor(HSSFColor.BLACK.index);
-						//			        cellStyle1.setFont(font1);
 						short io=90;
 						cellStyle1.setRotation(io);
 						sheet.addMergedRegion(new CellRangeAddress(2,(short)2,indexColonne,(short)indexColonne));
@@ -762,22 +791,58 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 				ArrayList<String> listemployeTrie=mapPostEmployeTriIMI.get(nomOnglet);
 				Iterator<String> iteratoremployeTrie=listemployeTrie.iterator();
 				////////////////////////////////////////////////
-				while(/*iteratorEmploye.hasNext()*/iteratoremployeTrie.hasNext())
-				{
-					String nomEmploye=iteratoremployeTrie.next();
-
+				while(/*iteratorEmploye.hasNext()*/iteratoremployeTrie.hasNext()) {
+					String cles=iteratoremployeTrie.next();
 					//String nomEmploye=iteratorEmploye.next();
-
+					String[] listDonnee=cles.split("#");
+					String nomEmploye=listDonnee[1];
+					
+				
 					//creation d'une ligne employe
 
 
 					HSSFRow row3 = sheet.createRow(numLigne);
 
 
+					//matricule
+					HSSFCell cellMat = row3.createCell((short)0);
+					cellMat.setCellValue(listDonnee[0]);
+					cellMat.setCellStyle(cellStyle0);
+					
 					//cellStyle0.setWrapText(true);
-					HSSFCell cell0 = row3.createCell((short)0);
+					HSSFCell cell0 = row3.createCell((short)1);
 					cell0.setCellValue(nomEmploye);
 					cell0.setCellStyle(cellStyle0);
+					
+					//cellStyle0.setWrapText(true);
+					HSSFCell cell00 = row3.createCell((short)2);
+					cell00.setCellValue(listDonnee[2]);
+					cell00.setCellStyle(cellStyle0);
+					
+					//cellStyle0.setWrapText(true);
+					HSSFCell cell001 = row3.createCell((short)3);
+					cell001.setCellValue(listDonnee[3]);
+					cell001.setCellStyle(cellStyle0);
+					
+					//cellStyle0.setWrapText(true);
+					HSSFCell cell002 = row3.createCell((short)4);
+					cell002.setCellValue(listDonnee[4]);
+					cell002.setCellStyle(cellStyle0);
+					
+					//cellStyle0.setWrapText(true);
+					HSSFCell cell003 = row3.createCell((short)5);
+					cell003.setCellValue(listDonnee[5]);
+					cell003.setCellStyle(cellStyle0);
+					
+					//cellStyle0.setWrapText(true);
+					HSSFCell cell004 = row3.createCell((short)6);
+					cell004.setCellValue(listDonnee[6]);
+					cell004.setCellStyle(cellStyle0);
+					
+					//cellStyle0.setWrapText(true);
+					HSSFCell cell005 = row3.createCell((short)7);
+					cell005.setCellValue(listDonnee[7]);
+					cell005.setCellStyle(cellStyle0);
 
 
 					//remplissage des moyennes par competence
@@ -786,7 +851,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 					iteratorFamilleCompetence=setFamilleCompetence.iterator();
 
 					Double IMI=new Double(0);
-					indexColonne=1;
+					indexColonne=1+decalage;
 					while(iteratorFamilleCompetence.hasNext())
 					{
 						String nomFamille=iteratorFamilleCompetence.next();
@@ -801,8 +866,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 						ArrayList<String> listeCompetence=mapFamilleCompetence.get(nomFamille);
 						int nbComp=listeCompetence.size();
 						HSSFFont font = workBook.createFont();
-						for(int i=0;i<nbComp;i++)
-						{
+						for(int i=0;i<nbComp;i++)						{
 							String competence=listeCompetence.get(i);
 							//System.out.println(competence);
 
@@ -815,7 +879,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 							font.setFontHeightInPoints((short)8);
 							font.setFontName("Arial");
 							cellStyle10.setFont(font);
-
+							
 
 							HSSFCell cellCompetence = row3.createCell((short)indexColonne);
 
@@ -863,7 +927,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 
 
 					HSSFRow row4 = sheet.createRow(numLigne);
-					indexColonne=1;
+					indexColonne=1+decalage;
 					iteratorFamilleCompetence=setFamilleCompetence.iterator();
 					while(iteratorFamilleCompetence.hasNext())
 					{
@@ -924,14 +988,14 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 
 				HSSFCell cell6 = row6.createCell((short)0);
 
-
+				sheet.addMergedRegion(new CellRangeAddress(numLigne,(short)numLigne,(short)0,(short)decalage));
 				cell6.setCellValue("Maitrise moyenne par domaine de competence");
 				cell6.setCellStyle(cellStyle6);	
 
 
 
 				////////////////////////////////////////////////
-				indexColonne=1;
+				indexColonne=1+decalage;
 				iteratorFamilleCompetence=setFamilleCompetence.iterator();
 				HSSFFont font = workBook.createFont();
 				while(iteratorFamilleCompetence.hasNext())
@@ -976,7 +1040,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 				//construction des lignes IMG
 				HSSFRow row8 = sheet.createRow(numLigne);
 
-
+				sheet.addMergedRegion(new CellRangeAddress(numLigne,(short)numLigne,(short)0,(short)decalage));
 				HSSFCell cell8 = row8.createCell((short)0);
 
 
@@ -994,7 +1058,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 
 				//calculer le nombre de cellules qui doivent être mergés
 				iteratorFamilleCompetence=setFamilleCompetence.iterator();
-				int nbcomp=0;
+				int nbcomp=decalage;
 				while(iteratorFamilleCompetence.hasNext())
 				{
 					String cles=iteratorFamilleCompetence.next();
@@ -1003,8 +1067,8 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 				}
 
 
-				sheet.addMergedRegion(new CellRangeAddress(numLigne,(short)numLigne,1,(short)nbcomp));
-				HSSFCell cell9 = row8.createCell((short)1);
+				sheet.addMergedRegion(new CellRangeAddress(numLigne,(short)numLigne,1+decalage,(short)nbcomp));
+				HSSFCell cell9 = row8.createCell((short)1+decalage);
 
 				Double IMG=mapPosteIMG.get(nomOnglet);
 				if(IMG==0 || IMG== null)
@@ -1049,6 +1113,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 
 		}
 	}
+
 
 	public int getNbCompetenceAllFamille(HashMap<String, ArrayList<String>>  mapFamilleCompetence)
 	{
@@ -1289,8 +1354,14 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 		///////////////////
 		while(/*iteratorEmploye.hasNext()*/iteratoremployeTrie.hasNext())
 		{
+			//String nomEmploye=iteratoremployeTrie.next();
+			
+			String cles=iteratoremployeTrie.next();
 			//String nomEmploye=iteratorEmploye.next();
-			String nomEmploye=iteratoremployeTrie.next();
+			String[] listDonnee=cles.split("#");
+			String nomEmploye=listDonnee[1];
+			
+			
 			HashMap<String, String> mapFamilleIMI=mapEmployeFamilleIMI.get(nomEmploye);
 			//creation de la ligne employe
 			Row ligne=new Row();
@@ -2165,5 +2236,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 
 
 	}
+	
+	
 
 }

@@ -1135,19 +1135,45 @@ public class ResultatEvaluationModel {
 		try 
 		{
 			stmt = (Statement) conn.createStatement();
-			//			String select_structure="select distinct e.nom, e.prenom,  round (i.imi, 2) as imi , p.intitule_poste "
-			//			 +" from employe e,  imi_stats i , poste_travail_description p "
-			//			 +" where i.id_employe=e.id_employe "  
-			//			 +" and p.code_poste=e.code_poste "
-			//			 +" and id_compagne=#id_compagne  ORDER BY imi DESC";
 
-			String select_structure="select distinct e.nom, e.prenom,  i.imi,p.intitule_poste "
+
+			/*String select_structure="select distinct e.nom, e.prenom,  i.imi,p.intitule_poste "
 					+" from employe e,  imi_stats i , poste_travail_description p "
 					+" where i.id_employe=e.id_employe "  
 					+" and p.code_poste=e.code_poste "
 					+" and id_compagne=#id_compagne"
 					+" and  e.id_employe   in (select id_employe from fiche_validation where fiche_valide=1)"
-					+" ORDER BY imi DESC";			
+					+" ORDER BY imi DESC";	*/	
+
+			String select_structure="select login matricule,concat(e.nom, concat( \" \" ,e.prenom)) as nom,DATE_FORMAT(e.date_naissance, '%d/%c/%Y') date_naissance,DATE_FORMAT(e.date_recrutement, '%d/%c/%Y') date_recrutement,d.niv_for_libelle formation,libelle_direction,structure_ent,p.intitule_poste ,round(imi,2) imi"
+					+ " from poste_travail_description p , employe e, common_evalcom.compte c, formation f , def_niv_formation d, imi_stats s  ,"
+					+ " ("
+					+ "    select libelle_direction,code_structure, structure_ent from ("
+					+ "           select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
+					+ "           and  libelle_section !='null' and  libelle_section !=''"
+					+ "           union"
+					+ "           select libelle_direction,code_structure,libelle_service structure_ent from structure_entreprise"
+					+ "           where libelle_service is  not null and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0"
+					+ "           union"
+					+ "           select libelle_direction,code_structure,libelle_departement structure_ent from structure_entreprise"
+					+ "           where libelle_departement is  not null and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0"
+					+ "           union"
+					+ "           select libelle_direction,code_structure,libelle_sous_direction structure_ent from structure_entreprise"
+					+ "           where libelle_sous_direction is  not null and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0"
+					+ "           union"
+					+ "           select libelle_direction,code_structure,libelle_unite structure_ent from structure_entreprise"
+					+ "           where libelle_unite is  not null and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
+					+ "           and length(libelle_service)=0 and  length(libelle_section) =0"
+					+ "           union"
+					+ "           select libelle_direction,code_structure,libelle_direction structure_ent from structure_entreprise"
+					+ "           where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
+					+ "           and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise ) t"
+
+					+ " where e.code_structure=t.code_structure and p.code_poste=e.code_poste  and s.id_employe=e.id_employe"
+					+ " and s.id_compagne=6   and c.id_compte=e.id_compte and d.niv_for_id=f.niv_for_id and e.code_formation=f.code_formation"
+					+ " union"
+					+ " select '99999999999' matricule,'DUMMY' as nom,'01/01/3999' date_naissance,'01/01/3999' date_recrutement,'DUMMY' formation,'vvvvvvvvvvvvvv' direction,'ZZZZZZZZZZZZZZ' structure_ent,'DUMMY' intitule_poste , 99 imi"
+					+ " order by   imi DESC,nom";
 
 			select_structure = select_structure.replaceAll("#id_compagne", id_compagne);
 			rs = (ResultSet) stmt.executeQuery(select_structure);
@@ -1157,32 +1183,38 @@ public class ResultatEvaluationModel {
 			{
 				if (rs.getRow()>=1) 
 				{
+					String matricule=rs.getString("matricule");
 					String nom=rs.getString("nom");
-					String prenom=rs.getString("prenom");
-					String employe=nom+" " +prenom;
-					//Double imi=rs.getDouble("imi"); 
+					String date_naissance=rs.getString("date_naissance");
+					String date_recrutement=rs.getString("date_recrutement");
+					String formation=rs.getString("formation");
+					String structure_ent=rs.getString("structure_ent");
 					String intitule_poste=rs.getString("intitule_poste");
+					String imi=rs.getString("imi");
+					String libelle_direction=rs.getString("libelle_direction");
 
-					if(mapPostEmployeTriIMI.containsKey(intitule_poste))
-					{
-						mapPostEmployeTriIMI.get(intitule_poste).add(employe);
+					String cles1=matricule+"#"+nom+"#"+libelle_direction+"#"+structure_ent+"#"+intitule_poste+"#"+date_naissance+"#"+date_recrutement+"#"+formation;
+
+					if (!matricule.equalsIgnoreCase("99999999999") && !nom.equalsIgnoreCase("DUMMY")){
+						if(mapPostEmployeTriIMI.containsKey(intitule_poste))
+						{
+							mapPostEmployeTriIMI.get(intitule_poste).add(cles1);
+						}
+						else
+						{
+							ArrayList<String> listEmploye=new ArrayList<String>();
+							listEmploye.add(cles1);
+							mapPostEmployeTriIMI.put(intitule_poste, listEmploye);
+						}
 					}
-					else
-					{
-						ArrayList<String> listEmploye=new ArrayList<String>();
-						listEmploye.add(employe);
-						mapPostEmployeTriIMI.put(intitule_poste, listEmploye);
-					}
+
 
 
 				}
-				//				else {
-				//					return mapPostEmployeTriIMI;
-				//				}
+
 
 			}
-			//			stmt.close();
-			//			conn.close();
+
 		} 
 		catch ( SQLException e ) {
 
@@ -1294,7 +1326,7 @@ public class ResultatEvaluationModel {
 			//utiliser l'ancienne table competence_poste_travail
 			retour=0;
 		}else
-			//utiliser l'ancienne table competence_poste_travail
+			//utiliser nouvelle  table poste_travail_comptence_aptitudeobservable
 			retour=1;
 		return retour;
 	}
@@ -1515,7 +1547,7 @@ public class ResultatEvaluationModel {
 					+ " union"
 					+" select '99999999999' matricule,'DUMMY' as nom,'01/01/3999' date_naissance,'01/01/3999' date_recrutement,'DUMMY' formation,'ZZZZZZZZZZZZZZ' structure_ent,'DUMMY' intitule_poste ,'DUMMY' famille, 99 moy_par_famille , 99 imi"
 					+ " order by  structure_ent,imi desc ,nom ";
-					
+
 
 
 			select_structure = select_structure.replaceAll("#id_compagne", id_compagne);
@@ -1537,7 +1569,7 @@ public class ResultatEvaluationModel {
 			{
 
 				structure_ent=rs.getString("structure_ent");
-			
+
 				String matricule=rs.getString("matricule");
 				String nom=rs.getString("nom");
 				String date_naissance=rs.getString("date_naissance");
