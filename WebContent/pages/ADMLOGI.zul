@@ -42,7 +42,7 @@
 			<listheader label="Prénom" width="130px" align="center"  sort="auto(prenom)" />
 			<listheader label="Login-Matricule" width="100px" align="center" sort="auto(login)"  />
 			<listheader label="Mot de passe" width="130px" align="center" />
-			<listheader label="Profil" width="100px" align="center" />
+			<listheader label="Profil" width="100px" align="center" sort="auto(profile)" />
 			<listheader label="Base de données" width="130px" align="center" />
 			<listheader label="Date debut validité" width="130px" align="center" />
 			<listheader label="Date fin validité" width="130px" align="center" />
@@ -67,7 +67,7 @@
 	</listbox>
 	<grid span="true" sizedByContent="true" width="100%" height="130px">
         <auxhead>
-            <auxheader colspan="13" class="topic">Edition des donnÃ©es</auxheader>
+            <auxheader colspan="13" class="topic">Edition des données</auxheader>
         </auxhead>
         <columns sizable="true">
             
@@ -112,7 +112,7 @@
 			<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
 			<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier un utilisateur"/>
 			<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer un utilisateur "/>
-			<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner a la selection"/>
+			<button id="effacer"  image="/image/CancelEnabled.gif" height="25px" width="50px" tooltiptext="Retourner à la selection"/>
 		</div>
 		<div>
 

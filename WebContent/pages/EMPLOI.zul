@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk>
+
 <window  id="win" title="Liste employés" apply="compagne.action.GestionEmployesAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
  closable="true"  onClose="self.visible = false; event.stopPropagation();">
  
@@ -15,9 +18,13 @@
 		   
 	       	<label value="Compte utilisateur" width="50px" />
 	        <textbox id="compteUtilisateurFiltre"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+	        
+	        <label value="Matricule" width="50px" />
+	        <textbox id="matriculeFiltre"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+	        
 	       
 	         <button id= "buttonReinitialiser" image="/image/undo.png" height="30px" width="40px" tooltiptext="Afficher la liste complete"  />
-		     <button id= "buttonRechercher"  image="/image/search.png" height="30px" width="40px"  tooltiptext="Rechercher un employé"  />
+		     <button id= "buttonRechercher"  image="/image/search.png" height="30px" width="40px"  tooltiptext="Rechercher un employÃƒÂ©"  />
 		     
 	     </hbox>     
                 
@@ -32,7 +39,9 @@
 		selectedItem="@{winCtrl.selected}"  width="100%" mold="paging" pageSize="8" height="300px" >
 		<listhead sizable="true">
 		
-	        <listheader label="Compte utilisateur" width="200px" sort="auto" align="center"  /> 	
+		   
+	        <listheader label="Compte utilisateur" width="200px" sort="auto" align="center"  /> 
+	        <listheader label="Matricule" width="100px" sort="auto" align="center"  /> 	
 		    <listheader label="id employe" width="10px" sort="auto" align="center"  visible="false"  />
 			<listheader label="Sexe " width="100px" sort="auto" align="center"   />
 			<listheader label="Type Contrat" width="100px" sort="auto" align="center"   />
@@ -48,8 +57,9 @@
 		</listhead>
 		<listitem self="@{each=listcompagne}">
 		    
-		    <listcell label="@{listcompagne.nom_complet}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-		    <listcell label="@{listcompagne.id_employe}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+            <listcell label="@{listcompagne.nom_complet}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+            <listcell label="@{listcompagne.login}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+            <listcell label="@{listcompagne.id_employe}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			<listcell label="@{listcompagne.sexe}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			<listcell label="@{listcompagne.type_contrat}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
 			<listcell label="@{listcompagne.date_naissance}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
@@ -66,12 +76,12 @@
 		</listitem>
 	</listbox>
 	<grid span="true" sizedByContent="true" width="100%" height="130px">
-        <auxhead>
-            <auxheader colspan="13" class="topic">Edition des données</auxheader>
-        </auxhead>
+      
         <columns sizable="true">
         
+            
             <column label="Compte utilisateur" width="200px" sort="auto" align="center"   />
+            <column label="Matricule" width="100px" sort="auto" align="center"   />
    		    <column label="id employe" width="10px" sort="auto" align="center"  visible="false"  />
 			<column label="Sexe" width="150px" sort="auto" align="center"   />
 			<column label="Type Contrat" width="160px" sort="auto" align="center"   />
@@ -89,8 +99,10 @@
         <rows>
             <row>
 
+                  
                   <listbox id="id_compte"  width="200 px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.nom_complet,save-when=none}"   />
-				  <textbox id="id_employe"  width="10px"  sclass="textboxdetail" value="@{winCtrl.selected.id_employe,save-when=none}"   visible="false"/>
+                  <textbox id="login"  width="100px" sclass="textboxdetail" value="@{winCtrl.selected.login,save-when=none}" />
+                  <textbox id="id_employe"  width="10px"  sclass="textboxdetail" value="@{winCtrl.selected.id_employe,save-when=none}"   visible="false"/>
 				  
 				   <listbox id="sexe"  width="150px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.sexe,save-when=none}" />
                   <listbox id="type_contrat"  width="160px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.type_contrat,save-when=none}" />
@@ -115,7 +127,7 @@
 
 	<hbox pack="center" width="100%" spacing="20">
 		<div>
-			<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter un employé"/>
+			<button id="add"    image="/image/DITEnabled.gif" height="25px" width="50px" tooltiptext="Ajouter un employÃƒÂ©"/>
 			<button id="okAdd"  image="/image/OkEnabled.gif" height="25px" width="50px" tooltiptext="Valider"/>
 			<button id="update" image="/image/EDITREDOEnabled.gif" height="25px" width="50px" tooltiptext="Modifier un employé"/>
 			<button id="delete"  image="/image/DeleteEnabled.gif" height="25px" width="50px" tooltiptext="Supprimer un employé "/>
@@ -130,3 +142,4 @@
 		
 	</hbox>
 </window>
+</zk>
