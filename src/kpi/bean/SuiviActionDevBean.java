@@ -6,8 +6,11 @@ public class SuiviActionDevBean {
 	
 	private int pourcentage;
 	private String evalue;
+	private String login;
 
 	
+
+
 	public SuiviActionDevBean( int pourcentage, String evalue) {
 		super();
 		
@@ -33,7 +36,13 @@ public class SuiviActionDevBean {
 		this.pourcentage = pourcentage;
 	}
 	
-	
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
 	
 	
 }

@@ -12,8 +12,27 @@ public class SuiviCompagneBean   {
 	private int fichenoncote;
 	private int fichecote;
 	private String dateExtract;
+	private String login;
+	
+	
+	
+	
 	
 
+	public SuiviCompagneBean(int id_employe, int pourcentage,
+			String evaluateur, String email, String poste_travail,
+			int fichenoncote, int fichecote, String dateExtract, String login) {
+		super();
+		this.id_employe = id_employe;
+		this.pourcentage = pourcentage;
+		this.evaluateur = evaluateur;
+		this.email = email;
+		this.poste_travail = poste_travail;
+		this.fichenoncote = fichenoncote;
+		this.fichecote = fichecote;
+		this.dateExtract = dateExtract;
+		this.login = login;
+	}
 
 
 
@@ -144,5 +163,17 @@ public class SuiviCompagneBean   {
 
 	public void setDateExtract(String dateExtract) {
 		this.dateExtract = dateExtract;
+	}
+	
+	
+	public String getLogin() {
+		return login;
+	}
+
+
+
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 }

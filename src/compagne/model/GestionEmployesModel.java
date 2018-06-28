@@ -69,30 +69,30 @@ public class GestionEmployesModel {
 			String sql_query="select login,concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,"
 					+ "	CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur,"
 					+ " CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,"
-					+ " t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
+					+ " t.libelle_direction,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
 					+ " from employe e  ,sexe s, type_contrat t,poste_travail_description p,formation f,#nom_table c  ,"
-					+ " def_niv_formation d,(select code_structure, structure_ent from ("
-					+ " select code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
+					+ " def_niv_formation d,(select libelle_direction,code_structure, structure_ent from ("
+					+ " select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
 					+ " and  libelle_section !='null' and  libelle_section !=''"
 					+ " union"
-					+ " select code_structure,libelle_service structure_ent from structure_entreprise"
+					+ " select libelle_direction,code_structure,libelle_service structure_ent from structure_entreprise"
 					+ " where libelle_service is  not null"
 					+ " and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_departement structure_ent from structure_entreprise"
+					+ " select libelle_direction,code_structure,libelle_departement structure_ent from structure_entreprise"
 					+ " where libelle_departement is  not null"
 					+ "	and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0 "
 					+ " union"
-					+ " select code_structure,libelle_sous_direction structure_ent from structure_entreprise "
+					+ " select libelle_direction,code_structure,libelle_sous_direction structure_ent from structure_entreprise "
 					+ " where libelle_sous_direction is  not null"
 					+ " and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_unite structure_ent from structure_entreprise"
+					+ " select libelle_direction,code_structure,libelle_unite structure_ent from structure_entreprise"
 					+ " where libelle_unite is  not null"
 					+ " and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ " and length(libelle_service)=0 and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_direction structure_ent from structure_entreprise"
+					+ " select libelle_direction,code_structure,libelle_direction structure_ent from structure_entreprise"
 					+ " where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ " and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise  )t"
 					+ " where e.code_poste=p.code_poste and e.code_formation=f.code_formation"
@@ -128,6 +128,8 @@ public class GestionEmployesModel {
 				bean.setLibelle_structure(rs.getString("libelle_structure"));
 				bean.setSexe(rs.getString("sexe_lbl"));
 				bean.setType_contrat(rs.getString("type_contrat_lbl"));
+				bean.setLibelle_direction(rs.getString("libelle_direction"));
+
 				
 				
 
@@ -1360,6 +1362,58 @@ public class GestionEmployesModel {
 
 	}	
 	
+	public String getDirection(String  codeStructure) throws SQLException
+	{
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToSecondairesDB();
+		Statement stmt = null;
+		String structure="";
+		ResultSet rs=null;
+		try 
+		{
+			stmt = (Statement) conn.createStatement();
+			String sql_query="";
+			
+				sql_query="select libelle_direction from structure_entreprise where code_structure="+"'"+codeStructure+"'";
+				rs = (ResultSet) stmt.executeQuery(sql_query);
+
+
+			while(rs.next()){
+				structure=rs.getString("libelle_direction");
+			}
+			//stmt.close();conn.close();
+		} 
+		catch ( SQLException e ) {
+			System.out.println(e.toString());
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+
+		return structure;
+
+
+	}	
 	
 	
 

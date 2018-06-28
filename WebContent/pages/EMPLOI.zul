@@ -23,8 +23,8 @@
 	        <textbox id="matriculeFiltre"   style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 	        
 	       
-	         <button id= "buttonReinitialiser" image="/image/undo.png" height="30px" width="40px" tooltiptext="Afficher la liste complete"  />
-		     <button id= "buttonRechercher"  image="/image/search.png" height="30px" width="40px"  tooltiptext="Rechercher un employÃƒÂ©"  />
+	         <button id= "buttonReinitialiser" image="/image/undo.png" height="25px" width="50px" tooltiptext="Afficher la liste complete"  />
+		     <button id= "buttonRechercher"  image="/image/search.png" height="25px" width="50px"  tooltiptext="Rechercher un employé"  />
 		     
 	     </hbox>     
                 
@@ -53,6 +53,8 @@
 			<listheader label="Evaluateur" width="80px" align="center"   />
 			<listheader label="Responsable RH" width="80px" align="center"   />
 			<listheader label="Structure Entreprise" width="180px" align="center"    />
+		    <listheader label="Direction" width="80px" align="center"   />
+		    
 	         
 		</listhead>
 		<listitem self="@{each=listcompagne}">
@@ -70,6 +72,8 @@
 			<listcell label="@{listcompagne.est_evaluateur}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			<listcell label="@{listcompagne.est_responsable_rh}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			<listcell label="@{listcompagne.libelle_structure}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+			<listcell label="@{listcompagne.libelle_direction}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			
 			
 			
 			
@@ -93,6 +97,8 @@
 			<column label="Evaluateur" width="80px" align="center"   />
 			<column label="Responsable RH" width="100px" align="center"   />
 			<column label="Structure" width="180px" align="center"     />
+			<column label="Libellé Direction" width="180px" align="center"     />
+			
                    
            
         </columns>
@@ -116,7 +122,8 @@
                   <textbox id="email"  width="180px"  sclass="textboxdetail" value="@{winCtrl.selected.email,save-when=none}"   />
                   <listbox id="est_evaluateur"  width="50px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.est_evaluateur,save-when=none}" />
                   <listbox id="est_responsable_rh"  width="50px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.est_responsable_rh,save-when=none}" />
-                   <listbox id="structure"  width="180px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.libelle_structure,save-when=none}"  />
+                  <listbox id="structure"  width="180px"  sclass="textboxdetail" mold="select" selectedItem="@{winCtrl.selected.libelle_structure,save-when=none}"  />
+                  <textbox id="libelle_direction"  width="180px" sclass="textboxdetail" value="@{winCtrl.selected.libelle_direction,save-when=none}" />
             </row>
             <row>
              <!-- label  id="structure_lbl" width="400px" sclass="textboxdetail" /-->

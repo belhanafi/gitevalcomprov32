@@ -1,4 +1,5 @@
-﻿<zk>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
 <style   >
 div.z-progressmeter {
 background:#FFFFFF
@@ -57,6 +58,7 @@ background-color: #00CC00 ;
 		multiple="true"  width="100%" mold="paging" pageSize="30" height="420px" >
 	<listhead sizable="true">
 		
+		    <listheader label="Matricule" width="130px" sort="auto" align="center" />
 			<listheader label="Evaluateur" width="130px" sort="auto" align="center" />
 			<listheader label="Poste de Travail" width="130px" sort="auto" align="center" />
 			<listheader label="Progression % " width="180px" align="center" />
@@ -68,8 +70,8 @@ background-color: #00CC00 ;
 	
 		<listitem  self="@{each=listevaluateur}">
 
-       
-			<listcell label="@{listevaluateur.evaluateur}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+       		<listcell label="@{listevaluateur.login}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+       		<listcell label="@{listevaluateur.evaluateur}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			<listcell label="@{listevaluateur.poste_travail}"  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			
 			<listcell label="@{listevaluateur.pourcentage}" >%

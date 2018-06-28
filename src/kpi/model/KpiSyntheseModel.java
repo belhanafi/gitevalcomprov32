@@ -1397,7 +1397,7 @@ public class KpiSyntheseModel {
 			for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
 				String vague = pair.getKey();
 
-				query="SELECT '"+vague+"' vague, concat (nom, concat(' ',prenom)) evaluateur, t.nomEmploye evalue, round(avg(round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60)),2) AS duree"
+				query="SELECT t.login,'"+vague+"' vague, concat (nom, concat(' ',prenom)) evaluateur, t.nomEmploye evalue, round(avg(round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60)),2) AS duree"
 						+ " FROM common_evalcom.compte h, "+entry.getKey()+"."+"histo_fiche_evaluation t  JOIN "+entry.getKey()+"."+"histo_fiche_evaluation v ON t.login = (v.login)"
 						+ " and t.date_histo<v.date_histo and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))<10 and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))>3"
 						+ " where h.login=t.login "
@@ -1435,6 +1435,8 @@ public class KpiSyntheseModel {
 				bean.setDuree(rs.getFloat("duree"));
 				bean.setEvaluateur(rs.getString("evaluateur"));
 				bean.setEvalue(rs.getString("evalue"));
+				bean.setLogin(rs.getString("login"));
+				
 				listbean.add(bean);
 
 

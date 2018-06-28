@@ -566,14 +566,14 @@ public class FicheIndividuelleModel {
 			stmt = (Statement) conn.createStatement();
 
 
-			sql_query="select m.id_employe,concat(m.nom,concat(' ',m.prenom)) evalue,p.intitule_poste,round((sum(taux)*100)/ sum(total),0) pourcentage"
+			sql_query="select c.login,m.id_employe,concat(m.nom,concat(' ',m.prenom)) evalue,p.intitule_poste,round((sum(taux)*100)/ sum(total),0) pourcentage"
 					+ " from ( select e.id_employe,count(e.realisee) taux, 0 total from actionsdev_employe e,employe p where e.realisee='O'"
 					+ "  and p.code_poste=#code_poste and e.id_compagne=#id_compagne and p.id_employe=e.id_employe"
 					+ "  group by e.id_employe"
 					+ " union"
 					+ " select e.id_employe, 0 taux ,count(e.id_employe) total  from actionsdev_employe e,employe p where"
-					+ " p.code_poste=#code_poste and e.id_compagne=#id_compagne  and p.id_employe=e.id_employe group by e.id_employe) t, employe m, poste_travail_description p"
-					+ " where t.id_employe=m.id_employe and p.code_poste=m.code_poste group by 1,2";
+					+ " p.code_poste=#code_poste and e.id_compagne=#id_compagne  and p.id_employe=e.id_employe group by e.id_employe) t, employe m, poste_travail_description p ,common_evalcom.compte c"
+					+ " where t.id_employe=m.id_employe and p.code_poste=m.code_poste and m.id_compte=c.id_compte group by 1,2";
 
 
 
@@ -587,7 +587,7 @@ public class FicheIndividuelleModel {
 			while(rs.next()){
 
 				SuiviActionDevBean bean=new SuiviActionDevBean();
-				//bean.setId_employe(rs.getInt("id_employe"));
+				bean.setLogin(rs.getString("login"));
 				bean.setEvalue(rs.getString("evalue"));
 				//bean.setLibelle_poste(rs.getString("intitule_poste"));
 				bean.setPourcentage(rs.getInt("pourcentage"));

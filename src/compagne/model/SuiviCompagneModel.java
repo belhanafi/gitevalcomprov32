@@ -299,23 +299,23 @@ public class SuiviCompagneModel {
 		String sqlquery="";
 		if (code_structure.equalsIgnoreCase("-1")){
 
-			sqlquery="select id_employe,concat (nom ,' ',prenom) as nom_evaluateur , intitule_poste,email,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress"+
+			sqlquery="select login,id_employe,concat (e.nom ,' ',e.prenom) as nom_evaluateur , intitule_poste,email,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress"+
 					" from (	select id_evaluateur as evaluateur ,count(r.id_employe) as nbfichevalide,0 as totalemploye from planning_evaluation t ,fiche_validation r" +
 					" where t.id_planning_evaluation=r.id_planning_evaluation" +
 					" and t.id_employe=r.id_employe  and fiche_valide=1  and  t.id_compagne=#compgane "+
 					" group by id_evaluateur   union select id_evaluateur as evaluateur ,0 as nbfichevalide ,count(t.id_employe)as totalemploye" +
 					" from planning_evaluation t where   t.id_compagne=#compgane  group by id_evaluateur" +
-					" ) as t2,employe e ,poste_travail_description p where e.id_employe=evaluateur and p.code_poste=e.code_poste  group by 1,2,3,4 order by 2";
+					" ) as t2,employe e ,poste_travail_description p, common_evalcom.compte c where e.id_employe=evaluateur and p.code_poste=e.code_poste and c.id_compte=e.id_compte group by 1,2,3,4 order by 2";
 
 		}
 		else{
-			sqlquery="select id_employe,concat (nom ,' ',prenom) as nom_evaluateur , intitule_poste,email,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress"+
+			sqlquery="select login,id_employe,concat (e.nom ,' ',e.prenom) as nom_evaluateur , intitule_poste,email,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress"+
 					" from (	select id_evaluateur as evaluateur ,count(r.id_employe) as nbfichevalide,0 as totalemploye from planning_evaluation t ,fiche_validation r" +
 					" where t.id_planning_evaluation=r.id_planning_evaluation" +
 					" and t.id_employe=r.id_employe  and fiche_valide=1  and  t.id_compagne=#compgane "+
 					" group by id_evaluateur   union select id_evaluateur as evaluateur ,0 as nbfichevalide ,count(t.id_employe)as totalemploye" +
 					" from planning_evaluation t where   t.id_compagne=#compgane  group by id_evaluateur" +
-					" ) as t2,employe e ,poste_travail_description p where e.id_employe=evaluateur and p.code_poste=e.code_poste and e.code_structure=#code_structure group by 1,2,3,4 order by 2";
+					" ) as t2,employe e ,poste_travail_description p, common_evalcom.compte c  where e.id_employe=evaluateur and p.code_poste=e.code_poste and e.code_structure=#code_structure and c.id_compte=e.id_compte group by 1,2,3,4 order by 2";
 			sqlquery = sqlquery.replaceAll("#code_structure", "'"+code_structure+"'");
 		}
 
@@ -339,6 +339,8 @@ public class SuiviCompagneModel {
 				evalbean.setPourcentage(rs.getInt("progress"));
 				evalbean.setId_employe(rs.getInt("id_employe"));
 				evalbean.setEmail(rs.getString("email"));
+				evalbean.setLogin(rs.getString("login"));
+				
 				listevaluateur.add(evalbean);
 
 
@@ -942,24 +944,21 @@ public class SuiviCompagneModel {
 		String sqlquery="";
 
 
-		sqlquery="select e.id_employe,concat (nom ,' ',prenom) as nom_evaluateur , intitule_poste,email,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress ,"
-				+ " sum(totalemploye-nbfichevalide)fichenoncote, sum(nbfichevalide)fichecote, h.date_alert dateExtract"+
+		sqlquery="select  c.login,e.id_employe,concat (e.nom ,' ',e.prenom) as nom_evaluateur , intitule_poste,email,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress ,"
+				+ " sum(totalemploye-nbfichevalide)fichenoncote, sum(nbfichevalide)fichecote, h.date_alert as dateExtract"+
 				" from (	select id_evaluateur as evaluateur ,count(r.id_employe) as nbfichevalide,0 as totalemploye from planning_evaluation t ,fiche_validation r" +
 				" where t.id_planning_evaluation=r.id_planning_evaluation" +
 				" and t.id_employe=r.id_employe  and fiche_valide=1  and  t.id_compagne=#compgane "+
 				" group by id_evaluateur   union select id_evaluateur as evaluateur ,0 as nbfichevalide ,count(t.id_employe)as totalemploye" +
 				" from planning_evaluation t where   t.id_compagne=#compgane  group by id_evaluateur" +
-				" ) as t2, poste_travail_description p,employe e LEFT OUTER JOIN histo_envoi_email h"
+				" ) as t2, poste_travail_description p,common_evalcom.compte c,employe e LEFT OUTER JOIN histo_envoi_email h"
 				+ "  ON  h.id_employe=e.id_employe and  h.id_compagne=#compgane where    e.id_employe=evaluateur and p.code_poste=e.code_poste"
-				+ " group by 1,2,3,4 order by 2";
+				+ " and c.id_compte=e.id_compte group by 1,2,3,4 order by 2";
 
 
 
 
 		sqlquery = sqlquery.replaceAll("#compgane", Integer.toString(id_compagne));
-
-		//System.out.println(sqlquery);
-
 
 		try {
 			stmt = (Statement) conn.createStatement();
@@ -975,17 +974,14 @@ public class SuiviCompagneModel {
 				evalbean.setPourcentage(rs.getInt("progress"));
 				evalbean.setId_employe(rs.getInt("id_employe"));
 				evalbean.setEmail(rs.getString("email"));
-
 				evalbean.setFichecote(rs.getInt("fichecote"));
 				evalbean.setFichenoncote(rs.getInt("fichenoncote"));
 				evalbean.setDateExtract(rs.getString("dateExtract"));
+				evalbean.setLogin(rs.getString("login"));
 				listevaluateur.add(evalbean);
 
-
-			}
-			//			stmt.close();
-			//			conn.close();
-
+			}	
+			
 		} catch ( SQLException e ) {
 
 		} finally {

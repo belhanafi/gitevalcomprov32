@@ -35,6 +35,7 @@ public class GestionEmployesBean implements Comparable {
 	private String libelle_structure;
 	
 	private String login;
+	private String libelle_direction;
 
 
 
@@ -265,6 +266,14 @@ public class GestionEmployesBean implements Comparable {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+
+	public String getLibelle_direction() {
+		return libelle_direction;
+	}
+
+	public void setLibelle_direction(String libelle_direction) {
+		this.libelle_direction = libelle_direction;
 	}
 
 }

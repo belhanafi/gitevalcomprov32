@@ -75,6 +75,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 	Textbox intituleFiltre;
 	
 	Textbox login;
+	Textbox libelle_direction;
 	
 	Listbox sexe;
 	Listbox type_contrat;
@@ -125,6 +126,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		okAdd.setVisible(false);
 		effacer.setVisible(false);
 		login.setDisabled(true);
+		libelle_direction.setDisabled(true);
 		GestionEmployesModel init= new GestionEmployesModel();
 		map_formation = new HashMap();
 		map_formation=init.getListFormation();
@@ -171,7 +173,6 @@ public class GestionEmployesAction extends GenericForwardComposer {
 			est_evaluateur.appendItem((String) me.getKey(),(String) me.getKey());
 		}
 
-
 		map_resRH=init.isResRH();
 		set = (map_resRH).entrySet(); 
 		i = set.iterator();
@@ -180,7 +181,6 @@ public class GestionEmployesAction extends GenericForwardComposer {
 			Map.Entry me = (Map.Entry)i.next();
 			est_responsable_rh.appendItem((String) me.getKey(),(String) me.getKey());
 		}
-
 		
 		map_sexe=init.sexeListe();
 		set = (map_sexe).entrySet(); 
@@ -309,6 +309,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		addedData.setCode_type_contrat(getSelectTypeContrat());
 		addedData.setType_contrat(getTypecontrat_str());
 		addedData.setLogin(getSelectedLogin());
+		addedData.setLibelle_direction(getSelectedLibelleDirection());
 		
 
 
@@ -637,6 +638,14 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		}
 		return name;
 	}
+	
+	private String getSelectedLibelleDirection() throws WrongValueException {
+		String name=libelle_direction.getValue();
+		if (name==null) {
+			throw new WrongValueException(libelle_direction, "Merci de saisir Libelle direction valide!");
+		}
+		return name;
+	}
 
 	
 	
@@ -645,8 +654,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 
 		email.setText("");
 		login.setText("");
-
-
+		libelle_direction.setText("");
 	}
 
 	public String getNom_complet() {
@@ -799,6 +807,14 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
 		int id_compte_int=(Integer)map_compte.get(id_compte.getSelectedItem().getLabel());
 		login.setText(gestionEmployeModel.getLogin(id_compte_int));
+		//System.out.println("id_compte_int>>>"+id_compte_int);
+	}
+	
+public void onSelect$structure() throws WrongValueException, SQLException {
+		
+		GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
+		String codestructure=(String)map_structure.get(structure.getSelectedItem().getLabel());
+		libelle_direction.setText(gestionEmployeModel.getDirection(codestructure));
 		//System.out.println("id_compte_int>>>"+id_compte_int);
 	}
 
