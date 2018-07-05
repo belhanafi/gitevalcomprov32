@@ -1516,6 +1516,9 @@ public class FicheEvaluationModel {
 		MapEmployesAEvaluerBean listEmployesAEvaluerBean=new MapEmployesAEvaluerBean();
 		HashMap<String, EmployesAEvaluerBean> MapclesnomEmploye=listEmployesAEvaluerBean.getMapclesnomEmploye();
 		HashMap<String, HashMap<String,EmployesAEvaluerBean>> Mapclesposte=listEmployesAEvaluerBean.getMapclesposte();
+		//modif point 2 v3.2 05/07/2018
+		HashMap<String, ArrayList< HashMap<String,String>>> Mapclesdirection=listEmployesAEvaluerBean.getMapclesdirection();
+
 
 
 		CreateDatabaseCon dbcon=new CreateDatabaseCon();
@@ -1527,13 +1530,23 @@ public class FicheEvaluationModel {
 			stmt = (Statement) conn.createStatement();
 
 
-			String select_structure="select distinct  k.id_planning_evaluation,r.famille, r.code_famille, e.nom, e.prenom , e.id_employe, t.intitule_poste , t.code_poste"
+			/*String select_structure="select distinct  k.id_planning_evaluation,r.famille, r.code_famille, e.nom, e.prenom , e.id_employe, t.intitule_poste , t.code_poste"
 					+ " from repertoire_competence r, employe e , poste_travail_description t, planning_evaluation k"
 					+ " where e.id_employe in  (select distinct v.id_employe from planning_evaluation v , compagne_evaluation n ,fiche_validation  i"
 					+ "                 		 where    v.id_compagne in ( select distinct id_compagne from compagne_evaluation"
 					+ "                          where  id_compagne=#id_compagne) and i.fiche_valide='1' and i.id_planning_evaluation=v.id_planning_evaluation)"
 					+ " and e.code_poste=t.code_poste  and e.code_poste =k.code_poste and e.id_employe=k.id_employe and k.id_planning_evaluation "
-					+ " in (select distinct  w.id_planning_evaluation from planning_evaluation w , compagne_evaluation h where  h.id_compagne=#id_compagne and w.id_compagne=h.id_compagne)";
+					+ " in (select distinct  w.id_planning_evaluation from planning_evaluation w , compagne_evaluation h where  h.id_compagne=#id_compagne and w.id_compagne=h.id_compagne)";*/
+			
+			String select_structure="select distinct  k.id_planning_evaluation,r.famille, r.code_famille, e.nom, e.prenom , e.id_employe, t.intitule_poste , t.code_poste,"
+					+ " case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+					+ " else libelle_direction end as libelle_direction  "
+					+ " from repertoire_competence r, employe e , poste_travail_description t, planning_evaluation k, structure_entreprise s"
+					+ " where e.id_employe in  (select distinct v.id_employe from planning_evaluation v , compagne_evaluation n ,fiche_validation  i"
+					+ " where    v.id_compagne =#id_compagne and i.fiche_valide='1' and i.id_planning_evaluation=v.id_planning_evaluation)"
+					+ " and e.code_poste=t.code_poste  and e.code_poste =k.code_poste and e.id_employe=k.id_employe and k.id_planning_evaluation"
+					+ " in (select distinct  w.id_planning_evaluation from planning_evaluation w , compagne_evaluation h where  h.id_compagne=#id_compagne and w.id_compagne=h.id_compagne)"
+					+ " and s.code_structure=e.code_structure";
 
 			//la dernière ligne permet la selection des employé ayant une fiche d'evaluation valide
 			select_structure = select_structure.replaceAll("#id_compagne", "'"+id_compagne+"'");
@@ -1550,6 +1563,7 @@ public class FicheEvaluationModel {
 				if (rs.getRow()>=1) 
 				{
 					//listposteTravail.add(rs.getString("intitule_poste"));
+				
 
 					int id_employe =rs.getInt("id_employe") ;
 					String poste_travail=rs.getString("intitule_poste");
@@ -1558,6 +1572,7 @@ public class FicheEvaluationModel {
 					String famille=rs.getString("famille");
 					String code_famille=rs.getString("code_famille");
 					int id_planning_evaluation=rs.getInt("id_planning_evaluation");
+					String libelle_direction=rs.getString("libelle_direction");
 
 					if(MapclesnomEmploye.containsKey(nom_employe))
 					{
@@ -1580,11 +1595,14 @@ public class FicheEvaluationModel {
 						employesAEvaluerBean.getCode_famille().add(code_famille);
 						employesAEvaluerBean.getFamille().add(famille);
 						employesAEvaluerBean.setId_planning_evaluation(id_planning_evaluation);
+						employesAEvaluerBean.setLibelle_direction(libelle_direction);
+
 						MapclesnomEmploye.put(nom_employe,employesAEvaluerBean);
 					}
 					if(Mapclesposte.containsKey(poste_travail))
 					{
 						HashMap<String, EmployesAEvaluerBean> mapEmploye=Mapclesposte.get(poste_travail);
+						
 						if(mapEmploye.containsKey(nom_employe))
 						{
 							ArrayList<String> listFamille=mapEmploye.get(nom_employe).getCode_famille();
@@ -1595,6 +1613,7 @@ public class FicheEvaluationModel {
 							listLibelleFamille.add(famille);
 							mapEmploye.get(nom_employe).setFamille(listLibelleFamille);
 							Mapclesposte.put(poste_travail, mapEmploye);
+						
 
 						}
 						else
@@ -1607,8 +1626,12 @@ public class FicheEvaluationModel {
 							employesAEvaluerBean.getCode_famille().add(code_famille);
 							employesAEvaluerBean.getFamille().add(famille);
 							employesAEvaluerBean.setId_planning_evaluation(id_planning_evaluation);
+							employesAEvaluerBean.setLibelle_direction(libelle_direction);
+
 							mapEmploye.put(nom_employe,employesAEvaluerBean);
 							Mapclesposte.put(poste_travail, mapEmploye);
+						
+							
 						}
 
 					}
@@ -1624,21 +1647,55 @@ public class FicheEvaluationModel {
 						employesAEvaluerBean.getFamille().add(famille);
 						employesAEvaluerBean.setId_planning_evaluation(id_planning_evaluation);
 						mapEmploye.put(nom_employe,employesAEvaluerBean);
+						employesAEvaluerBean.setLibelle_direction(libelle_direction);
 						Mapclesposte.put(poste_travail, mapEmploye);
-					}			
+						
+					}
+					
+					if(Mapclesdirection.containsKey(libelle_direction))
+					{
+						HashMap<String,String> postekeys= new HashMap<String,String>();
+						//ArrayList< HashMap<String,String>> listposte=new ArrayList< HashMap<String,String>> () ;
+						ArrayList<HashMap<String, String>> listposte=Mapclesdirection.get(libelle_direction);
+						postekeys.put(code_poste, poste_travail);
+						if(!listposte.contains(postekeys)){
+							listposte.add(postekeys);
+							Mapclesdirection.put(libelle_direction, listposte);
+					   }
+					}
+					else
+					{
 
+						EmployesAEvaluerBean employesAEvaluerBean=new EmployesAEvaluerBean();
+						HashMap<String,String> postekeys= new HashMap<String,String>();
+						ArrayList< HashMap<String,String>> listposte=new ArrayList< HashMap<String,String>> () ;
+						employesAEvaluerBean.setCode_poste(code_poste);
+						employesAEvaluerBean.setId_employe(id_employe);
+						employesAEvaluerBean.setNom_employe(nom_employe);
+						employesAEvaluerBean.setPoste_travail(poste_travail);
+						employesAEvaluerBean.getCode_famille().add(code_famille);
+						employesAEvaluerBean.getFamille().add(famille);
+						employesAEvaluerBean.setId_planning_evaluation(id_planning_evaluation);
+						employesAEvaluerBean.setLibelle_direction(libelle_direction);
 
+						MapclesnomEmploye.put(nom_employe,employesAEvaluerBean);
+						postekeys.put(code_poste, poste_travail);
+						listposte.add(postekeys);
+						Mapclesdirection.put(libelle_direction, listposte);
+					}
+					
+					
+				
 				}
-				//				else {
-				//					return listEmployesAEvaluerBean;
-				//				}
+			
 				listEmployesAEvaluerBean.setMapclesnomEmploye(MapclesnomEmploye);
 				listEmployesAEvaluerBean.setMapclesposte(Mapclesposte);
+				listEmployesAEvaluerBean.setMapclesdirection(Mapclesdirection);
 			}
-			//			stmt.close();
-			//			conn.close();
+			
 		} 
 		catch ( SQLException e ) {
+			System.out.println(e.toString());
 
 		} finally {
 

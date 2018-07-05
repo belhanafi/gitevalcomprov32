@@ -103,6 +103,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 	Combobox poste_travailV;
 	Combobox compagneV;
 	Listbox employelbV;
+	Combobox directionV;
 	//objets graphique de l'onglet la fiche d'evaluation
 
 
@@ -530,8 +531,27 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				mapEmployeEvalueBean=ficheEvaluationModel.getListEmployesvalueComp(id_employe,compagne_id);
 
 			//sinon (administrateur ) lancer un eautre méthode qui récupère tous ceux qui ont été évaluées
-			if ((compteUtilisateur.getId_profile()==2)||(compteUtilisateur.getId_profile()==1))
+			if ((compteUtilisateur.getId_profile()==2)||(compteUtilisateur.getId_profile()==1)){
+				//modif point 2 v3.2 05/07/2018
+				directionV.setVisible(true);
 				mapEmployeEvalueBean=ficheEvaluationModel.getListTousEmployesvalueComp(compagne_id);
+			}
+			
+			// debut modif point 2 v3.2 05/07/2018
+			HashMap<String, ArrayList< HashMap<String,String>>> Mapdirection=mapEmployeEvalueBean.getMapclesdirection();
+			Set <String>listedirection= Mapdirection.keySet();
+			Iterator <String > iterator_direction=listedirection.iterator();
+			directionV.appendItem("Selectionner Direction");
+			while(iterator_direction.hasNext())
+			{
+				String nomdirection=iterator_direction.next();
+				directionV.appendItem(nomdirection);
+			}
+			//selection du premier item (tous direction)
+			directionV.setSelectedIndex(0);
+			// fin modif point 2 v3.2 05/07/2018
+			
+			
 			HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeEvalueBean.getMapclesposte();
 			Set <String>listePoste= Mapclesposte.keySet();
 			Iterator <String > iterator=listePoste.iterator();
@@ -3431,6 +3451,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		poste_travail.getItems().clear();
 		
 		FamilleM.getItems().clear();
+		directionV.getItems().clear();
 		
 
 		try{

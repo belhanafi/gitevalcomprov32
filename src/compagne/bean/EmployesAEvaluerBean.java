@@ -9,6 +9,7 @@ public class EmployesAEvaluerBean {
 	private String code_poste;
 	private String nom_employe;
 	private int id_planning_evaluation;
+	private String libelle_direction;
 	
 	
 	public int getId_planning_evaluation() {
@@ -56,6 +57,12 @@ public class EmployesAEvaluerBean {
 	}
 	public void setCode_famille(ArrayList<String> code_famille) {
 		this.code_famille = code_famille;
+	}
+	public String getLibelle_direction() {
+		return libelle_direction;
+	}
+	public void setLibelle_direction(String libelle_direction) {
+		this.libelle_direction = libelle_direction;
 	}
 	
 	
