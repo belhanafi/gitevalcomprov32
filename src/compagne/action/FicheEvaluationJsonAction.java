@@ -180,8 +180,8 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 	Integer compagne_id=-2;
 	int type_appel=-1; //0  si l'appel de la methode se fait appartr de  doAfterCompose 1 si l'appel se fait appartir de la methode onSelect$compagneV
-	
-	
+
+
 
 
 
@@ -199,8 +199,8 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 		valider.setDisabled(true);
 		confirmer.setDisabled(true);
-		
-		
+
+
 		FicheEvaluationJsonModel ficheJson=new FicheEvaluationJsonModel();
 		map_compagne=ficheJson.getListAllCompagne();
 		Set set = (map_compagne).entrySet(); 
@@ -210,14 +210,14 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
 			compagneV.appendItem((String) me.getKey());
-			
+
 		}
 
 		if(compagneV.getItemCount()>0){
 			compagneV.setSelectedIndex(0);
-			
+
 		}
-		
+
 		/**
 		 *  recuperer uniquement la liste des compagnes validés
 		 * Cette liste sera utilisée pour la combox compagne MaFiCheEvaluation
@@ -225,7 +225,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		 * la compagne validée
 		 *
 		 */
-		
+
 		map_compagneValidee=ficheJson.getListCompagneValidee();
 		Set set1 = (map_compagneValidee).entrySet(); 
 		Iterator i1 = set1.iterator();
@@ -236,17 +236,17 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		}
 
 		if(compagneM.getItemCount()>0){
-			
+
 			compagneM.setSelectedIndex(0);
 
 		}
-		
-		
-		
-         compagne_id=ficheJson.getCompagneEnCours();
+
+
+
+		compagne_id=ficheJson.getCompagneEnCours();
 		//compagne_id= Integer.parseInt((String) map_compagne.get((String)compagneV.getSelectedItem().getLabel()));
 		loadFicheEval(0,compagne_id);
-		
+
 
 
 
@@ -254,9 +254,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 	private void loadFicheEval(int type_appel,int compagne_id ) throws Exception,
 	ParseException, SQLException {
-		
-		
-		
+
+
+
 
 
 		//recupération du profil de l'utilisateur
@@ -351,12 +351,12 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			{
 
 				//récupération de la fiche d'avaluation de l'id_employe
-				
+
 				//content="";
 
 				mapfamilleFicheEvaluationM=ficheEvaluationJsonModel.getMaFicheEvaluaton(id_employe, mapcodeCompetenceLibelleCompetence, mapidRepCompetence_ApptitudeObservable,String.valueOf(compagne_id));
-				
-			
+
+
 				//affichage de la cotation
 				if(FamilleM.getItemCount()>0)
 					FamilleM.setSelectedIndex(0);
@@ -515,11 +515,11 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			//mapCompagneFicheV
 
 			//debut Modif NB du 19/02
-			
+
 			/*if (type_appel==0){
 				compagne_id= Integer.parseInt((String) map_compagne.get((String)compagneV.getItemAtIndex(0).getLabel()));
 			}*/
-			
+
 
 			mapPosteTravailFicheV=ficheEvaluationModel.getInfosFicheEvaluationparPosteComp(compagne_id);
 
@@ -534,11 +534,12 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			if ((compteUtilisateur.getId_profile()==2)||(compteUtilisateur.getId_profile()==1)){
 				//modif point 2 v3.2 05/07/2018
 				directionV.setVisible(true);
+
 				mapEmployeEvalueBean=ficheEvaluationModel.getListTousEmployesvalueComp(compagne_id);
 			}
-			
+
 			// debut modif point 2 v3.2 05/07/2018
-			HashMap<String, ArrayList< HashMap<String,String>>> Mapdirection=mapEmployeEvalueBean.getMapclesdirection();
+			HashMap<String, HashMap<String,ArrayList<String>>> Mapdirection=mapEmployeEvalueBean.getMapclesdirection();
 			Set <String>listedirection= Mapdirection.keySet();
 			Iterator <String > iterator_direction=listedirection.iterator();
 			directionV.appendItem("Selectionner Direction");
@@ -550,49 +551,52 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			//selection du premier item (tous direction)
 			directionV.setSelectedIndex(0);
 			// fin modif point 2 v3.2 05/07/2018
-			
-			
+
+
 			HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeEvalueBean.getMapclesposte();
 			Set <String>listePoste= Mapclesposte.keySet();
 			Iterator <String > iterator=listePoste.iterator();
+
 			
 
-			poste_travailV.appendItem("Tous poste de travail");
-			while(iterator.hasNext())
-			{
-				String nomPoste=iterator.next();
-				poste_travailV.appendItem(nomPoste);
-			}
-			//selection du premier item (tous poste de travail)
-			poste_travailV.setSelectedIndex(0);
+		
+				poste_travailV.appendItem("Tous poste de travail");
+				while(iterator.hasNext())
+				{
+					String nomPoste=iterator.next();
+					poste_travailV.appendItem(nomPoste);
+				}
+				//selection du premier item (tous poste de travail)
+				poste_travailV.setSelectedIndex(0);
 
-			//remplissage de la comboBox avec tous les nom des employes quelque soit leur type de poste
-			HashMap<String, EmployesAEvaluerBean> mapclesEmploye=mapEmployeEvalueBean.getMapclesnomEmploye();
-			Set <String>listeEmploye=mapclesEmploye.keySet();
-			iterator=listeEmploye.iterator();
-			employeV.appendItem("sélectionner un employé");
-			while(iterator.hasNext())
-			{
-				String nomEmploye=iterator.next();
-				employeV.appendItem(nomEmploye);
+				//remplissage de la comboBox avec tous les nom des employes quelque soit leur type de poste
+				HashMap<String, EmployesAEvaluerBean> mapclesEmploye=mapEmployeEvalueBean.getMapclesnomEmploye();
+				Set <String>listeEmploye=mapclesEmploye.keySet();
+				iterator=listeEmploye.iterator();
+				employeV.appendItem("sélectionner un employé");
+				while(iterator.hasNext())
+				{
+					String nomEmploye=iterator.next();
+					employeV.appendItem(nomEmploye);
 
+				}
+				//selection du premier item de la combobox employe
+				if(employeV.getItemCount()>0)
+					employeV.setSelectedIndex(0);
 			}
-			//selection du premier item de la combobox employe
-			if(employeV.getItemCount()>0)
-				employeV.setSelectedIndex(0);
-		}
+			
 		else
 		{
 			//rendre l'onglet invisible 
 			FValide.detach();
 			fichevalide.detach();
 		}
-		 if (type_appel==0){
-			 tb.setSelectedIndex(0);
+		if (type_appel==0){
+			tb.setSelectedIndex(0);
 			//vider Ma fiche d'évaluation la selection de la fiche se fait uniquement apres selection de la listbox compagneM
-				employelbM.getItems().clear();
+			employelbM.getItems().clear();
 
-		 }
+		}
 
 		//		minutes=applicationSession.getTimerValue();
 		//		 timer.addEventListener(Events.ON_TIMER, new EventListener() {
@@ -741,9 +745,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 					e1.printStackTrace();
 				}
 
-				
+
 			}
-			
+
 			//afficher toutes les données associées à ce poste de travail
 
 			//recuperation du code_poste associé à l'intitule
@@ -1721,7 +1725,8 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 	public void onSelect$FamilleM()
 	{
-		
+
+		employelbM.getItems().clear();
 		//récupération de la famille selectionnée
 		selectedFamilleM=(String)FamilleM.getSelectedItem().getLabel();
 
@@ -1747,7 +1752,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 		ArrayList<FicheEvaluationBean> listficheEvaluationBean=mapfamilleFicheEvaluationM.get(selectedFamilleM);
 		if (listficheEvaluationBean==null){
-			
+
 			try {
 				Messagebox.show("L'employé  "+nomEmployeM.getValue()+" ne dispose pas de fiche pour la compagne sélectionné", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
 			} catch (InterruptedException e) {
@@ -1755,8 +1760,8 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				e.printStackTrace();
 			}
 			return;
-		
-			
+
+
 		}
 		ArrayList<Listitem> liste=new ArrayList<Listitem>();
 
@@ -1823,90 +1828,145 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 	 */
 	public void onSelect$poste_travailV()
 	{
+		
 
-		//debut Modif NB du 18/02/16 Point 9
-		structureV.setVisible(false);
-		structureV.setText("");
-		evaluateurV.setText("");
+		//modif point 2 v3.2 05/07/2018 ajout combo direction uniquement pour le profil super admin and admin
+		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
+		CompteBean compteUtilisateur=applicationSession.getCompteUtilisateur();
+		String poste =(String)poste_travailV.getSelectedItem().getLabel();
+		String direction =(String)directionV.getSelectedItem().getLabel();
+		if ((compteUtilisateur.getId_profile()==2)||(compteUtilisateur.getId_profile()==1)){
 
-		evaluateurV.setVisible(false);
-		structure_lblV.setVisible(false);
-		evaluateur_lblV.setVisible(false);
-		//Fin Modif NB du 18/02/16 Point 9
+			//directionV.setVisible(true);
+			employeV.getItems().clear();
+			employelbV.getItems().clear();
+		
+			// debut modif point 2 v3.2 05/07/2018
+			HashMap<String,ArrayList<String>> Mapdirection=mapEmployeEvalueBean.getMapclesdirection().get(direction);
+			ArrayList<String> employelist= Mapdirection.get(poste);
 
-		//vider le contenu de la grille associée à l'ancien employé selectionné
-		if (currentListItemV!=null)
-		{
-			Iterator<Listitem> iterator=currentListItemV.iterator();
-			while(iterator.hasNext())
-			{
-				Listitem item=iterator.next();
-				item.detach();
+			if (employelist==null || employelist.size()==0   ){
+				try {
+					Messagebox.show("Merci de selectionner un poste de travail ", "Erreur", Messagebox.OK, Messagebox.ERROR);
+					return;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			selectedEmployeV="";
-			nomEmployeV.setText(selectedEmployeV);
-			selectednomposteTravailV="";
-			posteTravailV.setText(selectednomposteTravailV);
-		}
-		//si un employé a déja été selectionner alors vider le contnu de la combobox
-		if(FamilleV.getItemCount()>0)
-		{
-			int nb= FamilleV.getItemCount();
-			for (int i=nb-1;i>=0;i--)
-			{
 
-				FamilleV.removeItemAt(i);
-			}
-		}
-		//vider le contenu de la combo employe 
-		if(employeV.getItemCount()>0)
-		{
-			int nb= employeV.getItemCount();
-			for (int i=nb-1;i>=0;i--)
-			{
-
-				employeV.removeItemAt(i);
-			}
-		}
-		employeV.appendItem("sélectionner un employé");
-
-		//1. mise à jour de la liste des employes avec la selection de l'attribut selectionner un employe
-		//avec toutes les conséquences qui doivent se découler de cette de cette selection
-
-		//remplissage du contenu de la combo associée aux postes de travail
-		selectednomposteTravailV=poste_travailV.getSelectedItem().getLabel();
-		if(!selectednomposteTravailV.equals("Tous poste de travail"))
-		{
-			HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeEvalueBean.getMapclesposte();
-			HashMap<String, EmployesAEvaluerBean> mapEmploye=Mapclesposte.get(selectednomposteTravailV);
-			Set <String> listEmploye=mapEmploye.keySet();
-			Iterator<String> iterator =listEmploye.iterator();
-			while(iterator.hasNext())
-			{
-				String nomEmploye=iterator.next();
-				employeV.appendItem(nomEmploye);
-			}
-			employeV.setSelectedIndex(0);
-
-
-		}
-		else
-		{
-			//remplissage de la comboBox avec tous les nom des employes quelque soit leur type de poste
+			employeV.appendItem("sélectionner un employé");
 			
-			HashMap<String, EmployesAEvaluerBean> mapclesEmploye=mapEmployeEvalueBean.getMapclesnomEmploye();
-			Set <String>listeEmploye=mapclesEmploye.keySet();
-			Iterator <String >iterator=listeEmploye.iterator();
-			//employeV.appendItem("sélectionner un employé");
-			while(iterator.hasNext())
+				for (String employe : employelist) {
+					employeV.appendItem(employe);
+				}
+				
+				
+				/* for (Map.Entry<String, EmployesAEvaluerBean> entryEmp : mapEmp.entrySet()) {
+				    String nom_employe = entry.getKey();
+				    EmployesAEvaluerBean employesAEvaluerBean=entryEmp.getValue();
+				    //mapEmploye.put(nom_employe,employesAEvaluerBean);
+			    }*/
+
+			
+
+
+
+			//selection du premier item (tous direction)
+			employeV.setSelectedIndex(0);
+			// fin modif point 2 v3.2 05/07/2018
+
+		}
+
+		//fin modif point 2 v3.2
+		else{
+
+
+
+			//debut Modif NB du 18/02/16 Point 9
+			structureV.setVisible(false);
+			structureV.setText("");
+			evaluateurV.setText("");
+
+			evaluateurV.setVisible(false);
+			structure_lblV.setVisible(false);
+			evaluateur_lblV.setVisible(false);
+			//Fin Modif NB du 18/02/16 Point 9
+
+			//vider le contenu de la grille associée à l'ancien employé selectionné
+			if (currentListItemV!=null)
 			{
-				String nomEmploye=iterator.next();
-				employeV.appendItem(nomEmploye);
+				Iterator<Listitem> iterator=currentListItemV.iterator();
+				while(iterator.hasNext())
+				{
+					Listitem item=iterator.next();
+					item.detach();
+				}
+				selectedEmployeV="";
+				nomEmployeV.setText(selectedEmployeV);
+				selectednomposteTravailV="";
+				posteTravailV.setText(selectednomposteTravailV);
+			}
+			//si un employé a déja été selectionner alors vider le contnu de la combobox
+			if(FamilleV.getItemCount()>0)
+			{
+				int nb= FamilleV.getItemCount();
+				for (int i=nb-1;i>=0;i--)
+				{
+
+					FamilleV.removeItemAt(i);
+				}
+			}
+			//vider le contenu de la combo employe 
+			if(employeV.getItemCount()>0)
+			{
+				int nb= employeV.getItemCount();
+				for (int i=nb-1;i>=0;i--)
+				{
+
+					employeV.removeItemAt(i);
+				}
+			}
+			employeV.appendItem("sélectionner un employé");
+
+			//1. mise à jour de la liste des employes avec la selection de l'attribut selectionner un employe
+			//avec toutes les conséquences qui doivent se découler de cette de cette selection
+
+			//remplissage du contenu de la combo associée aux postes de travail
+			selectednomposteTravailV=poste_travailV.getSelectedItem().getLabel();
+			if(!selectednomposteTravailV.equals("Tous poste de travail"))
+			{
+				HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeEvalueBean.getMapclesposte();
+				HashMap<String, EmployesAEvaluerBean> mapEmploye=Mapclesposte.get(selectednomposteTravailV);
+				Set <String> listEmploye=mapEmploye.keySet();
+				Iterator<String> iterator =listEmploye.iterator();
+				while(iterator.hasNext())
+				{
+					String nomEmploye=iterator.next();
+					employeV.appendItem(nomEmploye);
+				}
+				employeV.setSelectedIndex(0);
+
 
 			}
-			//selection du premier item de la combobox employe
-			if(employeV.getItemCount()>0)
-				employeV.setSelectedIndex(0);
+			else
+			{
+				//remplissage de la comboBox avec tous les nom des employes quelque soit leur type de poste
+
+				HashMap<String, EmployesAEvaluerBean> mapclesEmploye=mapEmployeEvalueBean.getMapclesnomEmploye();
+				Set <String>listeEmploye=mapclesEmploye.keySet();
+				Iterator <String >iterator=listeEmploye.iterator();
+				//employeV.appendItem("sélectionner un employé");
+				while(iterator.hasNext())
+				{
+					String nomEmploye=iterator.next();
+					employeV.appendItem(nomEmploye);
+
+				}
+				//selection du premier item de la combobox employe
+				if(employeV.getItemCount()>0)
+					employeV.setSelectedIndex(0);
+			}
 		}
 	}
 
@@ -2240,10 +2300,10 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 	{
 		//remplir les champs evaluateur et structure
 		//debut modif NB 18/02/16
-		
+
 		compagne_id= Integer.parseInt((String) map_compagne.get((String)compagneV.getSelectedItem().getLabel()));
 
-		
+
 		FicheEvaluationModel ficheEvaluationModelID=new FicheEvaluationModel();
 		selectedEmployeV=employeV.getSelectedItem().getLabel();
 		EmployesAEvaluerBean employerAEvaluerID=mapEmployeEvalueBean.getMapclesnomEmploye().get(selectedEmployeV);
@@ -2268,9 +2328,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			evaluateur_lblV.setVisible(false);
 			FamilleV.getItems().clear();
 		}
-		
-		
-		
+
+
+
 
 		//fin modif NB 18/02/16
 
@@ -2412,7 +2472,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 			currentListItemV=liste;
 		}	
-		
+
 
 	}
 
@@ -2456,8 +2516,8 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		FicheEvaluationJsonModel ficheEvaluationJsonModel=new FicheEvaluationJsonModel();		
 		mapintitule_codeposte=ficheEvaluationJsonModel.getlistepostesCode_postes(compagne_id);
 		mapcode_intituleposte=ficheEvaluationJsonModel.getlisteCode_postes_intituleposte(compagne_id);
-		
-		
+
+
 		//onglet Ma Fiche d'évaluation
 
 		//evaluations.setStyle("overflow:auto");
@@ -2522,7 +2582,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				}
 			}
 
-			
+
 			employe.appendItem("sélectionner un employé");
 			while(iterator.hasNext())
 			{
@@ -3437,42 +3497,97 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		this.id_evalue = id_evalue;
 	}
 
+	//modif v3.2 point 2 ajout de la combo direction
+	public void onSelect$directionV() throws SQLException
+	{
+
+		
+		
+		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
+		CompteBean compteUtilisateur=applicationSession.getCompteUtilisateur();
+		String direction =(String)directionV.getSelectedItem().getLabel();
+		if ((compteUtilisateur.getId_profile()==2)||(compteUtilisateur.getId_profile()==1)){
+
+
+			employeV.getItems().clear();
+			poste_travailV.getItems().clear();
+
+			// debut modif point 2 v3.2 05/07/2018
+			HashMap<String, HashMap<String,ArrayList<String>>> Mapdirection=mapEmployeEvalueBean.getMapclesdirection();
+			 HashMap<String,ArrayList<String>> listedirection= Mapdirection.get(direction);
+
+			if (listedirection==null  || listedirection.size()==0  ){
+				try {
+					Messagebox.show("Merci de selectionner une  direction ", "Erreur", Messagebox.OK, Messagebox.ERROR);
+					return;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			poste_travailV.appendItem("Tous poste de travail");
+			for (Entry<String, ArrayList<String>> entry : listedirection.entrySet()) {
+				String poste_travail = entry.getKey();
+				poste_travailV.appendItem(poste_travail);
+				//HashMap<String,EmployesAEvaluerBean>  mapEmp = entry.getValue();
+				/* for (Map.Entry<String, EmployesAEvaluerBean> entryEmp : mapEmp.entrySet()) {
+				    String nom_employe = entry.getKey();
+				    EmployesAEvaluerBean employesAEvaluerBean=entryEmp.getValue();
+				    //mapEmploye.put(nom_employe,employesAEvaluerBean);
+			    }*/
+
+			}
+
+
+			//selection du premier item (tous direction)
+			poste_travailV.setSelectedIndex(0);
+			// fin modif point 2 v3.2 05/07/2018
+
+		}
+
+
+
+
+	}
+
 	public void onSelect$compagneV() throws SQLException
 	{
-		
+
 		structureV.setText("");
 		FamilleV.getItems().clear();
 		employelbV.getItems().clear();
-		
+
 		poste_travailV.getItems().clear();
 		employeV.getItems().clear();
-		
+
 		employe.getItems().clear();
 		poste_travail.getItems().clear();
-		
+
 		FamilleM.getItems().clear();
 		directionV.getItems().clear();
-		
+
 
 		try{
 			compagne_id= Integer.parseInt((String) map_compagne.get((String)compagneV.getSelectedItem().getLabel()));
 			loadFicheEval(1,compagne_id);
-
+			
 		}catch (Exception e){
 
 			compagne_id=-1;
 		}
 	}
+
 	public void onSelect$compagneM() throws SQLException
 	{
-		
+
 		poste_travailV.getItems().clear();
 		employeV.getItems().clear();
 		employe.getItems().clear();
 		poste_travail.getItems().clear();
 		FamilleM.getItems().clear();
 		employelbM.getItems().clear();
-		
+
 
 		try{
 			compagne_id= Integer.parseInt((String) map_compagne.get((String)compagneM.getSelectedItem().getLabel()));
@@ -3483,79 +3598,79 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			compagne_id=-1;
 		}
 	}
-	
+
 	public void  onClick$AEvaluer() throws ParseException, SQLException, Exception{
 		//alert("Ce login existe deja, merci de choisir un autre login");
-		
+
 		employe.getItems().clear();
 		poste_travail.getItems().clear();
-		
-		
+
+
 		FicheEvaluationJsonModel ficheJson=new FicheEvaluationJsonModel();
-        compagne_id=ficheJson.getCompagneEnCours();
-        loadFicheEval(1,compagne_id);
-        
- 	}
-	
+		compagne_id=ficheJson.getCompagneEnCours();
+		loadFicheEval(1,compagne_id);
+
+	}
+
 	public void  onClick$FValide() throws InterruptedException{
 		///alert("Ce login existe deja, merci de choisir un autre login");
-		
-		
-	
+
+
+
 		compagneV.setSelectedIndex(0);
-		
-		
+
+
 		try {
 			compagne_id= Integer.parseInt((String) map_compagne.get((String)compagneV.getSelectedItem().getLabel()));
 		}catch (NumberFormatException e) {
-			
-				//Messagebox.show(" Merci de selectionner une campagne d'évaluation", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
 
-	    }
-	    
-			employelbV.getItems().clear();
+			//Messagebox.show(" Merci de selectionner une campagne d'évaluation", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+
+		}
+
+		employelbV.getItems().clear();
 
 	}
 	public void  onClick$FicheEvaluation() throws ParseException, SQLException, Exception{
-		
+
 		//reinitialiser les  widget
 		poste_travailV.getItems().clear();
 		employeV.getItems().clear();
 		//employe.getItems().clear();
 		//poste_travail.getItems().clear();
 		FamilleM.getItems().clear();
-		
+
 		//alert("Ce login existe deja, merci de choisir un autre login");
 		if(compagneM.getItemCount()>0){
 			compagneM.setSelectedIndex(0);
 			compagne_id= Integer.parseInt((String) map_compagne.get((String)compagneM.getSelectedItem().getLabel()));
 			loadFicheEval(1,compagne_id);
 		}
-		
+
 		//employelbM.getItems().clear();
-		
+
 
 
 	}
-	
+
 	public void onClick$exp_word() throws Exception
 	{
 
 		//int id_employe=(Integer) employeV.getSelectedItem().getValue();
-		
+
 		EmployesAEvaluerBean employerAEvaluerID=mapEmployeEvalueBean.getMapclesnomEmploye().get(selectedEmployeV);
 		int id_employe=employerAEvaluerID.getId_employe();
 		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
 		int compagne_id= Integer.parseInt((String) map_compagne.get((String)compagneV.getSelectedItem().getLabel()));
-		
+
 		applicationSession.setId_employe(id_employe);
 		applicationSession.setId_compagne(compagne_id);
-		
+
 		String url = "/run?__report=ficheIndividuelle1.rptdesign&formatRapport=doc";
 		iframe.setSrc(url);
 		iframe.invalidate();
 	}
-	
+
 
 
 

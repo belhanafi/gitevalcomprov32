@@ -257,7 +257,7 @@ public class FicheEvaluationModel {
 					//"and ( k.id_planning_evaluation,k.id_employe) not in (select w.id_planning_evaluation,w.id_employe from fiche_validation w  where fiche_valide!='1' )";
 					"and ( k.id_planning_evaluation,k.id_employe) not in (select w.id_planning_evaluation,w.id_employe from fiche_validation w  where fiche_valide='1' )";*/
 			//la dernière ligne permet la selection des employé ayant une fiche d'evaluation non encore valide
-			
+
 			//Modif Nabil du 08/10/2017 limiter l'affichage  dans la combox poste travail à uniquement aux postes de travail associé à la campgane en cours
 			// dans la table compagne_poste_travail
 			String select_structure="select distinct  k.id_planning_evaluation,r.famille, r.code_famille, e.nom, e.prenom , k.id_employe, t.intitule_poste , t.code_poste "+ 
@@ -1517,7 +1517,7 @@ public class FicheEvaluationModel {
 		HashMap<String, EmployesAEvaluerBean> MapclesnomEmploye=listEmployesAEvaluerBean.getMapclesnomEmploye();
 		HashMap<String, HashMap<String,EmployesAEvaluerBean>> Mapclesposte=listEmployesAEvaluerBean.getMapclesposte();
 		//modif point 2 v3.2 05/07/2018
-		HashMap<String, ArrayList< HashMap<String,String>>> Mapclesdirection=listEmployesAEvaluerBean.getMapclesdirection();
+		HashMap<String, HashMap<String,ArrayList<String>>> Mapclesdirection=listEmployesAEvaluerBean.getMapclesdirection();
 
 
 
@@ -1537,7 +1537,7 @@ public class FicheEvaluationModel {
 					+ "                          where  id_compagne=#id_compagne) and i.fiche_valide='1' and i.id_planning_evaluation=v.id_planning_evaluation)"
 					+ " and e.code_poste=t.code_poste  and e.code_poste =k.code_poste and e.id_employe=k.id_employe and k.id_planning_evaluation "
 					+ " in (select distinct  w.id_planning_evaluation from planning_evaluation w , compagne_evaluation h where  h.id_compagne=#id_compagne and w.id_compagne=h.id_compagne)";*/
-			
+
 			String select_structure="select distinct  k.id_planning_evaluation,r.famille, r.code_famille, e.nom, e.prenom , e.id_employe, t.intitule_poste , t.code_poste,"
 					+ " case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
 					+ " else libelle_direction end as libelle_direction  "
@@ -1546,7 +1546,7 @@ public class FicheEvaluationModel {
 					+ " where    v.id_compagne =#id_compagne and i.fiche_valide='1' and i.id_planning_evaluation=v.id_planning_evaluation)"
 					+ " and e.code_poste=t.code_poste  and e.code_poste =k.code_poste and e.id_employe=k.id_employe and k.id_planning_evaluation"
 					+ " in (select distinct  w.id_planning_evaluation from planning_evaluation w , compagne_evaluation h where  h.id_compagne=#id_compagne and w.id_compagne=h.id_compagne)"
-					+ " and s.code_structure=e.code_structure";
+					+ " and s.code_structure=e.code_structure order by libelle_direction";
 
 			//la dernière ligne permet la selection des employé ayant une fiche d'evaluation valide
 			select_structure = select_structure.replaceAll("#id_compagne", "'"+id_compagne+"'");
@@ -1563,7 +1563,7 @@ public class FicheEvaluationModel {
 				if (rs.getRow()>=1) 
 				{
 					//listposteTravail.add(rs.getString("intitule_poste"));
-				
+
 
 					int id_employe =rs.getInt("id_employe") ;
 					String poste_travail=rs.getString("intitule_poste");
@@ -1602,7 +1602,7 @@ public class FicheEvaluationModel {
 					if(Mapclesposte.containsKey(poste_travail))
 					{
 						HashMap<String, EmployesAEvaluerBean> mapEmploye=Mapclesposte.get(poste_travail);
-						
+
 						if(mapEmploye.containsKey(nom_employe))
 						{
 							ArrayList<String> listFamille=mapEmploye.get(nom_employe).getCode_famille();
@@ -1613,7 +1613,7 @@ public class FicheEvaluationModel {
 							listLibelleFamille.add(famille);
 							mapEmploye.get(nom_employe).setFamille(listLibelleFamille);
 							Mapclesposte.put(poste_travail, mapEmploye);
-						
+
 
 						}
 						else
@@ -1630,8 +1630,8 @@ public class FicheEvaluationModel {
 
 							mapEmploye.put(nom_employe,employesAEvaluerBean);
 							Mapclesposte.put(poste_travail, mapEmploye);
-						
-							
+
+
 						}
 
 					}
@@ -1649,26 +1649,37 @@ public class FicheEvaluationModel {
 						mapEmploye.put(nom_employe,employesAEvaluerBean);
 						employesAEvaluerBean.setLibelle_direction(libelle_direction);
 						Mapclesposte.put(poste_travail, mapEmploye);
-						
+
 					}
-					
-					if(Mapclesdirection.containsKey(libelle_direction))
+
+					if(Mapclesdirection.containsKey(libelle_direction) )
 					{
-						HashMap<String,String> postekeys= new HashMap<String,String>();
-						//ArrayList< HashMap<String,String>> listposte=new ArrayList< HashMap<String,String>> () ;
-						ArrayList<HashMap<String, String>> listposte=Mapclesdirection.get(libelle_direction);
-						postekeys.put(code_poste, poste_travail);
-						if(!listposte.contains(postekeys)){
-							listposte.add(postekeys);
-							Mapclesdirection.put(libelle_direction, listposte);
-					   }
+						ArrayList<String> listemploye;
+
+						HashMap<String,ArrayList<String>> mapposte=Mapclesdirection.get(libelle_direction) ;
+						 listemploye=mapposte.get(poste_travail);
+						if (listemploye==null || !listemploye.contains(nom_employe) ){
+							if(mapposte.containsKey(poste_travail)){
+
+
+								listemploye.add(nom_employe);
+								mapposte.put(poste_travail, listemploye);
+								Mapclesdirection.put(libelle_direction, mapposte);
+							}else{
+								listemploye=new ArrayList<String>();
+								listemploye.add(nom_employe);
+								mapposte.put(poste_travail, listemploye);
+								Mapclesdirection.put(libelle_direction, mapposte);
+							}
+						}
 					}
 					else
 					{
 
 						EmployesAEvaluerBean employesAEvaluerBean=new EmployesAEvaluerBean();
-						HashMap<String,String> postekeys= new HashMap<String,String>();
-						ArrayList< HashMap<String,String>> listposte=new ArrayList< HashMap<String,String>> () ;
+						HashMap<String,ArrayList<String>> postekeys= new HashMap<String,ArrayList<String>>();
+						ArrayList<String> listemploye=new ArrayList<String>();
+						//HashMap<String, HashMap<String,ArrayList<String>>> Mapclesdirection=new HashMap<String, HashMap<String,ArrayList<String>>>() ;
 						employesAEvaluerBean.setCode_poste(code_poste);
 						employesAEvaluerBean.setId_employe(id_employe);
 						employesAEvaluerBean.setNom_employe(nom_employe);
@@ -1679,20 +1690,21 @@ public class FicheEvaluationModel {
 						employesAEvaluerBean.setLibelle_direction(libelle_direction);
 
 						MapclesnomEmploye.put(nom_employe,employesAEvaluerBean);
-						postekeys.put(code_poste, poste_travail);
-						listposte.add(postekeys);
-						Mapclesdirection.put(libelle_direction, listposte);
+						//
+						listemploye.add(nom_employe);
+						postekeys.put(poste_travail, listemploye);
+						Mapclesdirection.put(libelle_direction, postekeys);
 					}
-					
-					
-				
+
+
+
 				}
-			
+
 				listEmployesAEvaluerBean.setMapclesnomEmploye(MapclesnomEmploye);
 				listEmployesAEvaluerBean.setMapclesposte(Mapclesposte);
 				listEmployesAEvaluerBean.setMapclesdirection(Mapclesdirection);
 			}
-			
+
 		} 
 		catch ( SQLException e ) {
 			System.out.println(e.toString());
@@ -2325,6 +2337,6 @@ public class FicheEvaluationModel {
 	//
 
 
-	
+
 
 }

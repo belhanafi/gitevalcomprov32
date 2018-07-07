@@ -16,7 +16,7 @@
             			<row>
                 			<!-- Selected contributor's title value is same as title model's data-->
                 			
-                			<combobox id="poste_travail" autodrop="true" mold="rounded" buttonVisible="true" readonly="true" width="100%" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+                			<combobox id="poste_travail"  autodrop="true" mold="rounded" buttonVisible="true" readonly="true" width="100%" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
                 			<button id="help1" image="/image/help.gif" tooltiptext="Description du poste de travail sélectionné"/>
                 			<combobox id="employe" autodrop="true" mold="rounded" buttonVisible="true" width="100%" readonly="true" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
                 			<button id="help2"  image="/image/W95MBX04.gif" tooltiptext="Informations sur les niveaux de maitrise des aptitudes observables"/>

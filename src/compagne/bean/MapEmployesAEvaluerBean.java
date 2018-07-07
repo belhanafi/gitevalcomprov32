@@ -8,7 +8,7 @@ public class MapEmployesAEvaluerBean {
 	HashMap<String, EmployesAEvaluerBean> MapclesnomEmploye=new HashMap <String, EmployesAEvaluerBean>();
 	HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=new HashMap<String, HashMap<String, EmployesAEvaluerBean>>();
 	//modif point 2 v3.2 05/07/2018
-	HashMap<String, ArrayList< HashMap<String,String>>> Mapclesdirection=new  HashMap<String, ArrayList< HashMap<String,String>>>();
+	HashMap<String, HashMap<String,ArrayList<String>>> Mapclesdirection=new  HashMap<String, HashMap<String,ArrayList<String>>>();
 
 	
 	public HashMap<String, EmployesAEvaluerBean> getMapclesnomEmploye() {
@@ -24,11 +24,11 @@ public class MapEmployesAEvaluerBean {
 	public void setMapclesposte(HashMap<String, HashMap<String, EmployesAEvaluerBean>> mapclesposte) {
 		Mapclesposte = mapclesposte;
 	}
-	public HashMap<String, ArrayList< HashMap<String,String>>> getMapclesdirection() {
+	public HashMap<String, HashMap<String,ArrayList<String>>> getMapclesdirection() {
 		return Mapclesdirection;
 	}
 	public void setMapclesdirection(
-			HashMap<String, ArrayList< HashMap<String,String>>> mapclesdirection) {
+			HashMap<String, HashMap<String,ArrayList<String>>> mapclesdirection) {
 		Mapclesdirection = mapclesdirection;
 	}
 	
