@@ -124,6 +124,20 @@ public class CompagneCreationAction extends GenericForwardComposer {
 		Set set = (map).entrySet(); 
 		Iterator i = set.iterator();
 
+		//replir la combobox rattachement campagne poste de travail
+		//CompagneCreationModel init =new CompagneCreationModel();
+		ma_compagne=init.getListCompagne();
+		Set set1 = (ma_compagne).entrySet(); 
+		Iterator i1 = set1.iterator();
+
+		// Display elements
+		while(i1.hasNext()) {
+			Map.Entry me = (Map.Entry)i1.next();
+			compagne_cb.appendItem((String)me.getKey());
+
+		}
+		compagne_cb.setSelectedIndex(0);
+
 		// Display elements
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
@@ -288,7 +302,7 @@ public class CompagneCreationAction extends GenericForwardComposer {
 		if (Messagebox.show("Voulez vous appliquer les modifications?", "Prompt", Messagebox.YES|Messagebox.NO,
 				Messagebox.QUESTION) == Messagebox.YES) {
 			//System.out.println("pressyes");
-			
+
 			if (compagne_model.checkIMIMix(model_mix)==100){
 				compagne_model.updateImiMixIdeal(model_mix);
 				binder.loadAll();
@@ -297,7 +311,7 @@ public class CompagneCreationAction extends GenericForwardComposer {
 				Messagebox.show("La somme des objectifs doit être égale à 100%", "Erreur",Messagebox.OK, Messagebox.ERROR);
 				return;
 			}
-			
+
 		}
 
 		else{
@@ -453,7 +467,7 @@ public class CompagneCreationAction extends GenericForwardComposer {
 		}
 		return name;
 	}
-	
+
 
 	private int getSelectedtype_compagne() throws WrongValueException {
 		Integer name=(Integer) map.get((String)type_compagne.getSelectedItem().getLabel());
@@ -526,19 +540,17 @@ public class CompagneCreationAction extends GenericForwardComposer {
 		String idtab=tb.getId();
 
 		if (idtab.equalsIgnoreCase("compvsPoste_tb")){
+			
+			Integer compagne_id= (Integer) ma_compagne.get((String)compagne_cb.getSelectedItem().getLabel());
+			CompagneCreationModel init= new CompagneCreationModel();
+			model1=init.loadPosteMapToComapgne(compagne_id);
+			binder1 = new AnnotateDataBinder(self);
+			if(model1.size()!=0)
+				selected1=model1.get(0);
 
-			compagne_cb.getItems().clear();
-			CompagneCreationModel init =new CompagneCreationModel();
-			ma_compagne=init.getListCompagne();
-			Set set = (ma_compagne).entrySet(); 
-			Iterator i = set.iterator();
-
-			// Display elements
-			while(i.hasNext()) {
-				Map.Entry me = (Map.Entry)i.next();
-				compagne_cb.appendItem((String)me.getKey());
-
-			}
+			if(admincomptelb1.getItemCount()!=0)
+				admincomptelb1.setSelectedIndex(0);
+			binder1.loadAll();
 
 		}else{
 
@@ -547,7 +559,7 @@ public class CompagneCreationAction extends GenericForwardComposer {
 			datedebut.setDisabled(true);
 			datefin.setDisabled(true);
 			niveaumaitise.setDisabled(true);
-			
+
 			PlanningCompagneModel init= new PlanningCompagneModel();
 			map_nomcomp = new HashMap();
 			map_nomcomp=init.getCompagneValid();
@@ -790,9 +802,9 @@ public class CompagneCreationAction extends GenericForwardComposer {
 		model_mix=init.getMixNiveauMaitrise();
 		binder.loadAll();
 	}
-	
-	
-	
+
+
+
 	public void onSelect$mixlb() throws SQLException {
 
 		idcompagne_mix.setDisabled(true);
@@ -810,9 +822,9 @@ public class CompagneCreationAction extends GenericForwardComposer {
 			Executions.getCurrent().addAuResponse(null,new AuClearWrongValue(comp));
 		}
 	}
-	
-	
-	
+
+
+
 
 
 }
