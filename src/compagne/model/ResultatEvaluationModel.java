@@ -1170,7 +1170,7 @@ public class ResultatEvaluationModel {
 					+ "           and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise ) t"
 
 					+ " where e.code_structure=t.code_structure and p.code_poste=e.code_poste  and s.id_employe=e.id_employe"
-					+ " and s.id_compagne=6   and c.id_compte=e.id_compte and d.niv_for_id=f.niv_for_id and e.code_formation=f.code_formation"
+					+ " and s.id_compagne=#id_compagne   and c.id_compte=e.id_compte and d.niv_for_id=f.niv_for_id and e.code_formation=f.code_formation"
 					+ " union"
 					+ " select '99999999999' matricule,'DUMMY' as nom,'01/01/3999' date_naissance,'01/01/3999' date_recrutement,'DUMMY' formation,'vvvvvvvvvvvvvv' direction,'ZZZZZZZZZZZZZZ' structure_ent,'DUMMY' intitule_poste , 99 imi"
 					+ " order by   imi DESC,nom";
@@ -1217,6 +1217,7 @@ public class ResultatEvaluationModel {
 
 		} 
 		catch ( SQLException e ) {
+			System.out.println(e.toString());
 
 		} finally {
 

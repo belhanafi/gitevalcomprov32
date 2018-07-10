@@ -63,6 +63,11 @@
                     <property name="name">columnMatricule</property>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">columnLibelle_direction</property>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -104,6 +109,10 @@
                 <structure>
                     <property name="columnName">columnMatricule</property>
                     <text-property name="displayName">matricule</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">columnLibelle_direction</property>
+                    <text-property name="displayName">libelle_direction</text-property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -158,6 +167,11 @@
                         <property name="name">columnMatricule</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">columnLibelle_direction</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">scriptedDS</property>
@@ -181,6 +195,7 @@ taux = gsh.getInfoGeneralEmploye();]]></method>
       row["columnPrenom"] = taux.get(count).getPrenom();
       row["columnSexe"] = taux.get(count).getSexe();
       row["columnType_contrat"] = taux.get(count).getType_contrat();
+      row["columnLibelle_direction"] = taux.get(count).getLibelle_direction();
      
        count++;
        return true;
@@ -598,7 +613,7 @@ return false;]]></method>
             <row id="151">
                 <cell id="152">
                     <property name="colSpan">1</property>
-                    <property name="rowSpan">13</property>
+                    <property name="rowSpan">14</property>
                     <property name="borderBottomStyle">none</property>
                     <property name="borderLeftStyle">none</property>
                     <property name="borderRightStyle">none</property>
@@ -637,7 +652,7 @@ return false;]]></method>
                 </cell>
                 <cell id="155">
                     <property name="colSpan">1</property>
-                    <property name="rowSpan">13</property>
+                    <property name="rowSpan">14</property>
                     <property name="backgroundColor">#C0C0C0</property>
                     <text id="280">
                         <property name="backgroundColor">#C0C0C0</property>
@@ -765,6 +780,34 @@ return false;]]></method>
                             </structure>
                         </list-property>
                         <property name="resultSetColumn">columnDate_recrutement</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="608">
+                <cell id="610">
+                    <text id="613">
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">8pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">left</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[Direction :]]></text-property>
+                    </text>
+                </cell>
+                <cell id="611">
+                    <data id="617">
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">8pt</property>
+                        <property name="dataSet">dataSetFicheIndivInfoGen</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">columnLibelle_direction</property>
+                                <text-property name="displayName">libelle_direction</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["columnLibelle_direction"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">columnLibelle_direction</property>
                     </data>
                 </cell>
             </row>

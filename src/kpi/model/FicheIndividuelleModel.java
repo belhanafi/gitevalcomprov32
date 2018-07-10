@@ -76,30 +76,31 @@ public class FicheIndividuelleModel {
 
 					sql_query="select c.login matricule,e.nom,e.prenom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,"
 
-					+ " t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
+					+ " t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+					+ " else libelle_direction end as libelle_direction"
 					+ " from "+entry.getKey()+"."+"employe e  ,"+entry.getKey()+"."+"sexe s, "+entry.getKey()+"."+"type_contrat t,"+entry.getKey()+"."+"poste_travail_description p,"+entry.getKey()+"."+"formation f,common_evalcom.compte c  ,"
-					+ " "+entry.getKey()+"."+"def_niv_formation d,(select code_structure, structure_ent from ("
-					+ " select code_structure,libelle_section structure_ent  from "+entry.getKey()+"."+"structure_entreprise  where libelle_section is  not null"
+					+ " "+entry.getKey()+"."+"def_niv_formation d,(select code_structure, structure_ent,libelle_direction from ("
+					+ " select code_structure,libelle_section structure_ent,libelle_direction  from "+entry.getKey()+"."+"structure_entreprise  where libelle_section is  not null"
 					+ " and  libelle_section !='null' and  libelle_section !=''"
 					+ " union"
-					+ " select code_structure,libelle_service structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+					+ " select code_structure,libelle_service structure_ent,libelle_direction  from "+entry.getKey()+"."+"structure_entreprise"
 					+ " where libelle_service is  not null"
 					+ " and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_departement structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+					+ " select code_structure,libelle_departement structure_ent,libelle_direction  from "+entry.getKey()+"."+"structure_entreprise"
 					+ " where libelle_departement is  not null"
 					+ "	and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0 "
 					+ " union"
-					+ " select code_structure,libelle_sous_direction structure_ent from "+entry.getKey()+"."+"structure_entreprise "
+					+ " select code_structure,libelle_sous_direction structure_ent,libelle_direction  from "+entry.getKey()+"."+"structure_entreprise "
 					+ " where libelle_sous_direction is  not null"
 					+ " and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_unite structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+					+ " select code_structure,libelle_unite structure_ent,libelle_direction  from "+entry.getKey()+"."+"structure_entreprise"
 					+ " where libelle_unite is  not null"
 					+ " and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ " and length(libelle_service)=0 and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_direction structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+					+ " select code_structure,libelle_direction structure_ent,libelle_direction  from "+entry.getKey()+"."+"structure_entreprise"
 					+ " where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ " and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise  )t"
 					+ " where e.code_poste=p.code_poste and e.code_formation=f.code_formation"
@@ -134,6 +135,7 @@ public class FicheIndividuelleModel {
 				bean.setSexe(rs.getString("sexe_lbl"));
 				bean.setType_contrat(rs.getString("type_contrat_lbl"));
 				bean.setMatricule(rs.getString("matricule"));
+				bean.setLibelle_direction(rs.getString("libelle_direction"));
 
 				liststatbean.add(bean);
 			}

@@ -28,6 +28,7 @@ public class FicheIndivInfoGenBean {
 	private String code_type_contrat;
 	private String libelle_structure;
 	private String matricule;
+	private String libelle_direction;
 
 
 
@@ -210,6 +211,15 @@ public class FicheIndivInfoGenBean {
 
 	public void setCode_type_contrat(String code_type_contrat) {
 		this.code_type_contrat = code_type_contrat;
+	}
+
+
+	public String getLibelle_direction() {
+		return libelle_direction;
+	}
+
+	public void setLibelle_direction(String libelle_direction) {
+		this.libelle_direction = libelle_direction;
 	}
 
 
