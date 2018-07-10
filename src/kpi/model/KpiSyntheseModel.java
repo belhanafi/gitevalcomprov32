@@ -1396,12 +1396,49 @@ public class KpiSyntheseModel {
 
 			for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
 				String vague = pair.getKey();
+//
+//			query="SELECT t.login,'"+vague+"' vague, concat (nom, concat(' ',prenom)) evaluateur, t.nomEmploye evalue, round(avg(round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60)),2) AS duree"
+//						+ " FROM common_evalcom.compte h, "+entry.getKey()+"."+"histo_fiche_evaluation t  JOIN "+entry.getKey()+"."+"histo_fiche_evaluation v ON t.login = (v.login)"
+//						+ " and t.date_histo<v.date_histo and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))<10 and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))>3"
+//					+ " where h.login=t.login "
+//					+ " group by 1,2";
+//				
+				
+				
+				
+				query=" select h.login,'"+vague+"' vague, concat (h.nom, concat(' ',h.prenom)) evaluateur,evalue, intitule_poste,libelle_direction,structure_ent, sum(duree) duree"
+						+ " from("
+						+ "      select t.login,t.nomEmploye evalue,round(avg(round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60)),2) AS duree"
+						+ "      from "+entry.getKey()+"."+"histo_fiche_evaluation t,  "+entry.getKey()+"."+"histo_fiche_evaluation v"
+						+ "      where t.login = v.login  and t.date_histo<v.date_histo and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))<10"
+						+ "      and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))>3 group by 1"
+						+ "      union"
+						+ "      select  h.login, ' ', 0 as duree from  "+entry.getKey()+"."+"employe e,common_evalcom.compte h"
+						+ "      where  e.id_compte=h.id_compte )  aggreg_table  , "+entry.getKey()+"."+"employe e,common_evalcom.compte h ,"+entry.getKey()+"."+"poste_travail_description p,"
+						+ "      ( select libelle_direction,code_structure, structure_ent from ("
+						+ "                  select libelle_direction,code_structure,libelle_section structure_ent  from "+entry.getKey()+"."+"structure_entreprise  where libelle_section is  not null"
+						+ "                  and  libelle_section !='null' and  libelle_section !=''"
+						+ "  	             union"
+						+ " 	           select libelle_direction,code_structure,libelle_service structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+						+ "                where libelle_service is  not null and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0"
+						+ "                union"
+						+ "                select libelle_direction,code_structure,libelle_departement structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+						+ "                where libelle_departement is  not null and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0"
+						+ "                union"
+						+ "                select libelle_direction,code_structure,libelle_sous_direction structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+						+ "                where libelle_sous_direction is  not null and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0"
+						+ "		           union"
+						+ "		           select libelle_direction,code_structure,libelle_unite structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+						+ "		           where libelle_unite is  not null and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
+						+ "		           and length(libelle_service)=0 and  length(libelle_section) =0"
+						+ "    	           union"
+						+ "		           select libelle_direction,code_structure,libelle_direction structure_ent from "+entry.getKey()+"."+"structure_entreprise"
+						+ "		           where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
+						+ "		           and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise ) t"
+						+ "  			where  duree >3 and duree<10 and h.login=aggreg_table.login and e.id_compte=h.id_compte and e.code_poste=p.code_poste and t.code_structure=e.code_structure"
+						+ "			group by 1";
 
-				query="SELECT t.login,'"+vague+"' vague, concat (nom, concat(' ',prenom)) evaluateur, t.nomEmploye evalue, round(avg(round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60)),2) AS duree"
-						+ " FROM common_evalcom.compte h, "+entry.getKey()+"."+"histo_fiche_evaluation t  JOIN "+entry.getKey()+"."+"histo_fiche_evaluation v ON t.login = (v.login)"
-						+ " and t.date_histo<v.date_histo and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))<10 and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))>3"
-						+ " where h.login=t.login "
-						+ " group by 1,2";
+				
 
 				if (counter<map_size){
 					query_finale=query_finale+query +" union ";
@@ -1436,6 +1473,9 @@ public class KpiSyntheseModel {
 				bean.setEvaluateur(rs.getString("evaluateur"));
 				bean.setEvalue(rs.getString("evalue"));
 				bean.setLogin(rs.getString("login"));
+				bean.setStructure_entreprise(rs.getString("structure_ent"));
+				bean.setPoste_travail(rs.getString("intitule_poste"));
+				bean.setLibelle_direction(rs.getString("libelle_direction"));
 				
 				listbean.add(bean);
 
