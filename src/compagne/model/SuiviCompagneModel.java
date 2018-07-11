@@ -944,7 +944,7 @@ public class SuiviCompagneModel {
 		String sqlquery="";
 
 
-		sqlquery="select  c.login,e.id_employe,concat (e.nom ,' ',e.prenom) as nom_evaluateur , intitule_poste,email,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress ,"
+		/*sqlquery="select  c.login,e.id_employe,concat (e.nom ,' ',e.prenom) as nom_evaluateur , intitule_poste,email,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress ,"
 				+ " sum(totalemploye-nbfichevalide)fichenoncote, sum(nbfichevalide)fichecote, h.date_alert as dateExtract"+
 				" from (	select id_evaluateur as evaluateur ,count(r.id_employe) as nbfichevalide,0 as totalemploye from planning_evaluation t ,fiche_validation r" +
 				" where t.id_planning_evaluation=r.id_planning_evaluation" +
@@ -953,7 +953,41 @@ public class SuiviCompagneModel {
 				" from planning_evaluation t where   t.id_compagne=#compgane  group by id_evaluateur" +
 				" ) as t2, poste_travail_description p,common_evalcom.compte c,employe e LEFT OUTER JOIN histo_envoi_email h"
 				+ "  ON  h.id_employe=e.id_employe and  h.id_compagne=#compgane where    e.id_employe=evaluateur and p.code_poste=e.code_poste"
-				+ " and c.id_compte=e.id_compte group by 1,2,3,4 order by 2";
+				+ " and c.id_compte=e.id_compte group by 1,2,3,4 order by 2";*/
+		
+		sqlquery="select  c.login,e.id_employe,concat (e.nom ,' ',e.prenom) as nom_evaluateur , intitule_poste,email, case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+				+ " else libelle_direction end as libelle_direction,structure_ent,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress ,"
+				+ "	 sum(totalemploye-nbfichevalide)fichenoncote, sum(nbfichevalide)fichecote, h.date_alert as dateExtract"
+				+ "	 from (	select id_evaluateur as evaluateur ,count(r.id_employe) as nbfichevalide,0 as totalemploye from planning_evaluation t ,fiche_validation r"
+				+ "  where t.id_planning_evaluation=r.id_planning_evaluation  and t.id_employe=r.id_employe  and fiche_valide=1  and  t.id_compagne=#compgane"
+				+ "  group by id_evaluateur   union select id_evaluateur as evaluateur ,0 as nbfichevalide ,count(t.id_employe)as totalemploye"
+				+ "   from planning_evaluation t where   t.id_compagne=#compgane  group by id_evaluateur) as t2,"
+				+ "	 ("
+				+ "	   select libelle_direction,code_structure, structure_ent from ("
+				+ "           select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
+				+ "           and  libelle_section !='null' and  libelle_section !=''"
+				+ "           union"
+				+ "           select libelle_direction,code_structure,libelle_service structure_ent from structure_entreprise"
+				+ "           where libelle_service is  not null and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0"
+				+ "           union"
+				+ "           select libelle_direction,code_structure,libelle_departement structure_ent from structure_entreprise"
+				+ "           where libelle_departement is  not null and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0"
+				+ "           union"
+				+ "           select libelle_direction,code_structure,libelle_sous_direction structure_ent from structure_entreprise"
+				+ "           where libelle_sous_direction is  not null and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0"
+				+ "			 union"
+				+ "			 select libelle_direction,code_structure,libelle_unite structure_ent from structure_entreprise where libelle_unite is  not null and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
+				+ "          and length(libelle_service)=0 and  length(libelle_section) =0"
+				+ "			 union"
+				+ "			 select libelle_direction,code_structure,libelle_direction structure_ent from structure_entreprise"
+				+ "			 where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
+				+ "			 and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise )aggreg,"
+				+ "          poste_travail_description p,common_evalcom.compte c,employe e LEFT OUTER JOIN histo_envoi_email h"
+				+ "          ON  h.id_employe=e.id_employe and  h.id_compagne=#compgane where    e.id_employe=evaluateur and p.code_poste=e.code_poste"
+				+ " 		and c.id_compte=e.id_compte  and aggreg.code_structure=e.code_structure  group by 1,2,3,4,5,6 order by 2";
+		
+		
+		
 
 
 
@@ -978,6 +1012,8 @@ public class SuiviCompagneModel {
 				evalbean.setFichenoncote(rs.getInt("fichenoncote"));
 				evalbean.setDateExtract(rs.getString("dateExtract"));
 				evalbean.setLogin(rs.getString("login"));
+				evalbean.setLibelle_direction(rs.getString("libelle_direction"));
+				evalbean.setStructure_ent(rs.getString("structure_ent"));
 				listevaluateur.add(evalbean);
 
 			}	

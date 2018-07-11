@@ -16,21 +16,15 @@ public class MatriceCotationBean {
 	private double imi;
 	private EmployeFamilleBean famille_cotation ;
 	private int ordre;
+	private String libelle_direction;
 	
 	
 	
-
-
-
-
-
-
-
 
 
 	public MatriceCotationBean(int ordre,String matricule, String nom,
 			String date_naissance, String date_recrutement, String formation,
-			String structure_ent, String intitule_poste,double imi,EmployeFamilleBean famille_cotation) {
+			String structure_ent, String intitule_poste,double imi,EmployeFamilleBean famille_cotation,String libelle_direction) {
 		super();
 		this.ordre=ordre;
 		this.matricule = matricule;
@@ -42,6 +36,7 @@ public class MatriceCotationBean {
 		this.intitule_poste = intitule_poste;
 		this.imi=imi;
 		this.famille_cotation=famille_cotation;
+		this.libelle_direction=libelle_direction;
 	}
 	
 	
@@ -124,6 +119,19 @@ public class MatriceCotationBean {
 		return famille_cotation;
 	}
 
+
+
+	public String getLibelle_direction() {
+		return libelle_direction;
+	}
+
+
+
+	public void setLibelle_direction(String libelle_direction) {
+		this.libelle_direction = libelle_direction;
+	}
+
+	
 
 
 }

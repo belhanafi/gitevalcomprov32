@@ -63,6 +63,9 @@
 			<listbox id="evaluateurlb" model="@{winCtrl.model}" multiple="true"
 				width="100%" mold="paging" pageSize="30" height="420px">
 				<listhead sizable="true">
+				
+				<listheader label="Direction" width="130px" sort="auto"
+						align="center" />
 
 					<listheader label="Matricule" width="130px" sort="auto"
 						align="center" />
@@ -76,6 +79,10 @@
 				</listhead>
 
 				<listitem self="@{each=listevaluateur}">
+				
+				<listcell label="@{listevaluateur.libelle_direction}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+						
 
 					<listcell label="@{listevaluateur.login}"
 						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
@@ -125,8 +132,8 @@
 							/ -->
 					</column>
 					<column>
-						<!--button id="executeexp" image="/image/excel_32.png" visible="true" 
-							tooltiptext="Exporter rapport de compagne" / -->
+						<button id="executeexp" image="/image/excel_32.png" visible="true" 
+							tooltiptext="Exporter rapport suvi actions de développement" />
 					</column>
 
 				</columns>

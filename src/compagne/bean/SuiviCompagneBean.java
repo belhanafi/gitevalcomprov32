@@ -13,6 +13,8 @@ public class SuiviCompagneBean   {
 	private int fichecote;
 	private String dateExtract;
 	private String login;
+	private String libelle_direction;
+	private String structure_ent;
 	
 	
 	
@@ -89,6 +91,28 @@ public class SuiviCompagneBean   {
 		this.evaluateur = evaluateur;
 		this.email = email;
 	}
+
+	
+	public SuiviCompagneBean(int id_employe, int pourcentage,
+			String evaluateur, String email, String poste_travail,
+			int fichenoncote, int fichecote, String dateExtract, String login,
+			String libelle_direction, String structure_ent) {
+		super();
+		this.id_employe = id_employe;
+		this.pourcentage = pourcentage;
+		this.evaluateur = evaluateur;
+		this.email = email;
+		this.poste_travail = poste_travail;
+		this.fichenoncote = fichenoncote;
+		this.fichecote = fichecote;
+		this.dateExtract = dateExtract;
+		this.login = login;
+		this.libelle_direction = libelle_direction;
+		this.structure_ent = structure_ent;
+	}
+
+
+
 
 	public String getEmail() {
 		return email;
@@ -176,4 +200,34 @@ public class SuiviCompagneBean   {
 	public void setLogin(String login) {
 		this.login = login;
 	}
+
+
+
+
+	public String getLibelle_direction() {
+		return libelle_direction;
+	}
+
+
+
+
+	public void setLibelle_direction(String libelle_direction) {
+		this.libelle_direction = libelle_direction;
+	}
+
+
+
+
+	public String getStructure_ent() {
+		return structure_ent;
+	}
+
+
+
+
+	public void setStructure_ent(String structure_ent) {
+		this.structure_ent = structure_ent;
+	}
+	
+	
 }

@@ -568,14 +568,15 @@ public class FicheIndividuelleModel {
 			stmt = (Statement) conn.createStatement();
 
 
-			sql_query="select c.login,m.id_employe,concat(m.nom,concat(' ',m.prenom)) evalue,p.intitule_poste,round((sum(taux)*100)/ sum(total),0) pourcentage"
+			sql_query="select c.login,m.id_employe,concat(m.nom,concat(' ',m.prenom)) evalue,p.intitule_poste,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+					+ " else libelle_direction end as libelle_direction,round((sum(taux)*100)/ sum(total),0) pourcentage"
 					+ " from ( select e.id_employe,count(e.realisee) taux, 0 total from actionsdev_employe e,employe p where e.realisee='O'"
 					+ "  and p.code_poste=#code_poste and e.id_compagne=#id_compagne and p.id_employe=e.id_employe"
 					+ "  group by e.id_employe"
 					+ " union"
 					+ " select e.id_employe, 0 taux ,count(e.id_employe) total  from actionsdev_employe e,employe p where"
-					+ " p.code_poste=#code_poste and e.id_compagne=#id_compagne  and p.id_employe=e.id_employe group by e.id_employe) t, employe m, poste_travail_description p ,common_evalcom.compte c"
-					+ " where t.id_employe=m.id_employe and p.code_poste=m.code_poste and m.id_compte=c.id_compte group by 1,2";
+					+ " p.code_poste=#code_poste and e.id_compagne=#id_compagne  and p.id_employe=e.id_employe group by e.id_employe) t, employe m, poste_travail_description p ,common_evalcom.compte c,structure_entreprise s"
+					+ " where t.id_employe=m.id_employe and p.code_poste=m.code_poste and m.id_compte=c.id_compte and s.code_structure=m.code_structure group by 1,2";
 
 
 
@@ -593,6 +594,7 @@ public class FicheIndividuelleModel {
 				bean.setEvalue(rs.getString("evalue"));
 				//bean.setLibelle_poste(rs.getString("intitule_poste"));
 				bean.setPourcentage(rs.getInt("pourcentage"));
+				bean.setLibelle_direction(rs.getString("libelle_direction"));
 
 				listmoyfam.add(bean);
 
@@ -781,6 +783,82 @@ public class FicheIndividuelleModel {
 		return liststatbean;
 
 
+	}
+	
+	public ArrayList<SuiviActionDevBean> exportRapport(int id_compagne) throws SQLException
+	{
+        
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToSecondairesDB();
+		Statement stmt = null;
+		ArrayList<SuiviActionDevBean> listmoyfam = new ArrayList<SuiviActionDevBean>();
+		ResultSet rs=null;
+		String sql_query="";
+		try 
+		{
+			stmt = (Statement) conn.createStatement();
+
+
+			sql_query="select c.login,m.id_employe,concat(m.nom,concat(' ',m.prenom)) evalue,p.intitule_poste,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+					+ " else libelle_direction end as libelle_direction,round((sum(taux)*100)/ sum(total),0) pourcentage"
+					+ " from ( select e.id_employe,count(e.realisee) taux, 0 total from actionsdev_employe e,employe p where e.realisee='O'"
+					+ "  and p.code_poste=#code_poste and e.id_compagne=#id_compagne and p.id_employe=e.id_employe"
+					+ "  group by e.id_employe"
+					+ " union"
+					+ " select e.id_employe, 0 taux ,count(e.id_employe) total  from actionsdev_employe e,employe p where"
+					+ " p.code_poste=#code_poste and e.id_compagne=#id_compagne  and p.id_employe=e.id_employe group by e.id_employe) t, employe m, poste_travail_description p ,common_evalcom.compte c,structure_entreprise s"
+					+ " where t.id_employe=m.id_employe and p.code_poste=m.code_poste and m.id_compte=c.id_compte and s.code_structure=m.code_structure group by 1,2";
+
+
+
+			sql_query = sql_query.replaceAll("#code_poste", "'"+code_poste+"'");
+			sql_query = sql_query.replaceAll("#id_compagne", "'"+id_compagne+"'");
+
+
+
+			rs = (ResultSet) stmt.executeQuery(sql_query);
+
+			while(rs.next()){
+
+				SuiviActionDevBean bean=new SuiviActionDevBean();
+				bean.setLogin(rs.getString("login"));
+				bean.setEvalue(rs.getString("evalue"));
+				//bean.setLibelle_poste(rs.getString("intitule_poste"));
+				bean.setPourcentage(rs.getInt("pourcentage"));
+				bean.setLibelle_direction(rs.getString("libelle_direction"));
+
+				listmoyfam.add(bean);
+
+			}
+			//stmt.close();conn.close();
+		} 
+		catch ( SQLException e ) {
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+
+		return listmoyfam;
 	}
 
 }

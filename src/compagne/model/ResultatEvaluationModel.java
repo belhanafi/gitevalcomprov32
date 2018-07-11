@@ -1392,10 +1392,10 @@ public class ResultatEvaluationModel {
 		try 
 		{
 			stmt = (Statement) conn.createStatement();
-			String select_structure="select login matricule,concat(e.nom, concat(\" \",e.prenom)) as nom,e.date_naissance,e.date_recrutement,d.niv_for_libelle formation,structure_ent,p.intitule_poste ,famille,moy_par_famille ,imi"
+			String select_structure="select login matricule,concat(e.nom, concat(\" \",e.prenom)) as nom,e.date_naissance,e.date_recrutement,d.niv_for_libelle formation,structure_ent,p.intitule_poste ,famille,moy_par_famille ,imi,libelle_direction"
 					+ " from poste_travail_description p , employe e, common_evalcom.compte c, formation f , def_niv_formation d, imi_stats s  ,"
 					+ "	 ("
-					+ "   select code_structure, structure_ent from ("
+					+ "   select libelle_direction,code_structure, structure_ent from ("
 					+ "   select code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
 					+ "   and  libelle_section !='null' and  libelle_section !=''"
 					+ "   union"
@@ -1443,6 +1443,7 @@ public class ResultatEvaluationModel {
 					String famille=rs.getString("famille");
 					String moy_par_famille=rs.getString("moy_par_famille");
 					String imi=rs.getString("imi");
+					//String libelle_direction=rs.getString("libelle_direction");
 
 
 					String cles1=matricule+"#"+nom+"#"+date_naissance+"#"+date_recrutement+"#"+formation+"#"+structure_ent+"#"+intitule_poste+"#"+imi;
@@ -1519,34 +1520,35 @@ public class ResultatEvaluationModel {
 		try 
 		{
 			stmt = (Statement) conn.createStatement();
-			String select_structure="select login matricule,concat(e.nom, concat(\" \",e.prenom)) as nom,e.date_naissance,e.date_recrutement,d.niv_for_libelle formation,structure_ent,p.intitule_poste ,famille,round(moy_par_famille,2) moy_par_famille ,round(imi,2) imi "
+			String select_structure="select login matricule,concat(e.nom, concat(\" \",e.prenom)) as nom,e.date_naissance,e.date_recrutement,d.niv_for_libelle formation,structure_ent,p.intitule_poste ,famille,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+					+ " else libelle_direction end as libelle_direction,round(moy_par_famille,2) moy_par_famille ,round(imi,2) imi "
 					+ " from poste_travail_description p , employe e, common_evalcom.compte c, formation f , def_niv_formation d, imi_stats s  ,"
 					+ "	 ("
-					+ "   select code_structure, structure_ent from ("
-					+ "   select code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
+					+ "   select libelle_direction,code_structure, structure_ent from ("
+					+ "   select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
 					+ "   and  libelle_section !='null' and  libelle_section !=''"
 					+ "   union"
-					+ "	 select code_structure,libelle_service structure_ent from structure_entreprise"
+					+ "	 select libelle_direction,code_structure,libelle_service structure_ent from structure_entreprise"
 					+ "  where libelle_service is  not null and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0"
 					+ "  union"
-					+ " select code_structure,libelle_departement structure_ent from structure_entreprise"
+					+ " select libelle_direction,code_structure,libelle_departement structure_ent from structure_entreprise"
 					+ " where libelle_departement is  not null and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_sous_direction structure_ent from structure_entreprise"
+					+ " select libelle_direction,code_structure,libelle_sous_direction structure_ent from structure_entreprise"
 					+ " where libelle_sous_direction is  not null and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_unite structure_ent from structure_entreprise"
+					+ " select libelle_direction,code_structure,libelle_unite structure_ent from structure_entreprise"
 					+ " where libelle_unite is  not null and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ " and length(libelle_service)=0 and  length(libelle_section) =0"
 					+ " union"
-					+ " select code_structure,libelle_direction structure_ent from structure_entreprise"
+					+ " select libelle_direction,code_structure,libelle_direction structure_ent from structure_entreprise"
 					+ " where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ " and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise ) t, (select distinct code_famille,famille from repertoire_competence) r"
 					+ " where e.code_structure=t.code_structure and p.code_poste=e.code_poste  and s.id_employe=e.id_employe"
 					+ " and s.id_compagne=#id_compagne  and s.code_famille=r.code_famille  and c.id_compte=e.id_compte"
 					+ " and f.code_formation=e.code_formation and d.niv_for_id=f.niv_for_id"
 					+ " union"
-					+" select '99999999999' matricule,'DUMMY' as nom,'01/01/3999' date_naissance,'01/01/3999' date_recrutement,'DUMMY' formation,'ZZZZZZZZZZZZZZ' structure_ent,'DUMMY' intitule_poste ,'DUMMY' famille, 99 moy_par_famille , 99 imi"
+					+" select '99999999999' matricule,'DUMMY' as nom,'01/01/3999' date_naissance,'01/01/3999' date_recrutement,'DUMMY' formation,'ZZZZZZZZZZZZZZ' structure_ent,'DUMMY' intitule_poste ,'DUMMY' famille, 99 moy_par_famille , 99 imi,'DUMMY'"
 					+ " order by  structure_ent,imi desc ,nom ";
 
 
@@ -1580,7 +1582,11 @@ public class ResultatEvaluationModel {
 				String intitule_poste=rs.getString("intitule_poste");
 				//String moy_par_famille=rs.getString("moy_par_famille");
 				String imi=rs.getString("imi");
-				cles=matricule+"#"+nom+"#"+date_naissance+"#"+date_recrutement+"#"+formation+"#"+structure_ent+"#"+intitule_poste+"#"+imi;
+				
+				String libelle_direction=rs.getString("libelle_direction");
+				
+				
+				cles=matricule+"#"+nom+"#"+date_naissance+"#"+date_recrutement+"#"+formation+"#"+structure_ent+"#"+intitule_poste+"#"+imi+"#"+libelle_direction;
 
 				if (!cles_bckp.equalsIgnoreCase(cles)){
 
@@ -1588,7 +1594,7 @@ public class ResultatEvaluationModel {
 					//employees.add( new MatriceCotationBean(matricule, nom, date_naissance, date_recrutement,formation,structure_ent,intitule_poste,imi) );
 					if (!listDonnee[0].equalsIgnoreCase("")){
 						EmployeFamilleBean beans=new EmployeFamilleBean(listDonnee[0],OPERATIONNELLES_moy,PERSONNELLES_moy,AFFAIRES_moy,RELATIONNELLES_moy);
-						employees.add( new MatriceCotationBean(order,listDonnee[0], listDonnee[1], listDonnee[2], listDonnee[3],listDonnee[4],listDonnee[5],listDonnee[6],Double.parseDouble(listDonnee[7]),beans) );
+						employees.add( new MatriceCotationBean(order,listDonnee[0], listDonnee[1], listDonnee[2], listDonnee[3],listDonnee[4],listDonnee[5],listDonnee[6],Double.parseDouble(listDonnee[7]),beans,listDonnee[8]) );
 						//vider la chaine pour le prochain employé 
 						cles_bckp="";
 						if (structure_ent.equalsIgnoreCase(structure_ent_bckp) || structure_ent_bckp.equalsIgnoreCase("") ){

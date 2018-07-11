@@ -173,7 +173,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		if (model.size()==0){
 			
 			 try {
-				Messagebox.show("Aucune action de développement definie pour ce poste  pour cette compagne !", "Information", Messagebox.OK, Messagebox.INFORMATION);
+				Messagebox.show("Aucune action de développement definie pour ce poste  pour cette campagne !", "Information", Messagebox.OK, Messagebox.INFORMATION);
 				return;
 				
 				
@@ -301,46 +301,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 
 
 	}
-	public void onClick$valider() throws SQLException, InterruptedException, ParseException {
-		SuiviCompagneModel init= new SuiviCompagneModel();
-		Map map = new HashMap();
-		//Map map_struct = new HashMap();
-		map=init.getCompagneList();
-		//map_struct=init.getStructEntrepriseList();
-		Integer compagne=(Integer) map.get(comp_list.getSelectedItem().getLabel());
-
-		if (compagne!=-1){
-
-
-			if (Messagebox.show("Voulez vous valider la compagne  "+comp_list.getSelectedItem().getLabel(), "Prompt", Messagebox.YES|Messagebox.NO,
-					Messagebox.QUESTION) == Messagebox.YES) {
-				//System.out.println("pressyes");
-				boolean retour=init.validerCompagne(compagne);
-				boolean retour2=init.calculerIMG(compagne);
-
-
-
-				if (retour && retour2  ){
-
-					Messagebox.show("Compagne validée avec succès", "Information",Messagebox.OK, Messagebox.INFORMATION); 
-				}
-
-				return;
-			}
-
-			else{
-				return;
-			}
-		}
-
-		else{
-			Messagebox.show("Merci de valider une  vague  à la fois", "Information",Messagebox.OK, Messagebox.INFORMATION);
-			return;
-		}
-	}
-
-
-
+	
 
 
 	public void onSelect$comp_list() throws SQLException, InterruptedException {
@@ -350,56 +311,43 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 
 	}	
 
-	/*private void genExportExcel() throws SQLException, ParsePropertyException, InvalidFormatException, IOException {
+	private void genExportExcel() throws SQLException, ParsePropertyException, InvalidFormatException, IOException {
 
 		// System.out.println("\nApp Deployed Directory path: " + Sessions.getCurrent().getWebApp().getRealPath("WEB-INF"));
 
-		FileOutputStream fOut= new FileOutputStream("RapportProgressCotation.xls");
+		FileOutputStream fOut= new FileOutputStream("SuiviActionDeveloppement.xls");
 		int idCompagne=Integer.valueOf((String)comp_list.getSelectedItem().getValue());
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = new Date();
-		String dateExtract=dateFormat.format(date);
-
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-		String heureExtract=sdf.format(cal.getTime());
-
-		List info =new ArrayList<String>();
-		info.add(dateExtract);
-		info.add(heureExtract);
-
-
-
-		SuiviCompagneModel init= new SuiviCompagneModel();
-		ArrayList<SuiviCompagneBean> list=init.exportRapport(idCompagne);
+		      
+		
+		FicheIndividuelleModel init_m=new FicheIndividuelleModel();
+		ArrayList<SuiviActionDevBean>=init_m.exportRapport( idCompagne);
+		
 		Map beans = new HashMap();
 		beans.put("employee", list);
-		beans.put("infoDate", info);
-
-
+		
+		
+		
 		XLSTransformer transformer = new XLSTransformer(); 
-		//transformer.groupCollection("department.staff"); 
 		String reportLocation = Sessions.getCurrent().getWebApp().getRealPath("WEB-INF");
 		String reportLocation1 = Sessions.getCurrent().getWebApp().getRealPath("WebContent");
-		//System.out.println(reportLocation+ " "+reportLocation1);
-
-
-		Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_rapportProgressCotation.xls"), beans);
+	
+		Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_suivi_action_dev.xls"), beans);
 		workbook.write(fOut);
 		fOut.flush();
 		fOut.close();
 
-		File file = new File("RapportProgressCotation.xls");
+		File file = new File("SuiviActionDeveloppement.xls");
 		Filedownload.save(file, "XLS");
-		//transformer.transformXLS(templateFileName, beans, destFileName);
-		//date = new Date();
-		//System.out.println(" date fin" +date.toString());
+		
 
 
 
 	}
+	
 	public void onClick$executeexp() throws Exception {
-
+		
 		if (Messagebox.show("Voulez vous exporter le rapport de suivi compagne ?", "Prompt", Messagebox.YES|Messagebox.NO,
 				Messagebox.QUESTION) == Messagebox.YES) {
 			//exportMatriceCotationExlFileV2();
@@ -411,10 +359,9 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		else{
 			return;
 		}
-
-
-	}*/
-
+		
+		
+	}
 
 
 }
