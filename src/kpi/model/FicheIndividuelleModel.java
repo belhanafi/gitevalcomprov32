@@ -799,19 +799,49 @@ public class FicheIndividuelleModel {
 			stmt = (Statement) conn.createStatement();
 
 
-			sql_query="select c.login,m.id_employe,concat(m.nom,concat(' ',m.prenom)) evalue,p.intitule_poste,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
-					+ " else libelle_direction end as libelle_direction,round((sum(taux)*100)/ sum(total),0) pourcentage"
-					+ " from ( select e.id_employe,count(e.realisee) taux, 0 total from actionsdev_employe e,employe p where e.realisee='O'"
-					+ "  and p.code_poste=#code_poste and e.id_compagne=#id_compagne and p.id_employe=e.id_employe"
-					+ "  group by e.id_employe"
+//			sql_query="select c.login,m.id_employe,concat(m.nom,concat(' ',m.prenom)) evalue,p.intitule_poste,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+//					+ " else libelle_direction end as libelle_direction,round((sum(taux)*100)/ sum(total),0) pourcentage"
+//					+ " from ( select e.id_employe,count(e.realisee) taux, 0 total from actionsdev_employe e,employe p where e.realisee='O'"
+//					+ "  and p.code_poste=#code_poste and e.id_compagne=#id_compagne and p.id_employe=e.id_employe"
+//					+ "  group by e.id_employe"
+//					+ " union"
+//					+ " select e.id_employe, 0 taux ,count(e.id_employe) total  from actionsdev_employe e,employe p where"
+//					+ " p.code_poste=#code_poste and e.id_compagne=#id_compagne  and p.id_employe=e.id_employe group by e.id_employe) t, employe m, poste_travail_description p ,common_evalcom.compte c,structure_entreprise s"
+//					+ " where t.id_employe=m.id_employe and p.code_poste=m.code_poste and m.id_compte=c.id_compte and s.code_structure=m.code_structure group by 1,2";
+
+
+			sql_query="select  (select  concat(nom,concat(' ',prenom)) from employe e where id_employe in (select distinct id_evaluateur from planning_evaluation p where p.id_employe=m.id_employe)) evaluateur,id_action,c.login,m.id_employe,concat(m.nom,concat(' ',m.prenom)) evalue,libelle_action_formation,"
+					+ " libelle_action_ori_prof , libelle_action_disipline , libelle_action_mobilite,p.intitule_poste,structure_ent,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+					+ " else libelle_direction end as libelle_direction,case    when sum(taux) >0 then 'OUI' ELSE 'NON' end  progres"
+					+ " from ( select e.id_action,e.id_employe,count(e.realisee) taux, 0 total,libelle_action_formation, libelle_action_ori_prof , libelle_action_disipline , libelle_action_mobilite"
+					+ " from actionsdev_employe e,employe p ,actions_developpement v  where e.realisee='O'   and e.id_compagne=#id_compagne and p.id_employe=e.id_employe and e.id_action=v.id_action  group by e.id_employe,e.id_action"
 					+ " union"
-					+ " select e.id_employe, 0 taux ,count(e.id_employe) total  from actionsdev_employe e,employe p where"
-					+ " p.code_poste=#code_poste and e.id_compagne=#id_compagne  and p.id_employe=e.id_employe group by e.id_employe) t, employe m, poste_travail_description p ,common_evalcom.compte c,structure_entreprise s"
-					+ " where t.id_employe=m.id_employe and p.code_poste=m.code_poste and m.id_compte=c.id_compte and s.code_structure=m.code_structure group by 1,2";
-
-
-
-			sql_query = sql_query.replaceAll("#code_poste", "'"+code_poste+"'");
+					+ " select e.id_action,e.id_employe, 0 taux ,count(e.id_employe) total,libelle_action_formation, libelle_action_ori_prof , libelle_action_disipline , libelle_action_mobilite"
+					+ " from actionsdev_employe e,employe p,actions_developpement v  where   e.id_compagne=#id_compagne  and p.id_employe=e.id_employe  and e.id_action=v.id_action group by e.id_employe,e.id_action) t,"
+					+ " employe m, poste_travail_description p ,common_evalcom.compte c,"
+					+ "  ("
+					+ "    select libelle_direction,code_structure, structure_ent from ("
+					+ "           select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
+					+ "           and  libelle_section !='null' and  libelle_section !=''"
+					+ "           union"
+					+ "          select libelle_direction,code_structure,libelle_service structure_ent from structure_entreprise"
+					+ "          where libelle_service is  not null and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0"
+					+ "          union"
+					+ "          select libelle_direction,code_structure,libelle_departement structure_ent from structure_entreprise"
+					+ "          where libelle_departement is  not null and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0"
+					+ "          union"
+					+ "          select libelle_direction,code_structure,libelle_sous_direction structure_ent from structure_entreprise"
+					+ "          where libelle_sous_direction is  not null and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0"
+					+ " 		 union"
+					+ " 		 select libelle_direction,code_structure,libelle_unite structure_ent from structure_entreprise where libelle_unite is  not null and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
+					+ "          and length(libelle_service)=0 and  length(libelle_section) =0"
+					+ " 		 union"
+					+ " 		 select libelle_direction,code_structure,libelle_direction structure_ent from structure_entreprise"
+					+ "			 where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
+					+ "			 and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise )aggreg"
+					+ "			 where t.id_employe=m.id_employe and p.code_poste=m.code_poste and m.id_compte=c.id_compte and aggreg.code_structure=m.code_structure   group by 2,3  order by 5";
+			
+					
 			sql_query = sql_query.replaceAll("#id_compagne", "'"+id_compagne+"'");
 
 
@@ -824,9 +854,16 @@ public class FicheIndividuelleModel {
 				bean.setLogin(rs.getString("login"));
 				bean.setEvalue(rs.getString("evalue"));
 				//bean.setLibelle_poste(rs.getString("intitule_poste"));
-				bean.setPourcentage(rs.getInt("pourcentage"));
+				bean.setProgres(rs.getString("progres"));
 				bean.setLibelle_direction(rs.getString("libelle_direction"));
-
+				bean.setLibelle_action_disipline(rs.getString("libelle_action_disipline"));
+				bean.setLibelle_action_formation(rs.getString("libelle_action_formation"));
+				bean.setLibelle_action_mobilite(rs.getString("libelle_action_mobilite"));
+				bean.setLibelle_action_ori_prof(rs.getString("libelle_action_ori_prof"));
+				bean.setEvaluateur(rs.getString("evaluateur"));
+				bean.setPoste_travail(rs.getString("intitule_poste"));
+				bean.setStructure_ent(rs.getString("structure_ent"));
+				
 				listmoyfam.add(bean);
 
 			}

@@ -322,7 +322,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		      
 		
 		FicheIndividuelleModel init_m=new FicheIndividuelleModel();
-		ArrayList<SuiviActionDevBean>=init_m.exportRapport( idCompagne);
+		ArrayList<SuiviActionDevBean> list=init_m.exportRapport( idCompagne);
 		
 		Map beans = new HashMap();
 		beans.put("employee", list);
@@ -348,7 +348,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 	
 	public void onClick$executeexp() throws Exception {
 		
-		if (Messagebox.show("Voulez vous exporter le rapport de suivi compagne ?", "Prompt", Messagebox.YES|Messagebox.NO,
+		if (Messagebox.show("Voulez vous exporter le rapport de suivi des actions de développement ?", "Prompt", Messagebox.YES|Messagebox.NO,
 				Messagebox.QUESTION) == Messagebox.YES) {
 			//exportMatriceCotationExlFileV2();
 			genExportExcel();
