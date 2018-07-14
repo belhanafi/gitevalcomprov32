@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,16 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 	Button effacer;
 	List<String> profilemodel=new ArrayList<String>();
 	List<String> basedonneemodel=new ArrayList<String>();
+	HashMap<String, String> map_listfilter=new HashMap <String, String>();
 	Component comp1;
+	Combobox filtre1;
+	private  Textbox filtre1_txtbox; 
+	
+	Combobox filtre2;
+	private  Textbox filtre2_txtbox; 
+	
+
+	
 
 	public AdministrationLoginAction() {
 	}
@@ -99,6 +109,47 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 			basedonnee.appendItem((String) me.getKey(),(String) me.getKey());
 			//basedonneemodel.add((String) me.getKey());
 		}
+		
+		//remplissage de la combobox filtre1
+		map_listfilter.put( "Matricule","c.login");
+		map_listfilter.put( "Nom","nom");
+		map_listfilter.put( "Division","nom_base");
+		map_listfilter.put( "Date fin validité","c.val_date_fin");
+		map_listfilter.put( "Profil","libelle_profile");
+
+		
+		Set set_filter = map_listfilter.entrySet(); 
+		Iterator itr = set_filter.iterator();
+
+		// Affichage de la liste des compagnes
+		while(itr.hasNext()) {
+			Map.Entry me = (Map.Entry)itr.next();
+
+			filtre1.appendItem(String.valueOf(me.getKey()));
+			filtre2.appendItem(String.valueOf(me.getKey()));
+			
+			
+		}
+
+		// forcer la selection de la permiere ligne
+		if(filtre1.getItemCount()>0)
+			filtre1.setSelectedIndex(0);
+		
+		if(filtre2.getItemCount()>0)
+			filtre2.setSelectedIndex(0);
+		
+		/*map_listfilter.put("libelle_direction", "Direction");
+		map_listfilter.put("login", "Matricule");
+		map_listfilter.put("structure_ent", "Structure");
+		map_listfilter.put("intitule_poste", "Poste de travail");
+		map_listfilter.put("libelle_direction", "Direction");
+		map_listfilter.put("code_contrat", "Contrat");
+		map_listfilter.put("date_recrutement", "Date de recrutement");*/
+		
+
+
+				
+				
 		// création de la structure de l'entreprise bean
 		//AdministrationLoginModel admin_compte =new AdministrationLoginModel();
 		model=init.checkLoginBean();
@@ -467,10 +518,9 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 		AdministrationLoginModel admini_login_model =new AdministrationLoginModel();
 		//recherche des elements selectionnées
-		nomFiltre.setValue("");
-		prenomFiltre.setValue("");
-		profilFiltre.setValue("");  
-		bddFiltre.setValue("");  
+		
+		filtre1_txtbox.setValue("");  
+		filtre2_txtbox.setValue("");
 
 		//System.out.println("pressyes");
 		model=admini_login_model.checkLoginBean();
@@ -486,13 +536,22 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 		AdministrationLoginModel admini_login_model =new AdministrationLoginModel();
 		//recherche des elements selectionnées
-		String filtreNom=nomFiltre.getValue();
-		String filrePrenom=prenomFiltre.getValue();  
-		String filtreProfile=profilFiltre.getValue();  
-		String filtreBdd=bddFiltre.getValue();  
+			
+		String valeur_condition1=filtre1_txtbox.getText();
+		String valeur_condition2=filtre2_txtbox.getText();
+		
+		if (valeur_condition1.length()==0 && valeur_condition2.length()==0){
+			Messagebox.show("Merci de saisir au moins un critère de recherche !", "Erreur", Messagebox.OK, Messagebox.ERROR);
+			return;
+			
+		}
+		
+		String condition1=map_listfilter.get(filtre1.getValue());
+		String condition2=map_listfilter.get(filtre2.getValue());
+
 
 		//System.out.println("pressyes");
-		model=admini_login_model.filtreLoginBean(filtreNom,filrePrenom,filtreProfile,filtreBdd);
+		model=admini_login_model.filtreLoginBean(condition1, valeur_condition1, condition2,  valeur_condition2);
 
 		selected = null;
 		binder.loadAll();
@@ -500,6 +559,8 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 
 	}
+
+	
 
 
 }

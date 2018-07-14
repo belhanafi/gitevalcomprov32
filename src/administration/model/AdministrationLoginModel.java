@@ -203,7 +203,7 @@ private ListModel strset =null;
 		
 	}
 	
-	public ArrayList<AdministrationLoginBean> filtreLoginBean(String nom, String prenom, String profile, String bdd ) throws SQLException{
+	public ArrayList<AdministrationLoginBean> filtreLoginBean(String condition1, String valeur_condition1, String condition2, String valeur_condition2 ) throws SQLException{
 		
 		PwdCrypt pwdcrypt=new PwdCrypt();
 		listlogin = new ArrayList<AdministrationLoginBean>();
@@ -214,26 +214,20 @@ private ListModel strset =null;
 		
 		try {
 			stmt = (Statement) conn.createStatement();
-			String whereClause="";
-			if(nom!=null && !"".equals(nom))
+			String whereClause1="";
+			String whereClause2="";
+			if(valeur_condition1!=null && !"".equals(valeur_condition1))
 			{
-				whereClause= " and upper(nom) like upper('"+nom+"%')";
+				whereClause1= " and upper("+condition1+") like upper('"+valeur_condition1+"%')";
 			}
-			if(prenom!=null && !"".equals(prenom))
+			if(valeur_condition2!=null && !"".equals(valeur_condition2))
 			{
-				whereClause= "and upper(prenom) like upper('"+prenom+"%')";
+				whereClause2= " and upper("+condition2+") like upper('"+valeur_condition2+"%')";
 			}
-			if(profile!=null && !"".equals(profile))
-			{
-				whereClause= "and upper(libelle_profile) like upper('"+profile+"%')";
-			}
-			if(bdd!=null && !"".equals(bdd))
-			{
-				whereClause= "and upper(l.nom_base) like upper('"+bdd+"%')";
-			}
+			
 			String sel_compte="select id_compte,nom,prenom,c.login,c.pwd,libelle_profile,l.nom_base,DATE_FORMAT(val_date_deb,'%Y/%m/%d') as val_date_deb,DATE_FORMAT(val_date_fin,'%Y/%m/%d') as val_date_fin ,modifiedpwd "+ 
                                "from compte c ,liste_db l ,profile p where c.database_id=l.database_id "+
-                               "and c.id_profile=p.id_profile "+ whereClause +" order by l.nom_base,nom";
+                               "and c.id_profile=p.id_profile "+ whereClause1 + whereClause2 +" order by l.nom_base,nom";
 			
 			/*ResultSet*/ rs = (ResultSet) stmt.executeQuery(sel_compte);
 			
