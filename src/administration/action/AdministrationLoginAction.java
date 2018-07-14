@@ -72,12 +72,12 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 	Component comp1;
 	Combobox filtre1;
 	private  Textbox filtre1_txtbox; 
-	
+
 	Combobox filtre2;
 	private  Textbox filtre2_txtbox; 
-	
 
-	
+
+
 
 	public AdministrationLoginAction() {
 	}
@@ -109,7 +109,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 			basedonnee.appendItem((String) me.getKey(),(String) me.getKey());
 			//basedonneemodel.add((String) me.getKey());
 		}
-		
+
 		//remplissage de la combobox filtre1
 		map_listfilter.put( "Matricule","c.login");
 		map_listfilter.put( "Nom","nom");
@@ -117,7 +117,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 		map_listfilter.put( "Date fin validité","c.val_date_fin");
 		map_listfilter.put( "Profil","libelle_profile");
 
-		
+
 		Set set_filter = map_listfilter.entrySet(); 
 		Iterator itr = set_filter.iterator();
 
@@ -127,17 +127,17 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 			filtre1.appendItem(String.valueOf(me.getKey()));
 			filtre2.appendItem(String.valueOf(me.getKey()));
-			
-			
+
+
 		}
 
 		// forcer la selection de la permiere ligne
 		if(filtre1.getItemCount()>0)
 			filtre1.setSelectedIndex(0);
-		
+
 		if(filtre2.getItemCount()>0)
 			filtre2.setSelectedIndex(0);
-		
+
 		/*map_listfilter.put("libelle_direction", "Direction");
 		map_listfilter.put("login", "Matricule");
 		map_listfilter.put("structure_ent", "Structure");
@@ -145,11 +145,11 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 		map_listfilter.put("libelle_direction", "Direction");
 		map_listfilter.put("code_contrat", "Contrat");
 		map_listfilter.put("date_recrutement", "Date de recrutement");*/
-		
 
 
-				
-				
+
+
+
 		// création de la structure de l'entreprise bean
 		//AdministrationLoginModel admin_compte =new AdministrationLoginModel();
 		model=init.checkLoginBean();
@@ -163,9 +163,9 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 		if(admincomptelb.getItemCount()!=0)
 			admincomptelb.setSelectedIndex(0);
 		binder.loadAll();
-		 comp1=comp;
-		
-		
+		comp1=comp;
+
+
 
 	}
 
@@ -223,8 +223,8 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 		try {
 
 			loginExists=admini_login_model.isLoginExists(addedData.getLogin(),addedData, "A");
-			
-			
+
+
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -236,7 +236,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 			Messagebox.show("Ce login existe deja, merci de choisir un autre login/matricule", "Erreur", Messagebox.OK, Messagebox.ERROR);
 			//System.out.println("pressyes");
 			try {
-				
+
 				okAdd.setVisible(false);
 				effacer.setVisible(false);
 				add.setVisible(true);
@@ -250,9 +250,9 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 				e.printStackTrace();
 			}
 			//model.remove(selected);
-			
-			
-		    return;
+
+
+			return;
 
 		}
 		else
@@ -289,7 +289,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 		//verifier si le login existe déja
 		AdministrationLoginModel admini_login_model =new AdministrationLoginModel();
-		
+
 
 		//String codeStructureselectione=selected.getCodestructure();
 		//System.out.println(getSelectedcodeStructure());
@@ -329,10 +329,10 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			return;
-			
-			
+
+
 
 		}
 		else
@@ -411,7 +411,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 	}
 
 	public void onSelect$admincomptelb() {
-		
+
 		closeErrorBox(new Component[] { nom, prenom,login,motdepasse,  profile, 
 				basedonnee,date_deb_val, date_fin_val, datemodifpwd });
 	}
@@ -518,7 +518,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 		AdministrationLoginModel admini_login_model =new AdministrationLoginModel();
 		//recherche des elements selectionnées
-		
+
 		filtre1_txtbox.setValue("");  
 		filtre2_txtbox.setValue("");
 
@@ -536,18 +536,46 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 		AdministrationLoginModel admini_login_model =new AdministrationLoginModel();
 		//recherche des elements selectionnées
-			
+
 		String valeur_condition1=filtre1_txtbox.getText();
 		String valeur_condition2=filtre2_txtbox.getText();
-		
+
 		if (valeur_condition1.length()==0 && valeur_condition2.length()==0){
 			Messagebox.show("Merci de saisir au moins un critère de recherche !", "Erreur", Messagebox.OK, Messagebox.ERROR);
 			return;
-			
+
 		}
-		
+
+
 		String condition1=map_listfilter.get(filtre1.getValue());
 		String condition2=map_listfilter.get(filtre2.getValue());
+
+		if (condition1.equalsIgnoreCase(condition2)){
+
+			Messagebox.show("Merci de saisir  des critères de recherche différents!", "Erreur", Messagebox.OK, Messagebox.ERROR);
+			return;
+
+		}
+
+
+		if (condition1.equalsIgnoreCase("c.val_date_fin") && valeur_condition1.length()>0){
+
+			if (!isValidDate(valeur_condition1)){
+				Messagebox.show("Merci de saisir  une data de validité au format JJ/MM/AAAA !", "Erreur", Messagebox.OK, Messagebox.ERROR);
+				return;
+			}
+
+		}
+
+		if (condition2.equalsIgnoreCase("c.val_date_fin")&& valeur_condition2.length()>0 ){
+
+			if (!isValidDate(valeur_condition2)){
+				Messagebox.show("Merci de saisir  une data de validité au format JJ/MM/AAAA !", "Erreur", Messagebox.OK, Messagebox.ERROR);
+				return;
+			}
+
+		}
+
 
 
 		//System.out.println("pressyes");
@@ -555,12 +583,28 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 		selected = null;
 		binder.loadAll();
-
-
-
 	}
 
-	
+	public static boolean isValidDate(String inDate) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		dateFormat.setLenient(false);
+		try {
+			dateFormat.parse(inDate.trim());
+		} catch (ParseException pe) {
+			return false;
+		}
+		return true;
+	}
+
+	public void onSelect$filtre1() throws SQLException {
+		
+		filtre1_txtbox.setText("");
+		
+	}
+    public void onSelect$filtre2() throws SQLException {
+    	filtre2_txtbox.setText("");
+		
+	}
 
 
 }
