@@ -68,15 +68,15 @@ public class GestionEmployesAction extends GenericForwardComposer {
 	Listbox  structure;
 	Textbox  email;
 	Label structure_lbl;
-	
+
 	Textbox libelleFormationFiltre;
 	Textbox compteUtilisateurFiltre;
 	Textbox matriculeFiltre;
 	Textbox intituleFiltre;
-	
+
 	Textbox login;
 	Textbox libelle_direction;
-	
+
 	Listbox sexe;
 	Listbox type_contrat;
 
@@ -106,16 +106,23 @@ public class GestionEmployesAction extends GenericForwardComposer {
 	private String nom_employe;
 	private String prenom_employe;
 	private String lbl_structure;
-	
+
 	Map map_sexe=null;
 	Map map_type_contrat=null;
+	HashMap<String, String> map_listfilter=new HashMap <String, String>();
+
+	Combobox filtre1;
+	private  Textbox filtre1_txtbox; 
+
+	Combobox filtre2;
+	private  Textbox filtre2_txtbox; 
 
 	private String sexe_str;
 	public String getSexe_str() {
 		return sexe_str;
 	}
 
-	
+
 	public GestionEmployesAction() {
 	}
 
@@ -150,10 +157,10 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		}
 
 		map_compte=init.getCompteList();
-		
+
 		//set = (map_compte).entrySet();
 		set = (map_compte).keySet();
-		
+
 		ArrayList<String> liste=new ArrayList<String>(set);
 		Collections.sort(liste);
 		i = liste.iterator();
@@ -181,7 +188,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 			Map.Entry me = (Map.Entry)i.next();
 			est_responsable_rh.appendItem((String) me.getKey(),(String) me.getKey());
 		}
-		
+
 		map_sexe=init.sexeListe();
 		set = (map_sexe).entrySet(); 
 		i = set.iterator();
@@ -190,8 +197,8 @@ public class GestionEmployesAction extends GenericForwardComposer {
 			Map.Entry me = (Map.Entry)i.next();
 			sexe.appendItem((String) me.getKey(),(String) me.getKey());
 		}
-		
-		
+
+
 		map_type_contrat=init.typeContrat();
 		set = (map_type_contrat).entrySet(); 
 		i = set.iterator();
@@ -209,10 +216,10 @@ public class GestionEmployesAction extends GenericForwardComposer {
 			Map.Entry me = (Map.Entry)i.next();
 			structure.appendItem((String) me.getKey(),(String) me.getKey());
 		}*/
-		
-		
+
+
 		String code_structure_str="";
-		
+
 		map_structure=init.getStructEntList();
 		Set set_ent = (map_structure).entrySet(); 
 		Iterator itr_ = set_ent.iterator();
@@ -229,6 +236,39 @@ public class GestionEmployesAction extends GenericForwardComposer {
 			structure.setSelectedIndex(0);
 			code_structure_str=(String) structure.getSelectedItem().getValue();
 		}
+
+		//remplissage de la combobox filtre1
+		map_listfilter.put( "Direction","libelle_direction");
+		map_listfilter.put("Matricule","login");
+		map_listfilter.put( "Structure","structure_ent");
+		map_listfilter.put( "Poste de travail","intitule_poste");
+		map_listfilter.put( "Direction","libelle_direction");
+		map_listfilter.put( "Contrat","type_contrat_lbl");
+		map_listfilter.put("Date de recrutement","date_recrutement");
+		map_listfilter.put( "Nom","nom");
+
+
+		Set set_filter = map_listfilter.entrySet(); 
+		Iterator itr = set_filter.iterator();
+
+		// Affichage de la liste des compagnes
+		while(itr.hasNext()) {
+			Map.Entry me = (Map.Entry)itr.next();
+
+			filtre1.appendItem(String.valueOf(me.getKey()));
+			filtre2.appendItem(String.valueOf(me.getKey()));
+
+
+		}
+
+		// forcer la selection de la permiere ligne
+		if(filtre1.getItemCount()>0)
+			filtre1.setSelectedIndex(0);
+
+		if(filtre2.getItemCount()>0)
+			filtre2.setSelectedIndex(0);
+
+
 
 
 		model=init.loadListEmployes();
@@ -267,11 +307,11 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		est_evaluateur.setSelectedIndex(0);
 		est_responsable_rh.setSelectedIndex(0);
 		structure.setSelectedIndex(0);
-		
+
 		sexe.setSelectedIndex(0);
 		type_contrat.setSelectedIndex(0);
 
-	
+
 		okAdd.setVisible(true);
 		effacer.setVisible(true);
 		add.setVisible(false);
@@ -302,15 +342,15 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		addedData.setNom(getNom_employe());
 		addedData.setPrenom(getPrenom_employe());
 		addedData.setLibelle_structure(getLbl_structure());
-		
+
 		addedData.setCode_sexe(getSelectSexe());
 		addedData.setSexe(getSexe_str());
-		
+
 		addedData.setCode_type_contrat(getSelectTypeContrat());
 		addedData.setType_contrat(getTypecontrat_str());
 		addedData.setLogin(getSelectedLogin());
 		addedData.setLibelle_direction(getSelectedLibelleDirection());
-		
+
 
 
 
@@ -391,10 +431,10 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		selected.setNom(getNom_employe());
 		selected.setPrenom(getPrenom_employe());
 		selected.setLibelle_structure(getLbl_structure());
-		
+
 		selected.setCode_sexe(getSelectSexe());
 		selected.setSexe(getSexe_str());
-		
+
 		selected.setCode_type_contrat(getSelectTypeContrat());
 		selected.setType_contrat(getTypecontrat_str());
 
@@ -602,7 +642,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		}
 		return name;
 	}
-	
+
 	private String getSelectSexe() throws WrongValueException {
 		String name = (String) map_sexe.get((String)sexe.getSelectedItem().getLabel());
 		setSexe_str((String)sexe.getSelectedItem().getLabel());
@@ -638,7 +678,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		}
 		return name;
 	}
-	
+
 	private String getSelectedLibelleDirection() throws WrongValueException {
 		String name=libelle_direction.getValue();
 		if (name==null) {
@@ -647,8 +687,8 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		return name;
 	}
 
-	
-	
+
+
 
 	public void clearFields(){
 
@@ -734,7 +774,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 
 
 	//}
-	
+
 
 
 	public void onClick$buttonReinitialiser() throws InterruptedException, SQLException {
@@ -742,42 +782,40 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
 		//recherche des elements selectionnées
 
-		//libelleFormationFiltre.setValue("");
-		compteUtilisateurFiltre.setValue("");
-		//intituleFiltre.setValue("");  
-		 
-		
-			//System.out.println("pressyes");
-		model=gestionEmployeModel.loadListEmployes();
-			//model.remove(selected);
-			selected = null;
-			binder.loadAll();
+		filtre1_txtbox.setValue("");  
+		filtre2_txtbox.setValue("");
 
-		
-		
+		//System.out.println("pressyes");
+		model=gestionEmployeModel.loadListEmployes();
+		//model.remove(selected);
+		selected = null;
+		binder.loadAll();
+
+
+
 	}
-	
-	public void onClick$buttonRechercher() throws InterruptedException, SQLException {
+
+	/*public void onClick$buttonRechercher() throws InterruptedException, SQLException {
 
 		GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
 		//recherche des elements selectionnées
 		//String filtrelibelleFormation=libelleFormationFiltre.getValue();
 		String filreCompteUtilisateur=compteUtilisateurFiltre.getValue();  
 		//String filtreIntitule=intituleFiltre.getValue();  
-		
-		String filtrelogin=matriculeFiltre.getValue();
-		  
-		
-			//System.out.println("pressyes");
-		model=gestionEmployeModel.filtreEmployes(filreCompteUtilisateur,filtrelogin);
-		
-			selected = null;
-			binder.loadAll();
 
-		
-		
-	}
-	
+		String filtrelogin=matriculeFiltre.getValue();
+
+
+		//System.out.println("pressyes");
+		model=gestionEmployeModel.filtreEmployes(filreCompteUtilisateur,filtrelogin);
+
+		selected = null;
+		binder.loadAll();
+
+
+
+	}*/
+
 
 	public String getLbl_structure() {
 		return lbl_structure;
@@ -801,23 +839,94 @@ public class GestionEmployesAction extends GenericForwardComposer {
 
 	private String typecontrat_str;
 
-	
+
 	public void onSelect$id_compte() throws WrongValueException, SQLException {
-		
+
 		GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
 		int id_compte_int=(Integer)map_compte.get(id_compte.getSelectedItem().getLabel());
 		login.setText(gestionEmployeModel.getLogin(id_compte_int));
 		//System.out.println("id_compte_int>>>"+id_compte_int);
 	}
-	
-public void onSelect$structure() throws WrongValueException, SQLException {
-		
+
+	public void onSelect$structure() throws WrongValueException, SQLException {
+
 		GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
 		String codestructure=(String)map_structure.get(structure.getSelectedItem().getLabel());
 		libelle_direction.setText(gestionEmployeModel.getDirection(codestructure));
 		//System.out.println("id_compte_int>>>"+id_compte_int);
 	}
+	 public void onClick$buttonRechercher() throws InterruptedException, SQLException {
+
+		 GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
+			//recherche des elements selectionnées
+
+			String valeur_condition1=filtre1_txtbox.getText();
+			String valeur_condition2=filtre2_txtbox.getText();
+
+			if (valeur_condition1.length()==0 && valeur_condition2.length()==0){
+				Messagebox.show("Merci de saisir au moins un critère de recherche !", "Erreur", Messagebox.OK, Messagebox.ERROR);
+				return;
+
+			}
 
 
+			String condition1=map_listfilter.get(filtre1.getValue());
+			String condition2=map_listfilter.get(filtre2.getValue());
+
+			if (condition1.equalsIgnoreCase(condition2)){
+
+				Messagebox.show("Merci de saisir  des critères de recherche différents!", "Erreur", Messagebox.OK, Messagebox.ERROR);
+				return;
+
+			}
+
+
+			if (condition1.equalsIgnoreCase("c.val_date_fin") && valeur_condition1.length()>0){
+
+				if (!isValidDate(valeur_condition1)){
+					Messagebox.show("Merci de saisir  une data de validité au format JJ/MM/AAAA !", "Erreur", Messagebox.OK, Messagebox.ERROR);
+					return;
+				}
+
+			}
+
+			if (condition2.equalsIgnoreCase("c.val_date_fin")&& valeur_condition2.length()>0 ){
+
+				if (!isValidDate(valeur_condition2)){
+					Messagebox.show("Merci de saisir  une data de validité au format JJ/MM/AAAA !", "Erreur", Messagebox.OK, Messagebox.ERROR);
+					return;
+				}
+
+			}
+
+			model=gestionEmployeModel.filtreEmployes(condition1, valeur_condition1, condition2,  valeur_condition2);
+
+			selected = null;
+			binder.loadAll();
+
+		
+		
+		}
+
+	 public static boolean isValidDate(String inDate) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			dateFormat.setLenient(false);
+			try {
+				dateFormat.parse(inDate.trim());
+			} catch (ParseException pe) {
+				return false;
+			}
+			return true;
+		}
+
+		public void onSelect$filtre1() throws SQLException {
+			
+			filtre1_txtbox.setText("");
+			
+		}
+	    public void onSelect$filtre2() throws SQLException {
+	    	filtre2_txtbox.setText("");
+			
+		}
 
 }

@@ -138,14 +138,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 		if(filtre2.getItemCount()>0)
 			filtre2.setSelectedIndex(0);
 
-		/*map_listfilter.put("libelle_direction", "Direction");
-		map_listfilter.put("login", "Matricule");
-		map_listfilter.put("structure_ent", "Structure");
-		map_listfilter.put("intitule_poste", "Poste de travail");
-		map_listfilter.put("libelle_direction", "Direction");
-		map_listfilter.put("code_contrat", "Contrat");
-		map_listfilter.put("date_recrutement", "Date de recrutement");*/
-
+	
 
 
 

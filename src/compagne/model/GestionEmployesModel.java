@@ -69,7 +69,7 @@ public class GestionEmployesModel {
 			String sql_query="select login,concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,"
 					+ "	CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur,"
 					+ " CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,"
-					+ " t.libelle_direction,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
+					+ " case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'  else libelle_direction end as libelle_direction,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
 					+ " from employe e  ,sexe s, type_contrat t,poste_travail_description p,formation f,#nom_table c  ,"
 					+ " def_niv_formation d,(select libelle_direction,code_structure, structure_ent from ("
 					+ " select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
@@ -1070,7 +1070,7 @@ public class GestionEmployesModel {
 	}	
 
 
-	public List  filtreEmployes(String filreCompteUtilisateur,String filtrelogin/*String filtreIntitule*/) throws SQLException{
+	public List  filtreEmployes(String condition1, String valeur_condition1, String condition2,  String valeur_condition2) throws SQLException{
 
 
 		listcompagne = new ArrayList<GestionEmployesBean>();
@@ -1082,63 +1082,58 @@ public class GestionEmployesModel {
 		ResultSet rs=null;
 		try {
 			stmt = (Statement) conn.createStatement();
-			String whereClauseCombined="";
-			String whereClauseUtilisateur="";
-			String whereClauselogin="";
-			if(filreCompteUtilisateur!=null && !"".equals(filreCompteUtilisateur))
+			String whereClause1="";
+			String whereClause2="";
+		
+			if(valeur_condition1!=null && !"".equals(valeur_condition1))
+			{  
+				if (condition1.equalsIgnoreCase("date_recrutement")){
+					whereClause1= " and DATE_FORMAT(date_recrutement,'%d/%m/%Y') = '"+ valeur_condition1+"'";
+				}else{
+					whereClause1= " and upper("+condition1+") like upper('"+valeur_condition1+"%')";
+				}
+			}
+			if(valeur_condition2!=null && !"".equals(valeur_condition2))
 			{
-				whereClauseUtilisateur= " and upper(c.nom) like upper('"+filreCompteUtilisateur+"%')";
+				if (condition2.equalsIgnoreCase("date_recrutement")){
+					whereClause2= " and DATE_FORMAT(date_recrutement,'%d/%m/%Y') = '"+ valeur_condition2+"'";
+				}else{
+					whereClause2= " and upper("+condition2+") like upper('"+valeur_condition2+"%')";
+				}
 			}
 			
-			if(filtrelogin!=null && !"".equals(filtrelogin))
-			{
-				whereClauselogin= " and upper(c.login) like upper('"+filtrelogin+"%')";
-			}
-			
-			whereClauseCombined=whereClauseUtilisateur+" "+whereClauselogin;
-			//				if(filtrelibelleFormation!=null && !"".equals(filtrelibelleFormation))
-			//				{
-			//					whereClause= " and ( upper(d.niv_for_libelle) like upper('"+filtrelibelleFormation+"%')"+ " or upper(libelle_diplome) like upper('"+filtrelibelleFormation+"%')) ";
-			//				}
-			//				if(filtreIntitule!=null && !"".equals(filtreIntitule))
-			//				{
-			//					whereClause= " and upper(p.intitule_poste) like upper('"+filtreIntitule+"%') ";
-			//				}
 
 
 			String sel_comp="";
 			
-			/*sel_comp="select concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,  CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur," +
-					" CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,e.code_structure" +
-					" from employe e  ,poste_travail_description p,formation f,#nom_table c  , def_niv_formation d" +
-					"  where e.code_poste=p.code_poste and e.code_formation=f.code_formation" +
-					"  and   e.id_compte=c.id_compte and   d.niv_for_id=f.niv_for_id "+whereClause+" order by 1";*/
+		
 			
 			sel_comp="select login,concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,  CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur,"
-					+ "	 CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
+					+ "	 CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+					+ "	 else libelle_direction end as libelle_direction"
 					+ "  from employe e ,sexe s, type_contrat t,poste_travail_description p,formation f,common_evalcom.compte c  , def_niv_formation d,"
-					+ "  (select code_structure, structure_ent from ("
-					+ "  select code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
+					+ "  (select libelle_direction,code_structure, structure_ent from ("
+					+ "  select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
 					+ "	 and  libelle_section !='null' and  libelle_section !=''"
 					+ "	 union"
-					+ "	 select code_structure,libelle_service structure_ent from structure_entreprise"
+					+ "	 select libelle_direction,code_structure,libelle_service structure_ent from structure_entreprise"
 					+ "  where libelle_service is  not null and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0"
 					+ "  union"
-					+ "  select code_structure,libelle_departement structure_ent from structure_entreprise "
+					+ "  select libelle_direction,code_structure,libelle_departement structure_ent from structure_entreprise "
 					+ "  where libelle_departement is  not null and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0"
 					+ "  union"
-					+ "  select code_structure,libelle_sous_direction structure_ent from structure_entreprise"
+					+ "  select libelle_direction,code_structure,libelle_sous_direction structure_ent from structure_entreprise"
 					+ "  where libelle_sous_direction is  not null and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0"
 					+ "  union"
-					+ "	 select code_structure,libelle_unite structure_ent from structure_entreprise"
+					+ "	 select libelle_direction,code_structure,libelle_unite structure_ent from structure_entreprise"
 					+ "  where libelle_unite is  not null and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ "  and length(libelle_service)=0 and  length(libelle_section) =0"
 					+ "  union"
-					+ "  select code_structure,libelle_direction structure_ent from structure_entreprise"
+					+ "  select libelle_direction,code_structure,libelle_direction structure_ent from structure_entreprise"
 					+ "  where libelle_direction is  not null and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0"
 					+ "  and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise )t"
 					+ "  where e.code_poste=p.code_poste and e.code_formation=f.code_formation  and t.code_structure=e.code_structure"
-					+ "  and   e.id_compte=c.id_compte and  d.niv_for_id=f.niv_for_id and  e.code_contrat=t.code_contrat and e.code_sexe=s.code_sexe"+whereClauseCombined+" order by 2";
+					+ "  and   e.id_compte=c.id_compte and  d.niv_for_id=f.niv_for_id and  e.code_contrat=t.code_contrat and e.code_sexe=s.code_sexe"+ whereClause1 + whereClause2 +" order by 2";
 					  
 			
 			if (intctx.getDbtype().equalsIgnoreCase("1")){
@@ -1173,6 +1168,7 @@ public class GestionEmployesModel {
 				bean.setLibelle_structure(rs.getString("libelle_structure"));
 				bean.setSexe(rs.getString("sexe_lbl"));
 				bean.setType_contrat(rs.getString("type_contrat_lbl"));
+				bean.setLibelle_direction(rs.getString("libelle_direction"));
 
 
 				listcompagne.add(bean);
