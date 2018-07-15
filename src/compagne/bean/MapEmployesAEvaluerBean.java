@@ -12,6 +12,7 @@ public class MapEmployesAEvaluerBean {
 
 	
 	public HashMap<String, EmployesAEvaluerBean> getMapclesnomEmploye() {
+		
 		return MapclesnomEmploye;
 	}
 	public void setMapclesnomEmploye(

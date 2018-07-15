@@ -3,11 +3,14 @@ package compagne.action;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.zkoss.zk.ui.Component;
@@ -1067,7 +1070,14 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		{
 			HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeAEvaluerBean.getMapclesposte();
 			HashMap<String, EmployesAEvaluerBean> mapEmploye=Mapclesposte.get(selectednomposteTravail);
+		    
+
 			Set <String> listEmploye=mapEmploye.keySet();
+			
+			//Modif NB du 15/07/2018 point 4 v3.2 tri par ordre alphabetéque des evalués pour les fiche deja validées
+			 //Set<String> listEmploye = new TreeSet<String>();
+			//listEmploye=mapEmploye.keySet();
+
 			Iterator<String> iterator =listEmploye.iterator();
 			while(iterator.hasNext())
 			{
@@ -1844,6 +1854,8 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			// debut modif point 2 v3.2 05/07/2018
 			HashMap<String,ArrayList<String>> Mapdirection=mapEmployeEvalueBean.getMapclesdirection().get(direction);
 			ArrayList<String> employelist= Mapdirection.get(poste);
+			Collections.sort(employelist);
+
 
 			if (employelist==null || employelist.size()==0   ){
 				try {
@@ -1938,7 +1950,14 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			{
 				HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeEvalueBean.getMapclesposte();
 				HashMap<String, EmployesAEvaluerBean> mapEmploye=Mapclesposte.get(selectednomposteTravailV);
-				Set <String> listEmploye=mapEmploye.keySet();
+				
+				//Modif NB du 15/07/2018 point 4 v3.2 tri par ordre alphabetéque des evalués pour les fiche deja validées
+				//transformer set en List et apres filtre la list 
+				//Set <String> listEmploye=mapEmploye.keySet();
+				 Set<String> set=mapEmploye.keySet();
+				 List<String> listEmploye = new ArrayList<>(set);
+				 Collections.sort(listEmploye);
+				
 				Iterator<String> iterator =listEmploye.iterator();
 				while(iterator.hasNext())
 				{
@@ -3518,7 +3537,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 			if (listedirection==null  || listedirection.size()==0  ){
 				try {
-					Messagebox.show("Merci de selectionner une  direction ", "Erreur", Messagebox.OK, Messagebox.ERROR);
+					Messagebox.show("Merci de selectionner une  campagne et/ou une direction ", "Erreur", Messagebox.OK, Messagebox.ERROR);
 					return;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block

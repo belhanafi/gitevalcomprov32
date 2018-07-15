@@ -611,7 +611,7 @@ public class EmployeModel {
 				
 			try 
 			{
-				String select_structure="select p.code_poste,p.intitule_poste from employe e, poste_travail_description p where e.code_poste=p.code_poste and e.code_structure=?";
+				String select_structure="select p.code_poste,p.intitule_poste from employe e, poste_travail_description p where e.code_poste=p.code_poste and e.code_structure=? order by p.intitule_poste";
 				psmt =  conn.prepareStatement(select_structure);
 				psmt.setString(1, code_structure);
 				rs =  psmt.executeQuery();
@@ -648,7 +648,9 @@ public class EmployeModel {
 					}
 				}
 			}
-			return map;
+			
+			Map<String, String> treeMap = new TreeMap<String, String>(map);
+			return treeMap;
 
 
 		}
