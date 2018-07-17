@@ -69,7 +69,7 @@ public class GestionEmployesModel {
 			String sql_query="select login,concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,"
 					+ "	CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur,"
 					+ " CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,"
-					+ " case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'  else libelle_direction end as libelle_direction,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl"
+					+ " case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'  else libelle_direction end as libelle_direction,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl,evolution_carriere,antecedent_disciplinaire"
 					+ " from employe e  ,sexe s, type_contrat t,poste_travail_description p,formation f,#nom_table c  ,"
 					+ " def_niv_formation d,(select libelle_direction,code_structure, structure_ent from ("
 					+ " select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
@@ -129,6 +129,8 @@ public class GestionEmployesModel {
 				bean.setSexe(rs.getString("sexe_lbl"));
 				bean.setType_contrat(rs.getString("type_contrat_lbl"));
 				bean.setLibelle_direction(rs.getString("libelle_direction"));
+				bean.setAntecedent_disciplinaire(rs.getString("antecedent_disciplinaire"));
+				bean.setEvolution_carriere(rs.getString("evolution_carriere"));
 
 				
 				
@@ -275,8 +277,8 @@ public class GestionEmployesModel {
 		{
 
 			stmt = (Statement) conn.createStatement();
-			String sql_query="INSERT INTO employe( nom, prenom, date_naissance, rattach_dg, date_recrutement, code_formation, code_poste, email, est_evaluateur, est_responsable_service, est_responsable_direction, est_responsable_division, est_responsable_departement, est_responsable_unite, est_responsable_section, est_responsable_rh, code_structure, id_compte,code_sexe,code_contrat)" +
-					" VALUES(#nom,#prenom,#date_naissance,'N',#date_recrutement,#code_formation,#code_poste,#email,#est_evaluateur,'N','N','N','N','N','N',#est_responsable_rh,#code_structure,#id_compte,#sexe,#type_contrat)";
+			String sql_query="INSERT INTO employe( nom, prenom, date_naissance, rattach_dg, date_recrutement, code_formation, code_poste, email, est_evaluateur, est_responsable_service, est_responsable_direction, est_responsable_division, est_responsable_departement, est_responsable_unite, est_responsable_section, est_responsable_rh, code_structure, id_compte,code_sexe,code_contrat,evolution_carriere,antecedent_disciplinaire)" +
+					" VALUES(#nom,#prenom,#date_naissance,'N',#date_recrutement,#code_formation,#code_poste,#email,#est_evaluateur,'N','N','N','N','N','N',#est_responsable_rh,#code_structure,#id_compte,#sexe,#type_contrat,#evolution_carriere,#antecedent_disciplinaire)";
 			//sql_query = sql_query.replaceAll("#id_employe", "'"+ addedData.getId_employe()+"'");
 			sql_query = sql_query.replaceAll("#nom", "'"+ addedData.getNom()+"'");
 			sql_query = sql_query.replaceAll("#prenom", "'"+ addedData.getPrenom()+"'");
@@ -293,6 +295,9 @@ public class GestionEmployesModel {
 			
 			sql_query = sql_query.replaceAll("#sexe", "'"+ addedData.getCode_sexe()+"'");
 			sql_query = sql_query.replaceAll("#type_contrat", "'"+ addedData.getCode_type_contrat()+"'");
+			
+			sql_query = sql_query.replaceAll("#antecedent_disciplinaire","'"+addedData.getAntecedent_disciplinaire()+"'");
+			sql_query = sql_query.replaceAll("#evolution_carriere","'"+addedData.getEvolution_carriere()+"'");
 
 
 			//System.out.println(sql_query);
@@ -392,7 +397,7 @@ public class GestionEmployesModel {
 			stmt = (Statement) conn.createStatement();
 			String sql_query="update employe  set nom=#nom, prenom=#prenom, date_naissance=#date_naissance, rattach_dg='N', date_recrutement=#date_recrutement, code_formation=#code_formation, code_poste=#code_poste, email=#email, est_evaluateur=#est_evaluateur, est_responsable_service='N', est_responsable_direction='N', est_responsable_division='N', est_responsable_departement='N'," +
 					" est_responsable_unite='N', est_responsable_section='N', est_responsable_rh=#est_responsable_rh, " +
-					" code_structure=#code_structure, id_compte=#id_compte, code_sexe=#code_sexe,code_contrat=#code_contrat where id_employe=#id_employe " ;
+					" code_structure=#code_structure, id_compte=#id_compte, code_sexe=#code_sexe,code_contrat=#code_contrat,evolution_carriere=#evolution_carriere,antecedent_disciplinaire=#antecedent_disciplinaire where id_employe=#id_employe " ;
 
 
 			sql_query = sql_query.replaceAll("#id_employe", "'"+ addedData.getId_employe()+"'");
@@ -410,6 +415,10 @@ public class GestionEmployesModel {
 			sql_query = sql_query.replaceAll("#id_compte", "'"+ addedData.getId_compte()+"'");
 			sql_query = sql_query.replaceAll("#code_sexe", "'"+ addedData.getCode_sexe()+"'");
 			sql_query = sql_query.replaceAll("#code_contrat", "'"+ addedData.getCode_type_contrat()+"'");
+			
+			sql_query = sql_query.replaceAll("#antecedent_disciplinaire","'"+addedData.getAntecedent_disciplinaire()+"'");
+			sql_query = sql_query.replaceAll("#evolution_carriere","'"+addedData.getEvolution_carriere()+"'");
+
 
 
 
@@ -1110,7 +1119,7 @@ public class GestionEmployesModel {
 			
 			sel_comp="select login,concat(c.nom,'-',c.prenom) as nom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,  CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur,"
 					+ "	 CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
-					+ "	 else libelle_direction end as libelle_direction"
+					+ "	 else libelle_direction end as libelle_direction,evolution_carriere,antecedent_disciplinaire"
 					+ "  from employe e ,sexe s, type_contrat t,poste_travail_description p,formation f,common_evalcom.compte c  , def_niv_formation d,"
 					+ "  (select libelle_direction,code_structure, structure_ent from ("
 					+ "  select libelle_direction,code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null"
@@ -1169,6 +1178,8 @@ public class GestionEmployesModel {
 				bean.setSexe(rs.getString("sexe_lbl"));
 				bean.setType_contrat(rs.getString("type_contrat_lbl"));
 				bean.setLibelle_direction(rs.getString("libelle_direction"));
+				bean.setAntecedent_disciplinaire(rs.getString("antecedent_disciplinaire"));
+				bean.setEvolution_carriere(rs.getString("evolution_carriere"));
 
 
 				listcompagne.add(bean);
@@ -1370,7 +1381,7 @@ public class GestionEmployesModel {
 			stmt = (Statement) conn.createStatement();
 			String sql_query="";
 			
-				sql_query="select libelle_direction from structure_entreprise where code_structure="+"'"+codeStructure+"'";
+				sql_query="select case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'  else libelle_direction end as libelle_direction from structure_entreprise where code_structure="+"'"+codeStructure+"'";
 				rs = (ResultSet) stmt.executeQuery(sql_query);
 
 

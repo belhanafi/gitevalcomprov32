@@ -6,7 +6,8 @@
 		closable="true" onClose="self.visible = false; event.stopPropagation();">
 
 		<style>
-			.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+			.textboxdetail {font-family: Verdana,
+			Arial,Helvetica,sans-serif;
 			font-size: 10px;font-weight: ;
 			}
 		</style>
@@ -80,6 +81,10 @@
 				<listheader label="Structure Entreprise" width="180px"
 					align="center" />
 				<listheader label="Direction" width="80px" align="center" />
+				<listheader label="Evolution de carrière" width="80px"
+					align="center" />
+				<listheader label="Antécédents disciplinaires" width="80px"
+					align="center" />
 
 
 			</listhead>
@@ -113,6 +118,10 @@
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				<listcell label="@{listcompagne.libelle_direction}"
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcompagne.evolution_carriere}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listcell label="@{listcompagne.antecedent_disciplinaire}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
 
 
@@ -143,6 +152,10 @@
 				<column label="Responsable RH" width="100px" align="center" />
 				<column label="Structure" width="180px" align="center" />
 				<column label="Libellé Direction" width="180px" align="center" />
+
+				<column label="Evolution de carrière" width="180px" align="center" />
+				<column label="Antécédents disciplinaires" width="180px"
+					align="center" />
 
 
 
@@ -186,6 +199,11 @@
 						mold="select" selectedItem="@{winCtrl.selected.libelle_structure,save-when=none}" />
 					<textbox id="libelle_direction" width="180px" sclass="textboxdetail"
 						value="@{winCtrl.selected.libelle_direction,save-when=none}" />
+						
+					<textbox id="evolution_carriere" width="180px" sclass="textboxdetail"
+						value="@{winCtrl.selected.evolution_carriere,save-when=none}" />
+					<textbox id="antecedent_disciplinaire" width="180px" sclass="textboxdetail"
+						value="@{winCtrl.selected.antecedent_disciplinaire,save-when=none}" />
 				</row>
 				<row>
 					<!-- label id="structure_lbl" width="400px" sclass="textboxdetail" / -->
@@ -197,7 +215,7 @@
 		<hbox pack="center" width="100%" spacing="20">
 			<div>
 				<button id="add" image="/image/DITEnabled.gif" height="25px"
-					width="50px" tooltiptext="Ajouter un employÃƒÂ©" />
+					width="50px" tooltiptext="Ajouter un employé" />
 				<button id="okAdd" image="/image/OkEnabled.gif" height="25px"
 					width="50px" tooltiptext="Valider" />
 				<button id="update" image="/image/EDITREDOEnabled.gif"

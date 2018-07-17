@@ -68,6 +68,16 @@
                     <property name="name">columnLibelle_direction</property>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">columnEvolution_carriere</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">columnAntecedent_disciplinaire</property>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -113,6 +123,14 @@
                 <structure>
                     <property name="columnName">columnLibelle_direction</property>
                     <text-property name="displayName">libelle_direction</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">columnEvolution_carriere</property>
+                    <text-property name="displayName">evolution_carriere</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">columnAntecedent_disciplinaire</property>
+                    <text-property name="displayName">antecedent_disciplinaire</text-property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -172,6 +190,16 @@
                         <property name="name">columnLibelle_direction</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">columnEvolution_carriere</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">columnAntecedent_disciplinaire</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">scriptedDS</property>
@@ -196,6 +224,8 @@ taux = gsh.getInfoGeneralEmploye();]]></method>
       row["columnSexe"] = taux.get(count).getSexe();
       row["columnType_contrat"] = taux.get(count).getType_contrat();
       row["columnLibelle_direction"] = taux.get(count).getLibelle_direction();
+      row["columnEvolution_carriere"] = taux.get(count).getEvolution_carriere();
+      row["columnAntecedent_disciplinaire"] = taux.get(count).getAntecedent_disciplinaire();
      
        count++;
        return true;
@@ -960,7 +990,22 @@ return false;]]></method>
                         <text-property name="content"><![CDATA[Évolution de carrière :]]></text-property>
                     </text>
                 </cell>
-                <cell id="209"/>
+                <cell id="209">
+                    <data id="619">
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">8pt</property>
+                        <property name="dataSet">dataSetFicheIndivInfoGen</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">columnEvolution_carriere</property>
+                                <text-property name="displayName">evolution_carriere</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["columnEvolution_carriere"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">columnEvolution_carriere</property>
+                    </data>
+                </cell>
             </row>
             <row id="211">
                 <cell id="213">
@@ -973,7 +1018,22 @@ return false;]]></method>
                         <text-property name="content"><![CDATA[Antécédents disciplinaires :]]></text-property>
                     </text>
                 </cell>
-                <cell id="214"/>
+                <cell id="214">
+                    <data id="618">
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">8pt</property>
+                        <property name="dataSet">dataSetFicheIndivInfoGen</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">columnAntecedent_disciplinaire</property>
+                                <text-property name="displayName">antecedent_disciplinaire</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["columnAntecedent_disciplinaire"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">columnAntecedent_disciplinaire</property>
+                    </data>
+                </cell>
             </row>
         </grid>
         <text id="282">

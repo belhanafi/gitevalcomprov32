@@ -136,7 +136,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 			filtre1.setSelectedIndex(0);
 
 		if(filtre2.getItemCount()>0)
-			filtre2.setSelectedIndex(0);
+			filtre2.setSelectedIndex(1);
 
 	
 

@@ -30,6 +30,9 @@ public class FicheIndivInfoGenBean {
 	private String matricule;
 	private String libelle_direction;
 
+	private String evolution_carriere;
+	private String antecedent_disciplinaire;
+
 
 
 	public FicheIndivInfoGenBean() {
@@ -220,6 +223,38 @@ public class FicheIndivInfoGenBean {
 
 	public void setLibelle_direction(String libelle_direction) {
 		this.libelle_direction = libelle_direction;
+	}
+
+
+
+
+
+
+	public String getEvolution_carriere() {
+		return evolution_carriere;
+	}
+
+
+
+
+
+
+	public void setEvolution_carriere(String evolution_carriere) {
+		this.evolution_carriere = evolution_carriere;
+	}
+
+
+
+
+
+
+	public String getAntecedent_disciplinaire() {
+		return antecedent_disciplinaire;
+	}
+
+
+	public void setAntecedent_disciplinaire(String antecedent_disciplinaire) {
+		this.antecedent_disciplinaire = antecedent_disciplinaire;
 	}
 
 

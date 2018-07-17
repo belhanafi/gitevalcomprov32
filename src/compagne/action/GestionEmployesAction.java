@@ -76,6 +76,10 @@ public class GestionEmployesAction extends GenericForwardComposer {
 
 	Textbox login;
 	Textbox libelle_direction;
+	
+	Textbox evolution_carriere;
+	Textbox antecedent_disciplinaire;
+
 
 	Listbox sexe;
 	Listbox type_contrat;
@@ -239,13 +243,13 @@ public class GestionEmployesAction extends GenericForwardComposer {
 
 		//remplissage de la combobox filtre1
 		map_listfilter.put( "Direction","libelle_direction");
-		map_listfilter.put("Matricule","login");
+		map_listfilter.put("Matricule","c.login");
 		map_listfilter.put( "Structure","structure_ent");
 		map_listfilter.put( "Poste de travail","intitule_poste");
 		map_listfilter.put( "Direction","libelle_direction");
 		map_listfilter.put( "Contrat","type_contrat_lbl");
 		map_listfilter.put("Date de recrutement","date_recrutement");
-		map_listfilter.put( "Nom","nom");
+		map_listfilter.put( "Nom","c.nom");
 
 
 		Set set_filter = map_listfilter.entrySet(); 
@@ -266,7 +270,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 			filtre1.setSelectedIndex(0);
 
 		if(filtre2.getItemCount()>0)
-			filtre2.setSelectedIndex(0);
+			filtre2.setSelectedIndex(1);
 
 
 
@@ -350,6 +354,9 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		addedData.setType_contrat(getTypecontrat_str());
 		addedData.setLogin(getSelectedLogin());
 		addedData.setLibelle_direction(getSelectedLibelleDirection());
+		
+		addedData.setAntecedent_disciplinaire(getSelectedAntecedent_disciplinaire());
+		addedData.setEvolution_carriere(getSelectedEvolution_carriere());
 
 
 
@@ -437,6 +444,9 @@ public class GestionEmployesAction extends GenericForwardComposer {
 
 		selected.setCode_type_contrat(getSelectTypeContrat());
 		selected.setType_contrat(getTypecontrat_str());
+		
+		selected.setAntecedent_disciplinaire(getSelectedAntecedent_disciplinaire());
+		selected.setEvolution_carriere(getSelectedEvolution_carriere());
 
 
 
@@ -679,6 +689,23 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		return name;
 	}
 
+	private String getSelectedEvolution_carriere() throws WrongValueException {
+		String name=evolution_carriere.getValue();
+		if (name==null) {
+			throw new WrongValueException(libelle_direction, "Merci de saisir Libelle direction valide!");
+		}
+		return name;
+	}
+	
+	private String getSelectedAntecedent_disciplinaire() throws WrongValueException {
+		String name=antecedent_disciplinaire.getValue();
+		if (name==null) {
+			throw new WrongValueException(libelle_direction, "Merci de saisir Libelle direction valide!");
+		}
+		return name;
+	}
+	
+
 	private String getSelectedLibelleDirection() throws WrongValueException {
 		String name=libelle_direction.getValue();
 		if (name==null) {
@@ -686,7 +713,6 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		}
 		return name;
 	}
-
 
 
 

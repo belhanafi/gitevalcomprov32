@@ -22,6 +22,9 @@ public class GestionEmployesBean implements Comparable {
 	private String code_poste;
 	private String code_est_evaluateur;
 	private String code_est_responsable_rh;
+	private String antecedent_disciplinaire;
+	private String evolution_carriere;
+	
 
 
 	private String sexe;
@@ -276,4 +279,21 @@ public class GestionEmployesBean implements Comparable {
 		this.libelle_direction = libelle_direction;
 	}
 
+	public String getAntecedent_disciplinaire() {
+		return antecedent_disciplinaire;
+	}
+
+	public void setAntecedent_disciplinaire(String antecedent_disciplinaire) {
+		this.antecedent_disciplinaire = antecedent_disciplinaire;
+	}
+
+	public String getEvolution_carriere() {
+		return evolution_carriere;
+	}
+
+	public void setEvolution_carriere(String evolution_carriere) {
+		this.evolution_carriere = evolution_carriere;
+	}
+
+	
 }
