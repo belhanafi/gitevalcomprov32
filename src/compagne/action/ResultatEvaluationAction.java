@@ -29,8 +29,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.CellRangeAddress;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.RegionUtil;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Page;
 import org.zkoss.zk.ui.Sessions;
@@ -297,11 +301,7 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 		if(nomCompagne.getItemCount()!=0)
 		{
 			//récupération des informations d'entête du fichier excel
-
-
 			//récupération du nombre de compétence toute famille confondu
-
-
 			//creation du fichier xls
 
 			//creation d'un document excel 
@@ -603,17 +603,9 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 				cellStyle.setRightBorderColor(HSSFColor.BLACK.index);
 				cellStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
 				cellStyle.setTopBorderColor(HSSFColor.BLACK.index);
-
 				cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
-				cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-				
+				cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);			
 				cellStyle.setFont(font1);
-				
-				
-				
-				
-				
-				
 				
 				HSSFRow row = sheet.createRow(0);
 				
@@ -1084,7 +1076,10 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 					//System.out.println(i);
 					sheet.autoSizeColumn(i);
 
-				}	
+				}
+				
+				setBordersToMergedCells( workBook,  sheet);
+				
 			}
 
 
@@ -1115,6 +1110,21 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 	}
 
 
+	private void setBordersToMergedCells(HSSFWorkbook  workBook, HSSFSheet sheet) {
+        int numMerged = sheet.getNumMergedRegions();
+
+    for(int i= 0; i<numMerged;i++){
+        /*CellRangeAddress mergedRegions =*/ 
+    	org.apache.poi.ss.util.CellRangeAddress mergedRegions=sheet.getMergedRegion(i);
+        RegionUtil.setBorderTop(CellStyle.BORDER_THIN, mergedRegions, sheet, workBook);
+        RegionUtil.setBorderLeft(CellStyle.BORDER_THIN, mergedRegions, sheet, workBook);
+        RegionUtil.setBorderRight(CellStyle.BORDER_THIN, mergedRegions, sheet, workBook);
+        RegionUtil.setBorderBottom(CellStyle.BORDER_THIN, mergedRegions, sheet, workBook);
+    }
+
+
+}
+	
 	public int getNbCompetenceAllFamille(HashMap<String, ArrayList<String>>  mapFamilleCompetence)
 	{
 
@@ -1311,10 +1321,14 @@ public class ResultatEvaluationAction extends GenericForwardComposer {
 		if(mapFIMG==null){
 			try {
 				Messagebox.show("Aucune fiche n'a été validée pour le poste de travail: "+nomOnglet, "Information", Messagebox.OK, Messagebox.INFORMATION);
+				
+			
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				//throw new RuntimeException(e);
 				System.out.println(" Aucune fiche n'a été validé pour ce code poste: "+nomOnglet );
+				
+				
 			}
 
 
