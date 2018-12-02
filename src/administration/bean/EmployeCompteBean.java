@@ -26,7 +26,12 @@ public class EmployeCompteBean {
 	private String code_est_evaluateur;
 	private String code_est_responsable_rh;
 	private String login;
+	private String code_sexe;
+	private String code_contrat;
+	private String evolution_carriere;
+	private String antecedent_disciplinaire;
 
+	
 	
 	private String  causeRejet;
 
@@ -181,5 +186,31 @@ public class EmployeCompteBean {
 	public void setLogin(String login) {
 		this.login = login;
 	}
+	public String getCode_sexe() {
+		return code_sexe;
+	}
+	public void setCode_sexe(String code_sexe) {
+		this.code_sexe = code_sexe;
+	}
+	public String getCode_contrat() {
+		return code_contrat;
+	}
+	public void setCode_contrat(String code_contrat) {
+		this.code_contrat = code_contrat;
+	}
+	public String getEvolution_carriere() {
+		return evolution_carriere;
+	}
+	public void setEvolution_carriere(String evolution_carriere) {
+		this.evolution_carriere = evolution_carriere;
+	}
+	public String getAntecedent_disciplinaire() {
+		return antecedent_disciplinaire;
+	}
+	public void setAntecedent_disciplinaire(String antecedent_disciplinaire) {
+		this.antecedent_disciplinaire = antecedent_disciplinaire;
+	}
+	
+	
 
 }

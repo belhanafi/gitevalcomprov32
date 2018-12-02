@@ -66,7 +66,7 @@ public class EmployeCompteModel {
 
 			if (intctx.getDbtype().equalsIgnoreCase("1")){
 				sel_comp="select c.nom,c.prenom, id_employe,e.id_compte,date_naissance,date_recrutement ,concat(e.code_formation,',',d.niv_for_libelle)as libelle_formation,concat (e.code_poste,',',p.intitule_poste) as intitule_poste, email,  CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur," +
-						" CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,e.code_structure,c.login" +
+						" CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,e.code_structure,c.login,code_sexe,code_contrat,evolution_carriere,antecedent_disciplinaire " +
 						" from employe e  ,poste_travail_description p,formation f,common_evalcom.compte c  , def_niv_formation d" +
 						"  where e.code_poste=p.code_poste and e.code_formation=f.code_formation" +
 						"  and   e.id_compte=c.id_compte and   d.niv_for_id=f.niv_for_id order by 1";
@@ -74,7 +74,7 @@ public class EmployeCompteModel {
 
 			else {
 				sel_comp="select c.nom,c.prenom, id_employe,e.id_compte,date_naissance,date_recrutement ,concat(e.code_formation,',',d.niv_for_libelle)as libelle_formation,concat (e.code_poste,',',p.intitule_poste) as intitule_poste, email,  CASE WHEN est_evaluateur='N' THEN 'NON' ELSE 'OUI' END as est_evaluateur," +
-						" CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,e.code_structure,c.login" +
+						" CASE WHEN est_responsable_rh='N' THEN 'NON' ELSE 'OUI' END as est_responsable_rh ,e.code_structure,c.login,code_sexe,code_contrat,evolution_carriere,antecedent_disciplinaire" +
 						" from employe e  ,poste_travail_description p,formation f, compte c  , def_niv_formation d" +
 						"  where e.code_poste=p.code_poste and e.code_formation=f.code_formation" +
 						"  and   e.id_compte=c.id_compte and   d.niv_for_id=f.niv_for_id order by 1";
@@ -99,6 +99,12 @@ public class EmployeCompteModel {
 				bean.setEst_evaluateur(rs.getString("est_evaluateur"));
 				bean.setEst_responsable_rh(rs.getString("est_responsable_rh"));
 				bean.setCode_structure(rs.getString("code_structure"));
+				bean.setCode_sexe(rs.getString("code_sexe"));
+				bean.setCode_contrat(rs.getString("code_contrat"));
+				bean.setEvolution_carriere(rs.getString("evolution_carriere"));
+				bean.setAntecedent_disciplinaire(rs.getString("antecedent_disciplinaire"));
+
+
 
 				AdministrationLoginBean admLogin=mapCompte.get(rs.getString("id_compte"));
 				if(admLogin!=null)
@@ -728,7 +734,30 @@ public class EmployeCompteModel {
 																				{
 																					employeCompteBean.setLogin(valeur);
 																				}
-
+																				else
+																					if(numColonne==14)
+																					{
+																						String val[]=valeur.split(",");
+																						employeCompteBean.setCode_sexe(val[0]);
+																					}
+																					else
+																						if(numColonne==15)
+																						{
+																							String val[]=valeur.split(",");
+																							employeCompteBean.setCode_contrat(val[0]);
+																						}
+																						else
+																							if(numColonne==16)
+																							{
+																								
+																								employeCompteBean.setEvolution_carriere(valeur);
+																							}
+																							else
+																								if(numColonne==17)
+																								{
+																									
+																									employeCompteBean.setAntecedent_disciplinaire(valeur);
+																								}
 						}
 						else
 							if(numColonne==0)
@@ -1472,7 +1501,7 @@ public class EmployeCompteModel {
 		{
 			//ajout de log pour tracer l'exception
 		}		
-		requete=ConstructionRequeteUpdateCompte(requete,profile[0],log,passWord,database_id.toString(), donneeBean.getVal_date_deb(), donneeBean.getVal_date_fin(), donneeBean.getNom(), donneeBean.getPrenom());
+		requete=ConstructionRequeteUpdateCompte(requete,profile[0],log,passWord,database_id.toString(), donneeBean.getVal_date_deb(), donneeBean.getVal_date_fin(), donneeBean.getNom(), donneeBean.getPrenom(),donneeBean.getCode_sexe(),donneeBean.getCode_contrat());
 		return requete;
 	}
 
@@ -1489,7 +1518,7 @@ public class EmployeCompteModel {
 	 * @param prenom
 	 * @return
 	 */
-	public String ConstructionRequeteUpdateCompte(String requete,String profile,String login,String pwd,String database_id, Date val_date_deb,Date val_date_fin,String nom, String prenom)
+	public String ConstructionRequeteUpdateCompte(String requete,String profile,String login,String pwd,String database_id, Date val_date_deb,Date val_date_fin,String nom, String prenom,String code_sexe,String code_contrat)
 	{
 
 		StringUtils stringUtils=new StringUtils();
@@ -1518,6 +1547,8 @@ public class EmployeCompteModel {
 		insert_structure = insert_structure.replaceAll("#modifiedpwd", "'"+getCurrentDatetime()+"'");
 		insert_structure = insert_structure.replaceAll("#nom", "'"+stringUtils.removeString(nom)+"'");
 		insert_structure = insert_structure.replaceAll("#prenom", "'"+stringUtils.removeString(prenom)+"'");
+		
+
 		requete=requete+ insert_structure+ " ; ";
 
 		return requete;
@@ -1550,8 +1581,8 @@ public class EmployeCompteModel {
 
 				String id_compte=loginBean.getId_compte();	
 
-				String insert_structure="INSERT INTO employe( nom, prenom, date_naissance, rattach_dg, date_recrutement, code_formation, code_poste, email, est_evaluateur, est_responsable_service, est_responsable_direction, est_responsable_division, est_responsable_departement, est_responsable_unite, est_responsable_section, est_responsable_rh, code_structure, id_compte)" +
-						" VALUES(#nom,#prenom,#date_naissance,'N',#date_recrutement,#code_formation,#code_poste,#email,#est_evaluateur,'N','N','N','N','N','N',#est_responsable_rh,#code_structure,#id_compte)";
+				String insert_structure="INSERT INTO employe( nom, prenom, date_naissance, rattach_dg, date_recrutement, code_formation, code_poste, email, est_evaluateur, est_responsable_service, est_responsable_direction, est_responsable_division, est_responsable_departement, est_responsable_unite, est_responsable_section, est_responsable_rh, code_structure, id_compte,code_sexe,code_contrat,evolution_carriere,antecedent_disciplinaire )" +
+						" VALUES(#nom,#prenom,#date_naissance,'N',#date_recrutement,#code_formation,#code_poste,#email,#est_evaluateur,'N','N','N','N','N','N',#est_responsable_rh,#code_structure,#id_compte,#code_sexe,#code_contrat,#evolution_carriere,#antecedent_disciplinaire)";
 
 				insert_structure = insert_structure.replaceAll("#nom", "'"+ stringUtils.removeString(donneeBean.getNom())+"'");
 				insert_structure = insert_structure.replaceAll("#prenom", "'"+ stringUtils.removeString(donneeBean.getPrenom())+"'");
@@ -1563,12 +1594,20 @@ public class EmployeCompteModel {
 				insert_structure = insert_structure.replaceAll("#est_evaluateur", "'"+ donneeBean.getEst_evaluateur()+"'");
 				insert_structure = insert_structure.replaceAll("#est_responsable_rh", "'"+ donneeBean.getCode_est_responsable_rh()+"'");
 				insert_structure = insert_structure.replaceAll("#code_structure", "'"+ donneeBean.getCode_structure()+"'");
-
 				insert_structure = insert_structure.replaceAll("#id_compte", "'"+ id_compte+"'");
+				insert_structure = insert_structure.replaceAll("#code_sexe", "'"+ donneeBean.getCode_sexe()+"'");
+				insert_structure = insert_structure.replaceAll("#code_contrat", "'"+ donneeBean.getCode_contrat()+"'");
+				insert_structure = insert_structure.replaceAll("#evolution_carriere", "'"+ donneeBean.getEvolution_carriere()+"'");
+				insert_structure = insert_structure.replaceAll("#antecedent_disciplinaire", "'"+ donneeBean.getAntecedent_disciplinaire()+"'");
+
+
+
 
 
 				requete=requete+ insert_structure+ " ; ";
 				if(requete!=null) updateMultiQuery(requete);
+				System.out.println("requete="+requete);
+
 				requete="";
 			}
 			catch(Exception e)

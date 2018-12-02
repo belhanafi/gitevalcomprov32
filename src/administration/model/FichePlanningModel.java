@@ -243,6 +243,8 @@ public class  FichePlanningModel {
 
 		CreateDatabaseCon dbcon=new CreateDatabaseCon();
 		Connection conn=(Connection) dbcon.connectToSecondairesDB();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
 
 		PreparedStatement pstmt = null;
 		try {
@@ -255,9 +257,11 @@ public class  FichePlanningModel {
 					+ " ?, ?,?,?,?,?,?  from employe  where  trim(REPLACE(concat (nom,concat('  ',prenom)),' ',''))=trim(REPLACE((?),' ','')) ";
 
 			pstmt = conn.prepareStatement(requete_Sql);
+			
+		
 
 			pstmt.setString(1, addedData.getEvalue().replaceAll("'"," "));
-			pstmt.setString(2, DateToString(addedData.getDate_evaluation()));
+			pstmt.setString(2, formatter.format(addedData.getDate_evaluation()));
 			pstmt.setString(3, addedData.getEvaluateur().replaceAll("'"," "));
 			pstmt.setString(4, addedData.getHeure_debut_eval());
 			pstmt.setString(5, addedData.getHeure_fin_eval());
@@ -265,7 +269,7 @@ public class  FichePlanningModel {
 			pstmt.setString(7, addedData.getPersonne_ressource().replaceAll("'"," "));
 			pstmt.setString(8, addedData.getCode_poste());
 			pstmt.setString(9, addedData.getStructure());
-			pstmt.setString(10, DateToString(addedData.getDate_fin_evaluation()));
+			pstmt.setString(10, formatter.format(addedData.getDate_fin_evaluation()));
 			pstmt.setString(11, addedData.getEvalue().replaceAll("'"," "));
 			
 
@@ -636,7 +640,7 @@ public class  FichePlanningModel {
 
 							String valeur="";
 							Date date=null;
-							if((numColonne==4))
+							if((numColonne==4)|| (numColonne==6))
 							{
 								try
 								{

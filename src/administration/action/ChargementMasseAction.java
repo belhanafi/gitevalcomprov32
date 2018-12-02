@@ -639,7 +639,7 @@ public class ChargementMasseAction extends GenericForwardComposer {
 					}
 					//lecture des données se trouvant dans l'onglet liste_employés
 					EmployeCompteModel employeCompteModel=new EmployeCompteModel();
-					List<EmployeCompteBean> listEmployeCompteBean= employeCompteModel.uploadXLSFile(med.getStreamData());
+					List<EmployeCompteBean> listEmployeCompteBean= employeCompteModel.uploadXLSXFile(med.getStreamData());
 					//sauvegarde du contenu du model
 					savemodel3=model3;
 
@@ -708,7 +708,6 @@ public class ChargementMasseAction extends GenericForwardComposer {
 
 						//sauvegarde du contenu du model
 						savemodel3=model3;
-
 
 						//raffrechissement de l'affichage
 						Iterator<EmployeCompteBean> index1=listEmployeCompteBean.iterator();
