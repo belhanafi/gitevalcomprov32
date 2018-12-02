@@ -52,7 +52,8 @@ public class FicheMetierAction extends GenericForwardComposer implements EventLi
 	private Listbox poste_travail1;
 	private Listbox poste_travail2;
 	Map map_poste=null;
-
+    private Listbox direction1;
+	Map map_direction=null;
 
 
 	public void  doAfterCompose(Component comp) throws Exception {
@@ -242,7 +243,7 @@ public class FicheMetierAction extends GenericForwardComposer implements EventLi
 
 		}
 
-		KpiSyntheseModel kpi=new KpiSyntheseModel();
+		/*KpiSyntheseModel kpi=new KpiSyntheseModel();
 		map_poste=kpi.getListPostTravailValid(listDb);
 		Set set = (map_poste).entrySet(); 
 		Iterator i = set.iterator();
@@ -251,9 +252,42 @@ public class FicheMetierAction extends GenericForwardComposer implements EventLi
 			poste_travail1.appendItem((String) me.getKey(),(String) me.getValue());
 		}
 
-		poste_travail1.setSelectedIndex(0);
+		poste_travail1.setSelectedIndex(0);*/
+		
+		if (direction1.getSelectedItems().size()>0) 
+			direction1.getItems().clear();
+		
+		KpiSyntheseModel kpi=new KpiSyntheseModel();
+		map_direction=kpi.getListDirection(listDb);
+		Set set = (map_direction).entrySet(); 
+		Iterator i = set.iterator();
+		while(i.hasNext()) {
+			Map.Entry me = (Map.Entry)i.next();
+			direction1.appendItem((String) me.getKey(),(String) me.getKey());
+		}
+
+		direction1.setSelectedIndex(0);
 
 	}
+	
+	public void onSelect$direction1() throws SQLException	{
+		
+		String libelle_direction=(String)direction1.getSelectedItem().getValue();
+		List <String> list_code_dir=(List)map_direction.get(libelle_direction);
+		
+		KpiSyntheseModel kpi=new KpiSyntheseModel();
+		map_poste=kpi.getListPostTravailValid(listDb,list_code_dir);
+		Set set = (map_poste).entrySet(); 
+		
+		Iterator i = set.iterator();
+		while(i.hasNext()) {
+			Map.Entry me = (Map.Entry)i.next();
+			poste_travail1.appendItem((String) me.getKey(),(String) me.getValue());
+		}
+		
+	}
+	
+	
 	
 	public void onSelect$poste_travail1() throws SQLException
 	{
@@ -422,14 +456,16 @@ public class FicheMetierAction extends GenericForwardComposer implements EventLi
 
 		}
 
-		KpiSyntheseModel kpi=new KpiSyntheseModel();
+		/*
+		 * A MODIFIER MODIFIER NE PAS OUBLIER
+		 * KpiSyntheseModel kpi=new KpiSyntheseModel();
 		map_poste=kpi.getListPostTravailValid(listDb);
 		Set set = (map_poste).entrySet(); 
 		Iterator i = set.iterator();
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
 			poste_travail2.appendItem((String) me.getKey(),(String) me.getValue());
-		}
+		}*/
 
 		poste_travail2.setSelectedIndex(0);
 

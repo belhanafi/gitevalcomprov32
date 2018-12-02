@@ -585,7 +585,7 @@ public class KpiSyntheseModel {
 	}
 
 
-	public HashMap getListPostTravailValid(HashMap<String, HashMap<String, Integer>> listDb) throws SQLException
+	public HashMap getListPostTravailValid(HashMap<String, HashMap<String, Integer>> listDb,List <String> list_code_dir) throws SQLException
 	{
 		CreateDatabaseCon dbcon=new CreateDatabaseCon();
 		Connection conn=(Connection) dbcon.connectToPrincipalDB();
@@ -593,6 +593,14 @@ public class KpiSyntheseModel {
 		HashMap map = new HashMap();
 		ResultSet rs=null;
 		String query="";
+		String structure = "(";
+		for ( int i=0;i<list_code_dir.size();i++){
+			if (i <list_code_dir.size()-1)
+		        structure+="'"+list_code_dir.get(i)+"',";
+			else
+				 structure+="'"+list_code_dir.get(i)+"'";
+		}
+		structure+=")";
 		try 
 		{
 			stmt = (Statement) conn.createStatement();
@@ -607,7 +615,8 @@ public class KpiSyntheseModel {
 
 					query="select  distinct t.code_poste,t.intitule_poste  from "+entry.getKey()+"."+"compagne_evaluation e, "+entry.getKey()+"."+"planning_evaluation p, "+entry.getKey()+"."+"poste_travail_description t" +
 							" where e.id_compagne in (select id_compagne from "+entry.getKey()+"."+"compagne_validation where compagne_valide=1) " +
-							" and p.id_compagne=e.id_compagne  and t.code_poste=p.code_poste and e.id_compagne="+idcompagne;
+							" and p.id_compagne=e.id_compagne  and t.code_poste=p.code_poste and e.id_compagne="+idcompagne+
+							" and t.code_structure in "+structure;
 					//System.out.println(">>>"+query);
 
 				}
@@ -1518,7 +1527,107 @@ public class KpiSyntheseModel {
 
 	}
 
+	
+	
+	/**
+	 * cette méthode retrourne  La liste des direction si direction est null dans la table structure_entreprise,
+	 * on recupère la division
+	 *  @return
+	 */
+	public HashMap<String,List<String>> getListDirection(HashMap<String, HashMap<String, Integer>> listDb)	{
 
+	
+		String query="";
+
+		for (Entry<String, HashMap<String, Integer>> entry : listDb.entrySet()) {
+
+	
+
+			for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
+							
+				query="select code_structure, case   when length(trim(direction))=0 then 'DIR NON RENSEIGNEE' ELSE direction END direction "
+						+ " from ("
+						+ "	select code_structure,libelle_direction as direction from "+entry.getKey()+"."+"structure_entreprise"
+						+ " union distinct"
+						+ " select code_structure,libelle_division as direction from "+entry.getKey()+"."+"structure_entreprise where length(code_direction)=0"
+						+ " )  tb order by direction";
+
+			}
+
+		}
+
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToPrincipalDB();
+		Statement stmt=null;
+		ResultSet rs=null;
+		HashMap<String,List<String>> mapListDir = new HashMap<String,List<String>> ();
+		
+		try 
+		{
+			stmt = (Statement) conn.createStatement();
+
+			rs = (ResultSet) stmt.executeQuery(query);
+			String libelle_direction="";
+		
+			while(rs.next()){
+				
+				libelle_direction=rs.getString("direction");
+				
+				if(mapListDir.get(libelle_direction)== null){
+					List <String> list_code_dir=new ArrayList<String>();
+					list_code_dir.add(rs.getString("code_structure"));
+					mapListDir.put(libelle_direction, list_code_dir);
+								
+				}else{
+					List <String> list_code_dir=mapListDir.get(libelle_direction);
+					list_code_dir.add(rs.getString("code_structure"));
+					mapListDir.put(libelle_direction,list_code_dir );
+					
+					
+				}
+				
+				//listDir.put(libelle_direction_save, list_code_dir);
+				
+				
+			}
+
+
+
+		} catch ( SQLException e ) {
+			System.out.println(e.toString());
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+		return mapListDir;
+
+
+	}
+	
+	
 
 
 }
