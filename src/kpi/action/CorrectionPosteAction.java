@@ -54,20 +54,12 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	Listbox list_realise;
 	Component comp1;
 	private Include iframe3;
-	
-	
-	
-
 	Button exporterWord;
 	Button EnregistrerAssociation;
 	Window win;
  
 	private HashMap <String, Radio> selectedRadio;
 	private  Radio selectedRadioEchelle;
-
-
-
-
 	private List<ListeCompagneVagueBean> model = new ArrayList<ListeCompagneVagueBean>();
 	private List<EchelleMaitrise> modelEchelle = new ArrayList<EchelleMaitrise>();
 	private List<ActionDevelopmentMetierBean> modelActionDevelopment = new ArrayList<ActionDevelopmentMetierBean>();
@@ -84,6 +76,8 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	private HashMap<String, HashMap<String, ActionDevelopmentMetierBean>> mapEchelleDevAction=null;
 	private Integer idcompagne;
 	private String selectedPosteTravail=null;
+	private Listbox direction1;
+	Map map_direction=null;
 	
 	
 	@SuppressWarnings("deprecation")
@@ -330,16 +324,50 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 
 
 		}
-
+		
+		if (direction1.getSelectedItems().size()>0) 
+			direction1.getItems().clear();
+		
 		KpiSyntheseModel kpi=new KpiSyntheseModel();
-		map_poste=kpi.getListPostTravailValid(listDb);
-		Set set = (map_poste).entrySet(); 
+		map_direction=kpi.getListDirection(listDb);
+		Set set = (map_direction).entrySet(); 
 		Iterator i = set.iterator();
+		while(i.hasNext()) {
+			Map.Entry me = (Map.Entry)i.next();
+			direction1.appendItem((String) me.getKey(),(String) me.getKey());
+		}
+
+		direction1.setSelectedIndex(0);
+		
+
 
 		
 
+		
+	}
+	
+	
+public void onSelect$direction1() throws SQLException	{
+		
+		poste_travail.getItems().clear();
+		
 		poste_travail.appendItem("Tous Postes Travail","tous");
-
+		
+		String libelle_direction=(String)direction1.getSelectedItem().getValue();
+		List <String> list_code_dir=(List)map_direction.get(libelle_direction);
+		
+		KpiSyntheseModel kpi=new KpiSyntheseModel();
+		map_poste=kpi.getListPostTravailValid(listDb,list_code_dir);
+		Set set = (map_poste).entrySet(); 
+		
+		Iterator i = set.iterator();
+		while(i.hasNext()) {
+			Map.Entry me = (Map.Entry)i.next();
+			poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
+		}
+		
+		
+		
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
 			poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
@@ -365,7 +393,9 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 		liste_action_development.setModel(listModel2);
 		selectedPosteTravail=null;
 
+		
 	}
+
 	
 	public void onModifyEchelle(ForwardEvent event) throws SQLException, InterruptedException{
 		if(selectedPosteTravail!=null){
@@ -489,6 +519,10 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 			
 		
 		}
+		
+		
+		
+		
  
  
 

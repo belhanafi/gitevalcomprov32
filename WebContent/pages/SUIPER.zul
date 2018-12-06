@@ -39,12 +39,17 @@
 
 						<label />
 						<label />
+						
+							<label value="Direction:" />
+							<listbox id="direction" mold="select" width="180px"
+								style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+						
 
-						<label value="  Structure Entreprise:" width="50px" />
+						<label value="  Structure:" width="50px" />
 						<listbox id="comp_struct_ent_list" mold="select" width="200px"
 							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
-						<label value="Poste de Travail:" width="50px" />
+						<label value="Poste:" width="50px" />
 						<listbox id="poste_travail" mold="select" width="200px"
 							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 					</hbox>
@@ -63,8 +68,8 @@
 			<listbox id="evaluateurlb" model="@{winCtrl.model}" multiple="true"
 				width="100%" mold="paging" pageSize="30" height="420px">
 				<listhead sizable="true">
-				
-				<listheader label="Direction" width="130px" sort="auto"
+
+					<listheader label="Direction" width="130px" sort="auto"
 						align="center" />
 
 					<listheader label="Matricule" width="130px" sort="auto"
@@ -79,10 +84,10 @@
 				</listhead>
 
 				<listitem self="@{each=listevaluateur}">
-				
-				<listcell label="@{listevaluateur.libelle_direction}"
+
+					<listcell label="@{listevaluateur.libelle_direction}"
 						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-						
+
 
 					<listcell label="@{listevaluateur.login}"
 						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
@@ -132,8 +137,8 @@
 							/ -->
 					</column>
 					<column>
-						<button id="executeexp" image="/image/excel_32.png" visible="true" 
-							tooltiptext="Exporter rapport suvi actions de développement" />
+						<button id="executeexp" image="/image/excel_32.png"
+							visible="true" tooltiptext="Exporter rapport suvi actions de développement" />
 					</column>
 
 				</columns>

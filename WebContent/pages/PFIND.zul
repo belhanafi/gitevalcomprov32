@@ -53,10 +53,19 @@
 				</listbox>
 			</div>
 			<div>
-			
-				<label value="Poste de travail:" />
-				<listbox id="poste_travail" mold="select" width="180px"
-					style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			<div></div><div></div><div></div><div></div><div></div>
+				<vlayout spacing="10px" >
+					<hlayout spacing="36px">
+						<label value="Direction :" />
+						<listbox id="direction1" mold="select" width="180px"
+							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					</hlayout>
+					<hlayout>
+						<label value="Poste de travail:" />
+						<listbox id="poste_travail" mold="select" width="180px"
+							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					</hlayout>
+				</vlayout>
 			</div>
 			<div>
 				<listbox id="liste_echelle" model="@{winCtrl.modelEchelle}"

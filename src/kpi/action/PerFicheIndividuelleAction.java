@@ -57,10 +57,6 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 	Listbox list_realise;
 	Component comp1;
 	private Include iframe;
-
-	
-	
-
 	Button exporterWord;
 	Button enregistrerAssociation;
 	Window win;
@@ -68,10 +64,6 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 	private HashMap <String, Radio> selectedRadio;
 	private  Radio selectedRadioEchelle;
 	private  Radio selectedRadioEvalue;
-
-
-
-
 	private List<ListeCompagneVagueBean> model = new ArrayList<ListeCompagneVagueBean>();
 	private List<EchelleMaitrise> modelEchelle = new ArrayList<EchelleMaitrise>();
 	private List<ActionDevelopmentBean> modelEvalue = new ArrayList<ActionDevelopmentBean>();
@@ -90,6 +82,8 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 	private HashMap<String, ArrayList<ActionDevelopmentBean>> mapEvalueAction=null;
 	private Integer idcompagne;
 	private String selectedPosteTravail=null;
+	private Listbox direction1;
+	Map map_direction=null;
 	
 	
 	@SuppressWarnings("deprecation")
@@ -364,42 +358,23 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		}
 
 		if (poste_travail.getSelectedItems().size()>0){
-
-
 			poste_travail.getItems().clear();
-
-
 		}
 
-		KpiSyntheseModel kpi=new KpiSyntheseModel();
-		map_poste=kpi.getListPostTravailValid(listDb);
-		Set set = (map_poste).entrySet(); 
-		Iterator i = set.iterator();
-
+		if (direction1.getSelectedItems().size()>0) 
+			direction1.getItems().clear();
 		
-
-		poste_travail.appendItem("Tous Postes Travail","tous");
-
+		KpiSyntheseModel kpi=new KpiSyntheseModel();
+		map_direction=kpi.getListDirection(listDb);
+		Set set = (map_direction).entrySet(); 
+		Iterator i = set.iterator();
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
-			poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
+			direction1.appendItem((String) me.getKey(),(String) me.getKey());
 		}
 
-		poste_travail.setSelectedIndex(0);
-		
-		
-		//chargement des d'echelles
-		modelEchelle=correctionPosteMoel.getListeEchelleMaitrise(listDb);
-
-		//chargement de la table suivi_sort
-		listSuiviSort= correctionPosteMoel.getListeSuiviSortEvalue( listDb);
-		ListModelList listModel = new ListModelList(modelEchelle);
-		liste_echelle.setModel(listModel);
-
-		initListBoxSuivi( listSuiviSort);
-		ListModelList listModel2 = new ListModelList(new ArrayList<ActionDevelopmentBean>());
-		liste_action_development.setModel(listModel2);
-		selectedPosteTravail=null;
+		direction1.setSelectedIndex(0);
+	
 
 	}
 	
@@ -648,6 +623,49 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 					return actionDevelopmentBean;
 			}
 			return null;
+		}
+		
+		
+		public void onSelect$direction1() throws SQLException	{
+			
+			poste_travail.getItems().clear();
+			
+			poste_travail.appendItem("Tous Postes Travail","tous");
+			
+			String libelle_direction=(String)direction1.getSelectedItem().getValue();
+			List <String> list_code_dir=(List)map_direction.get(libelle_direction);
+			
+			KpiSyntheseModel kpi=new KpiSyntheseModel();
+			map_poste=kpi.getListPostTravailValid(listDb,list_code_dir);
+			Set set = (map_poste).entrySet(); 
+			
+			Iterator i = set.iterator();
+			while(i.hasNext()) {
+				Map.Entry me = (Map.Entry)i.next();
+				poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
+			}
+			
+			while(i.hasNext()) {
+				Map.Entry me = (Map.Entry)i.next();
+				poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
+			}
+
+			poste_travail.setSelectedIndex(0);
+			
+			
+			//chargement des d'echelles
+			modelEchelle=correctionPosteMoel.getListeEchelleMaitrise(listDb);
+
+			//chargement de la table suivi_sort
+			listSuiviSort= correctionPosteMoel.getListeSuiviSortEvalue( listDb);
+			ListModelList listModel = new ListModelList(modelEchelle);
+			liste_echelle.setModel(listModel);
+
+			initListBoxSuivi( listSuiviSort);
+			ListModelList listModel2 = new ListModelList(new ArrayList<ActionDevelopmentBean>());
+			liste_action_development.setModel(listModel2);
+			selectedPosteTravail=null;
+			
 		}
  
 

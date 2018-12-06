@@ -636,6 +636,7 @@ public class KpiSyntheseModel {
 			//stmt.close();conn.close();
 		} 
 		catch ( SQLException e ) {
+			System.out.println(e.toString());
 
 		} finally {
 
@@ -1547,9 +1548,9 @@ public class KpiSyntheseModel {
 							
 				query="select code_structure, case   when length(trim(direction))=0 then 'DIR NON RENSEIGNEE' ELSE direction END direction "
 						+ " from ("
-						+ "	select code_structure,libelle_direction as direction from "+entry.getKey()+"."+"structure_entreprise"
+						+ "	select code_structure,libelle_direction as direction from "+entry.getKey()+"."+"structure_entreprise where length(trim(libelle_direction))!=0 "
 						+ " union distinct"
-						+ " select code_structure,libelle_division as direction from "+entry.getKey()+"."+"structure_entreprise where length(code_direction)=0"
+						+ " select code_structure,libelle_division as direction from "+entry.getKey()+"."+"structure_entreprise where length(trim(libelle_direction))=0 "
 						+ " )  tb order by direction";
 
 			}
@@ -1626,7 +1627,76 @@ public class KpiSyntheseModel {
 
 
 	}
-	
+	public HashMap getListPostTravailValid1(HashMap<String, HashMap<String, Integer>> listDb) throws SQLException
+	{
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToPrincipalDB();
+		Statement stmt = null;
+		HashMap map = new HashMap();
+		ResultSet rs=null;
+		String query="";
+		try 
+		{
+			stmt = (Statement) conn.createStatement();
+
+			for (Entry<String, HashMap<String, Integer>> entry : listDb.entrySet()) {
+
+				int map_size=listDb.entrySet().size();
+
+				for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
+					String vague = pair.getKey();
+					Integer idcompagne = pair.getValue();
+
+					query="select  distinct t.code_poste,t.intitule_poste  from "+entry.getKey()+"."+"compagne_evaluation e, "+entry.getKey()+"."+"planning_evaluation p, "+entry.getKey()+"."+"poste_travail_description t" +
+							" where e.id_compagne in (select id_compagne from "+entry.getKey()+"."+"compagne_validation where compagne_valide=1) " +
+							" and p.id_compagne=e.id_compagne  and t.code_poste=p.code_poste and e.id_compagne="+idcompagne;
+					//System.out.println(">>>"+query);
+
+				}
+
+			}
+
+
+
+
+			rs = (ResultSet) stmt.executeQuery(query);
+
+
+			while(rs.next()){
+				map.put(rs.getString("intitule_poste"), rs.getString("code_poste"));
+				//list_profile.add(rs.getString("libelle_profile"));
+			}
+			//stmt.close();conn.close();
+		} 
+		catch ( SQLException e ) {
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+
+		return map;
+	}
+
 	
 
 

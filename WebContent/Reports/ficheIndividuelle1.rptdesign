@@ -576,17 +576,13 @@ return false;]]></method>
     </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
+            <property name="showFooterOnLast">true</property>
             <page-footer>
                 <grid id="3">
                     <property name="width">100%</property>
                     <column id="4"/>
                     <row id="5">
-                        <cell id="6">
-                            <text id="7">
-                                <property name="contentType">html</property>
-                                <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
-                            </text>
-                        </cell>
+                        <cell id="6"/>
                     </row>
                 </grid>
             </page-footer>

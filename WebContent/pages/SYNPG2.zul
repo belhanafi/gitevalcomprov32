@@ -199,6 +199,14 @@
 											</listbox>
 
 											<vlayout>
+												<hlayout spacing="36px">
+													<label value="Direction :" />
+													<listbox id="direction2" mold="select" width="180px"
+														style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+
+													<!-- button id="executer2" label="Ok" / -->
+												</hlayout>
 												<hlayout>
 													<label value="Poste de travail:" />
 													<listbox id="poste_travail2" mold="select" width="180px"

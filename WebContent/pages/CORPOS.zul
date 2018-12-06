@@ -54,6 +54,14 @@
 					</listbox>
 
 					<vlayout>
+						<hlayout spacing="36px">
+							<label value="Direction :" />
+							<listbox id="direction1" mold="select" width="180px"
+								style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+
+							<!-- button id="executer2" label="Ok" / -->
+						</hlayout>
 						<hlayout>
 							<label value="Poste de travail:" />
 							<listbox id="poste_travail" mold="select" width="220px"
@@ -100,8 +108,8 @@
 
 				<vlayout>
 					<listbox id="liste_action_development" rows="1"
-						model="@{winCtrl.modelActionDevelopment}" 
-						width="100%" mold="paging" pageSize="500" height="420px">
+						model="@{winCtrl.modelActionDevelopment}" width="100%" mold="paging"
+						pageSize="500" height="420px">
 						<listhead sizable="true">
 
 							<listheader label="idAction" width="0px" sort="auto"
@@ -183,8 +191,10 @@
 					<label visible="false"></label>
 					<label visible="false"></label>
 					<div height="50px">
-					<button id="btReportpg3" image="/image/word-icon32.png" tooltiptext="Exporter perspectives fiche métier" />
-					<button id="enregistrerAssociation" image="/image/save.png" tooltiptext="Enregister les actions de développement pour ce poste"/>
+						<button id="btReportpg3" image="/image/word-icon32.png"
+							tooltiptext="Exporter perspectives fiche métier" />
+						<button id="enregistrerAssociation" image="/image/save.png"
+							tooltiptext="Enregister les actions de développement pour ce poste" />
 					</div>
 				</hlayout>
 

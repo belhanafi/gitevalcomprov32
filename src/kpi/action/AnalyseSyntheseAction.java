@@ -520,12 +520,8 @@ public class AnalyseSyntheseAction extends GenericForwardComposer implements Eve
 				Integer idcompagne=Integer.parseInt(selectedRadio.get(cles).getContext());
 				String nominstance=selectedRadio.get(cles).getSclass();
 				String vague=selectedRadio.get(cles).getValue();
-
-
-
 				listDb.put(nominstance, new HashMap<String, Integer>());
 				listDb.get(nominstance).put(vague, idcompagne);
-
 
 			}
 
@@ -536,7 +532,7 @@ public class AnalyseSyntheseAction extends GenericForwardComposer implements Eve
 
 
 		KpiSyntheseModel kpi=new KpiSyntheseModel();
-		map_poste=kpi.getListPostTravailValid(listDb);
+		map_poste=kpi.getListPostTravailValid1(listDb);
 		Set set = (map_poste).entrySet(); 
 		Iterator i = set.iterator();
 		poste_travail.appendItem("Tous Postes Travail","tous");
@@ -1366,7 +1362,7 @@ public class AnalyseSyntheseAction extends GenericForwardComposer implements Eve
 		}
 
 		KpiSyntheseModel kpi=new KpiSyntheseModel();
-		map_poste=kpi.getListPostTravailValid(listDb);
+		map_poste=kpi.getListPostTravailValid1(listDb);
 		Set set = (map_poste).entrySet(); 
 		Iterator i = set.iterator();
 

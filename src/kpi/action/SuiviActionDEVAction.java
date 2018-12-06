@@ -17,8 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import kpi.bean.ProgresActionDevBean;
 import kpi.bean.SuiviActionDevBean;
 import kpi.model.FicheIndividuelleModel;
+import kpi.model.KpiSyntheseModel;
+import kpi.model.SuviActionDEVModel;
 import net.sf.jxls.exception.ParsePropertyException;
 import net.sf.jxls.transformer.XLSTransformer;
 
@@ -71,13 +74,16 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 	boolean compage_termine=true;
 	int profileid;
 	Popup pp_list_evalue;
-	
+
 	AnnotateDataBinder binder1;
 	Component comp1;
 	Button executeexp;
 	Map map = new HashMap();
 	Listbox poste_travail;
 	Map map_poste=null;
+	private Listbox direction;
+	Map map_direction=null;
+
 
 
 
@@ -91,7 +97,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		SuiviCompagneModel init= new SuiviCompagneModel();
 
 		Integer compagne_id=0;
-		String code_structure_str="";
+
 
 		map=init.getCompagneList();
 
@@ -111,22 +117,20 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 			compagne_id=Integer.parseInt((String) comp_list.getSelectedItem().getValue());
 		}
 
-		Set set_ent = (init.getStructEntList()).entrySet(); 
-		Iterator itr = set_ent.iterator();
 
-		// Affichage de la liste des strcutures entreprise
-		comp_struct_ent_list.appendItem("Toutes Structures","-1");
-		while(itr.hasNext()) {
-			Map.Entry me = (Map.Entry)itr.next();
+		if (direction.getSelectedItems().size()>0) 
+			direction.getItems().clear();
 
-			comp_struct_ent_list.appendItem((String) me.getKey(),(String) me.getValue());
-
-			//profilemodel.add((String) me.getKey());
+		SuviActionDEVModel kpi=new SuviActionDEVModel();
+		map_direction=kpi.getListDirection();
+		Set set1 = (map_direction).entrySet(); 
+		Iterator i1 = set1.iterator();
+		while(i1.hasNext()) {
+			Map.Entry me = (Map.Entry)i1.next();
+			direction.appendItem((String) me.getKey(),(String) me.getKey());
 		}
-		if(comp_struct_ent_list.getItemCount()>0){
-			comp_struct_ent_list.setSelectedIndex(0);
-			code_structure_str=(String) comp_struct_ent_list.getSelectedItem().getValue();
-		}
+
+		direction.setSelectedIndex(0);
 
 
 
@@ -136,7 +140,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		progressbar.setStyle("background:#FF0000;");
 		binder = new AnnotateDataBinder(comp);
 		binder.loadAll();
-		
+
 		comp1=comp;
 
 	}
@@ -169,20 +173,20 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 
 		FicheIndividuelleModel init_m=new FicheIndividuelleModel();
 		model=init_m.getActionDevProgress(code_poste, compagne);
-		
+
 		if (model.size()==0){
-			
-			 try {
+
+			try {
 				Messagebox.show("Aucune action de développement definie pour ce poste  pour cette campagne !", "Information", Messagebox.OK, Messagebox.INFORMATION);
 				return;
-				
-				
+
+
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			
+
 		}
 		binder = new AnnotateDataBinder(comp1);
 		binder.loadAll();
@@ -199,7 +203,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		String code_structure=(String) comp_struct_ent_list.getSelectedItem().getValue();
 		//FicheIndividuelleModel init_m=new FicheIndividuelleModel();
 		//model=init_m.getActionDevProgress(code_structure, compagne);
-
+		poste_travail.appendItem("Tous Postes Travail","-1");
 		EmployeModel init_p=new EmployeModel();
 		Set set_ent = (init_p.getListPosteStructure(code_structure)).entrySet(); 
 		Iterator itr_ = set_ent.iterator();
@@ -219,6 +223,8 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 
 			//profilemodel.add((String) me.getKey());
 		}
+		
+	
 
 		if (poste_travail.getItemCount()>0)
 			poste_travail.setSelectedIndex(0);
@@ -241,7 +247,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		}
 
 	}
-	
+
 
 
 
@@ -272,12 +278,12 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 	}
 
 	public void onClick$sendmail() throws SQLException, InterruptedException {
-		
+
 		FicheIndividuelleModel init= new FicheIndividuelleModel();
 		List lisAdmin=init.getListAdmin();
-		
+
 		if (lisAdmin.size()!=0){
-			
+
 			if (Messagebox.show("Voulez vous envoyer l'alerte email aux adminitrateurs RH?", "Prompt", Messagebox.YES|Messagebox.NO,
 					Messagebox.QUESTION) == Messagebox.YES) {
 				init.sendAlertEvaluateur(model,lisAdmin);
@@ -288,20 +294,20 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 			else{
 				return;
 			}
-			
+
 		}else{
 			Messagebox.show("La liste des employés ne comporte aucun administrateur RH !", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
 
 			return;
 		}
-		
 
-		
+
+
 
 
 
 	}
-	
+
 
 
 	public void onSelect$comp_list() throws SQLException, InterruptedException {
@@ -315,43 +321,96 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 
 		// System.out.println("\nApp Deployed Directory path: " + Sessions.getCurrent().getWebApp().getRealPath("WEB-INF"));
 
-		FileOutputStream fOut= new FileOutputStream("SuiviActionDeveloppement.xls");
+		FileOutputStream fOut= new FileOutputStream("SuiviActionDeveloppement.xlsx");
 		int idCompagne=Integer.valueOf((String)comp_list.getSelectedItem().getValue());
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = new Date();
-		      
-		
+
+
 		FicheIndividuelleModel init_m=new FicheIndividuelleModel();
 		ArrayList<SuiviActionDevBean> list=init_m.exportRapport( idCompagne);
-		
+		List maps = new ArrayList();
+		List sheetNames = new ArrayList();
+		 
 		Map beans = new HashMap();
 		beans.put("employee", list);
+		sheetNames.add( "list actions DEV" );
 		
+		SuviActionDEVModel init=new SuviActionDEVModel();
+		ArrayList<ProgresActionDevBean> list_act=init.exportRapport(idCompagne);
+
+		//Map beans = new HashMap();
+		beans.put("action_dev", list_act);
+		sheetNames.add( "Progression actions DEV" );
+
+		maps.add( beans );
 		
+	
 		
+
+
+
 		XLSTransformer transformer = new XLSTransformer(); 
 		String reportLocation = Sessions.getCurrent().getWebApp().getRealPath("WEB-INF");
 		String reportLocation1 = Sessions.getCurrent().getWebApp().getRealPath("WebContent");
-	
-		Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_suivi_action_dev.xls"), beans);
+
+		Workbook workbook  = transformer.transformMultipleSheetsList(new FileInputStream(reportLocation+ "/template_suivi_action_dev2.xlsx"), maps, sheetNames, "map", new HashMap(), 0);                
+      //Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_suivi_action_dev.xls"), beans);
 		workbook.write(fOut);
 		fOut.flush();
 		fOut.close();
 
-		File file = new File("SuiviActionDeveloppement.xls");
+		File file = new File("SuiviActionDeveloppement.xlsx");
 		Filedownload.save(file, "XLS");
-		
+
 
 
 
 	}
 	
+	
+	private void genExportProgressActionExcel() throws SQLException, ParsePropertyException, InvalidFormatException, IOException {
+
+		// System.out.println("\nApp Deployed Directory path: " + Sessions.getCurrent().getWebApp().getRealPath("WEB-INF"));
+
+		FileOutputStream fOut= new FileOutputStream("SuiviProgresActionDeveloppement.xls");
+		int idCompagne=Integer.valueOf((String)comp_list.getSelectedItem().getValue());
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = new Date();
+
+
+		SuviActionDEVModel init_m=new SuviActionDEVModel();
+		ArrayList<ProgresActionDevBean> list=init_m.exportRapport(idCompagne);
+
+		Map beans = new HashMap();
+		beans.put("action_dev", list);
+
+
+
+		XLSTransformer transformer = new XLSTransformer(); 
+		String reportLocation = Sessions.getCurrent().getWebApp().getRealPath("WEB-INF");
+		String reportLocation1 = Sessions.getCurrent().getWebApp().getRealPath("WebContent");
+
+		Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_suivi_action_dev1.xls"), beans);
+		workbook.write(fOut);
+		fOut.flush();
+		fOut.close();
+
+		File file = new File("SuiviProgresActionDeveloppement.xls");
+		Filedownload.save(file, "XLS");
+
+
+
+
+	}
+
 	public void onClick$executeexp() throws Exception {
-		
-		if (Messagebox.show("Voulez vous exporter le rapport de suivi des actions de développement ?", "Prompt", Messagebox.YES|Messagebox.NO,
+
+		if (Messagebox.show("Voulez vous exporter le rapport de suivi des actions de développement et de progression ?", "Prompt", Messagebox.YES|Messagebox.NO,
 				Messagebox.QUESTION) == Messagebox.YES) {
 			//exportMatriceCotationExlFileV2();
-			genExportExcel();
+			genExportProgressActionExcel();
+			//genExportProgressActionExcel();
 
 			return;
 		}
@@ -359,8 +418,37 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		else{
 			return;
 		}
+
+
+	}
+
+	public void onSelect$direction() throws SQLException	{
+
+		comp_struct_ent_list.getItems().clear();
+		String code_structure_str="";
 		
+		String libelle_direction=(String)direction.getSelectedItem().getValue();
+		List <String> list_code_dir=(List)map_direction.get(libelle_direction);
 		
+		SuviActionDEVModel init= new SuviActionDEVModel();
+		//recuperer la liste des structures
+		Set set_ent = (init.getStructEntList(list_code_dir)).entrySet(); 
+		Iterator itr = set_ent.iterator();
+
+		// Affichage de la liste des strcutures entreprise
+		comp_struct_ent_list.appendItem("Toutes Structures","-1");
+		while(itr.hasNext()) {
+			
+			Map.Entry me = (Map.Entry)itr.next();
+			comp_struct_ent_list.appendItem((String) me.getKey(),(String) me.getValue());
+
+			//profilemodel.add((String) me.getKey());
+		}
+		if(comp_struct_ent_list.getItemCount()>0){
+			comp_struct_ent_list.setSelectedIndex(0);
+			code_structure_str=(String) comp_struct_ent_list.getSelectedItem().getValue();
+		}
+
 	}
 
 

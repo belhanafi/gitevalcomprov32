@@ -53,6 +53,8 @@ public class FicheMetierAction extends GenericForwardComposer implements EventLi
 	private Listbox poste_travail2;
 	Map map_poste=null;
     private Listbox direction1;
+    private Listbox direction2;
+
 	Map map_direction=null;
 
 
@@ -272,6 +274,8 @@ public class FicheMetierAction extends GenericForwardComposer implements EventLi
 	
 	public void onSelect$direction1() throws SQLException	{
 		
+		poste_travail1.getItems().clear();
+		
 		String libelle_direction=(String)direction1.getSelectedItem().getValue();
 		List <String> list_code_dir=(List)map_direction.get(libelle_direction);
 		
@@ -283,6 +287,26 @@ public class FicheMetierAction extends GenericForwardComposer implements EventLi
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
 			poste_travail1.appendItem((String) me.getKey(),(String) me.getValue());
+		}
+		
+	}
+	
+	
+public void onSelect$direction2() throws SQLException	{
+		
+		poste_travail2.getItems().clear();
+		
+		String libelle_direction=(String)direction2.getSelectedItem().getValue();
+		List <String> list_code_dir=(List)map_direction.get(libelle_direction);
+		
+		KpiSyntheseModel kpi=new KpiSyntheseModel();
+		map_poste=kpi.getListPostTravailValid(listDb,list_code_dir);
+		Set set = (map_poste).entrySet(); 
+		
+		Iterator i = set.iterator();
+		while(i.hasNext()) {
+			Map.Entry me = (Map.Entry)i.next();
+			poste_travail2.appendItem((String) me.getKey(),(String) me.getValue());
 		}
 		
 	}
@@ -448,26 +472,20 @@ public class FicheMetierAction extends GenericForwardComposer implements EventLi
 
 		}
 
-		if (poste_travail2.getSelectedItems().size()>0){
-
-
-			poste_travail2.getItems().clear();
-
-
-		}
-
-		/*
-		 * A MODIFIER MODIFIER NE PAS OUBLIER
-		 * KpiSyntheseModel kpi=new KpiSyntheseModel();
-		map_poste=kpi.getListPostTravailValid(listDb);
-		Set set = (map_poste).entrySet(); 
+		
+		if (direction2.getSelectedItems().size()>0) 
+			direction2.getItems().clear();
+		
+		KpiSyntheseModel kpi=new KpiSyntheseModel();
+		map_direction=kpi.getListDirection(listDb);
+		Set set = (map_direction).entrySet(); 
 		Iterator i = set.iterator();
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
-			poste_travail2.appendItem((String) me.getKey(),(String) me.getValue());
-		}*/
+			direction2.appendItem((String) me.getKey(),(String) me.getKey());
+		}
 
-		poste_travail2.setSelectedIndex(0);
+		direction2.setSelectedIndex(0);
 
 	}
 	
