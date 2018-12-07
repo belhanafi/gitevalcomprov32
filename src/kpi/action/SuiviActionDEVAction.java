@@ -321,7 +321,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 
 		// System.out.println("\nApp Deployed Directory path: " + Sessions.getCurrent().getWebApp().getRealPath("WEB-INF"));
 
-		FileOutputStream fOut= new FileOutputStream("SuiviActionDeveloppement.xlsx");
+		FileOutputStream fOut= new FileOutputStream("SuiviActionDeveloppement.xls");
 		int idCompagne=Integer.valueOf((String)comp_list.getSelectedItem().getValue());
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = new Date();
@@ -334,18 +334,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		 
 		Map beans = new HashMap();
 		beans.put("employee", list);
-		sheetNames.add( "list actions DEV" );
 		
-		SuviActionDEVModel init=new SuviActionDEVModel();
-		ArrayList<ProgresActionDevBean> list_act=init.exportRapport(idCompagne);
-
-		//Map beans = new HashMap();
-		beans.put("action_dev", list_act);
-		sheetNames.add( "Progression actions DEV" );
-
-		maps.add( beans );
-		
-	
 		
 
 
@@ -354,13 +343,13 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		String reportLocation = Sessions.getCurrent().getWebApp().getRealPath("WEB-INF");
 		String reportLocation1 = Sessions.getCurrent().getWebApp().getRealPath("WebContent");
 
-		Workbook workbook  = transformer.transformMultipleSheetsList(new FileInputStream(reportLocation+ "/template_suivi_action_dev2.xlsx"), maps, sheetNames, "map", new HashMap(), 0);                
+		Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_suivi_action_dev.xls"), beans);
       //Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_suivi_action_dev.xls"), beans);
 		workbook.write(fOut);
 		fOut.flush();
 		fOut.close();
 
-		File file = new File("SuiviActionDeveloppement.xlsx");
+		File file = new File("SuiviActionDeveloppement.xls");
 		Filedownload.save(file, "XLS");
 
 
@@ -410,7 +399,7 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 				Messagebox.QUESTION) == Messagebox.YES) {
 			//exportMatriceCotationExlFileV2();
 			genExportProgressActionExcel();
-			//genExportProgressActionExcel();
+			genExportExcel();
 
 			return;
 		}

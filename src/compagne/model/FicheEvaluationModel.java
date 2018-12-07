@@ -1539,7 +1539,7 @@ public class FicheEvaluationModel {
 					+ " in (select distinct  w.id_planning_evaluation from planning_evaluation w , compagne_evaluation h where  h.id_compagne=#id_compagne and w.id_compagne=h.id_compagne)";*/
 
 			String select_structure="select distinct  k.id_planning_evaluation,r.famille, r.code_famille, e.nom, e.prenom , e.id_employe, t.intitule_poste , t.code_poste,"
-					+ " case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
+					+ " case    when length(trim(libelle_direction))=0 then libelle_division"
 					+ " else libelle_direction end as libelle_direction  "
 					+ " from repertoire_competence r, employe e , poste_travail_description t, planning_evaluation k, structure_entreprise s"
 					+ " where e.id_employe in  (select distinct v.id_employe from planning_evaluation v , compagne_evaluation n ,fiche_validation  i"

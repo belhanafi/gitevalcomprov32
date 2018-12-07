@@ -4,8 +4,11 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -126,7 +129,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 	Combobox compagneM;
 
 
-	//TODO ces deux boutons sont à supprimer
+	//TODO ces deux boutons sont é supprimer
 	Button exporterJson;
 	Button rattrapageCalculIMI;
 	//objets a utiliser
@@ -224,7 +227,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		/**
 		 *  recuperer uniquement la liste des compagnes validés
 		 * Cette liste sera utilisée pour la combox compagne MaFiCheEvaluation
-		 * L'évaluateur et l'évalué doivent avoir accès  à leur fiche uniquement une fois
+		 * L'évaluateur et l'évalué doivent avoir accés  é leur fiche uniquement une fois
 		 * la compagne validée
 		 *
 		 */
@@ -268,7 +271,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		//TODO ligne a supprimer ApplicationFacade
 		//CompteBean compteUtilisateur=ApplicationFacade.getInstance().getCompteUtilisateur();
 
-		//récupération de l'id_employé associé à l'id_compte
+		//récupération de l'id_employé associé é l'id_compte
 		FicheEvaluationModel ficheEvaluationModel=new FicheEvaluationModel();
 		FicheEvaluationJsonModel ficheEvaluationJsonModel=new FicheEvaluationJsonModel();
 		id_employe=ficheEvaluationModel.getIdEmploye(compteUtilisateur.getId_compte());
@@ -287,7 +290,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		//récupération de l'information sur la validité de la fiche de l'employé connecté
 		boolean ficheValide=ficheEvaluationModel.getValiditeFiche(id_employe);
 
-		//récupération des informations associées à une fiche d'evaluation à remplir;
+		//récupération des informations associées é une fiche d'evaluation é remplir;
 
 		mapPosteTravailFiche=ficheEvaluationModel.getInfosFicheEvaluationparPoste(compagne_id);
 		//CompetencePosteTravailModel compt=new CompetencePosteTravailModel();
@@ -307,7 +310,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 			//construction et affichage du contenu de la page d'evaluation de la personne connecté
 
-			//initialisation du nom de l'evaluateur à blanc
+			//initialisation du nom de l'evaluateur é blanc
 			String nomEvaluateur= ficheEvaluationModel.getMonEvaluateur(id_employe, String.valueOf(compagne_id));
 			nomEvaluateurM.setText(nomEvaluateur);
 			//récupération du nom de la personne connecté
@@ -341,10 +344,10 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				//aucune compagne n'est prévu pour ce poste de travail
 
 				//enlever ce qui existe et afficher la page HTML 
-				//affichage d'un message disant que la fiche ne peut être visible
+				//affichage d'un message disant que la fiche ne peut étre visible
 				//gb3.detach();
 				html=new Html();
-				//String content="Vous n'avez pas  été convoqué à aucune campagne d'évaluation ";
+				//String content="Vous n'avez pas  été convoqué é aucune campagne d'évaluation ";
 				String content=" ";
 				html.setStyle("color:red;margin-left:15px");
 				html.setContent(content);
@@ -375,7 +378,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 					{
 						FicheEvaluationBean ficheEvaluationBean=iteratorFiche.next();
 
-						//mise à jour du titre
+						//mise é jour du titre
 
 
 						//labelM.setLabel("Fiche Employé : évaluation du "+  ficheEvaluationBean.getDate_evaluation() +" de la compagne "+ ficheEvaluationBean.getCompagne_type());
@@ -439,9 +442,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			String content="";
 			gb3.detach();
 
-			//affichage d'un message disant que la fiche ne peut être visible
+			//affichage d'un message disant que la fiche ne peut étre visible
 			html=new Html();
-			content="Vous n'avez pas accès à votre fiche d'évaluation car elle n'a pas encore été complétée par l'évaluateur";
+			content="Vous n'avez pas accés é votre fiche d'évaluation car elle n'a pas encore été complétée par l'évaluateur";
 			html.setStyle("color:red;margin-left:15px");
 			html.setContent(content);
 			html.setParent(maFiche);
@@ -451,10 +454,10 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			FicheEvaluation.detach();
 			maFiche.detach();
 		}
-		//si c'est un évaluateur alors on affiche la liste des fiches associés aux employés à évaluer
+		//si c'est un évaluateur alors on affiche la liste des fiches associés aux employés é évaluer
 		boolean est_evaluateur=false;
 		//if(compteUtilisateur.getId_profile()==3)
-		//un administrateur peut être un évaluateur aors on test l'attribut est_evauateur de la table employe
+		//un administrateur peut étre un évaluateur aors on test l'attribut est_evauateur de la table employe
 		est_evaluateur=ficheEvaluationModel.getEstEvauateur(id_employe);
 		if(est_evaluateur)
 		{
@@ -464,7 +467,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeAEvaluerBean.getMapclesposte();
 			Set <String>listePoste= Mapclesposte.keySet();
 			Iterator <String > iterator=listePoste.iterator();
-			poste_travail.appendItem("Tous poste de travail");
+			poste_travail.appendItem("Tous postes de travail");
 			while(iterator.hasNext())
 			{				
 				String nomPoste=iterator.next();
@@ -533,7 +536,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			if (compteUtilisateur.getId_profile()==3)
 				mapEmployeEvalueBean=ficheEvaluationModel.getListEmployesvalueComp(id_employe,compagne_id);
 
-			//sinon (administrateur ) lancer un eautre méthode qui récupère tous ceux qui ont été évaluées
+			//sinon (administrateur ) lancer un eautre méthode qui récupére tous ceux qui ont été évaluées
 			if ((compteUtilisateur.getId_profile()==2)||(compteUtilisateur.getId_profile()==1)){
 				//modif point 2 v3.2 05/07/2018
 				directionV.setVisible(true);
@@ -563,7 +566,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			
 
 		
-				poste_travailV.appendItem("Tous poste de travail");
+				poste_travailV.appendItem("Tous postes de travail");
 				while(iterator.hasNext())
 				{
 					String nomPoste=iterator.next();
@@ -672,7 +675,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		//fin reinitialisation du timer	
 
 		validationtente=false;
-		//vider le contenu de la grille associée à l'ancien employé selectionné
+		//vider le contenu de la grille associée é l'ancien employé selectionné
 		autorise=true;
 
 		mapFamilleCombo=new HashMap<String, HashMap<String , Combobox>> (); 
@@ -704,10 +707,10 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 		mapItemsFamille=new 	HashMap<String, ArrayList<Listitem>>();	 
 		//employelb.renderAll();
-		//lors de la selection d'un employé, affichage d ela fiche associé à cet employé si elle existe 
+		//lors de la selection d'un employé, affichage d ela fiche associé é cet employé si elle existe 
 		//si la fiche n'existe pas , il faut la creer
 
-		//1. affichage des informations relatifs à l'employé
+		//1. affichage des informations relatifs é l'employé
 
 		selectedEmploye=employe.getSelectedItem().getLabel();
 
@@ -742,7 +745,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				// TODO Auto-generated catch block
 				//e.printStackTrace()
 				try {
-					Messagebox.show("Problème de configuration: Merci de vérifier association du poste travail vs campagne OU poste travail vs aptitudes Obs !", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+					Messagebox.show("Probléme de configuration: Merci de vérifier association du poste travail vs campagne OU poste travail vs aptitudes Obs !", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -751,9 +754,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 			}
 
-			//afficher toutes les données associées à ce poste de travail
+			//afficher toutes les données associées é ce poste de travail
 
-			//recuperation du code_poste associé à l'intitule
+			//recuperation du code_poste associé é l'intitule
 
 
 			String cles=code_poste+"#"+selectedFamille;
@@ -931,7 +934,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			currentListItem=liste;
 			mapFamilleCombo.put(selectedFamille, listeCombo);
 
-			//initialisation du reste des combos au cas où il y deja eu une cotatio
+			//initialisation du reste des combos au cas oé il y deja eu une cotatio
 			iterator=listFamillePoste.iterator();
 			while (iterator.hasNext())
 			{
@@ -1007,7 +1010,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 							listeCombo.put(valeur,cotation );
 						}
 					}
-					if(listFiche!=null) //si une quotation a été déjà effectué;enregistrer sinon ne rien faire
+					if(listFiche!=null) //si une quotation a été déjé effectué;enregistrer sinon ne rien faire
 						mapFamilleCombo.put(famille, listeCombo);
 				}
 
@@ -1025,7 +1028,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 
 
-		//vider le contenu de la grille associée à l'ancien employé selectionné
+		//vider le contenu de la grille associée é l'ancien employé selectionné
 		if (currentListItem!=null)
 		{
 			Iterator<Listitem> iterator=currentListItem.iterator();
@@ -1061,12 +1064,12 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		}
 		employe.appendItem("sélectionner un employé");
 
-		//1. mise à jour de la liste des employes avec la selection de l'attribut selectionner un employe
+		//1. mise é jour de la liste des employes avec la selection de l'attribut selectionner un employe
 		//avec toutes les conséquences qui doivent se découler de cette de cette selection
 
 		//remplissage du contenu de la combo associée aux postes de travail
 		selectednomposteTravail=poste_travail.getSelectedItem().getLabel();
-		if(!selectednomposteTravail.equals("Tous poste de travail"))
+		if(!selectednomposteTravail.equals("Tous postes de travail"))
 		{
 			HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeAEvaluerBean.getMapclesposte();
 			HashMap<String, EmployesAEvaluerBean> mapEmploye=Mapclesposte.get(selectednomposteTravail);
@@ -1138,9 +1141,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			}
 		}
 
-		//recuperer les infos associé à l'employé selectionné
+		//recuperer les infos associé é l'employé selectionné
 		EmployesAEvaluerBean employerAEvaluerBean=mapEmployeAEvaluerBean.getMapclesnomEmploye().get(selectedEmploye);
-		//recuperation du code_poste associé à l'intitule
+		//recuperation du code_poste associé é l'intitule
 		String code_poste=mapintitule_codeposte.get(selectednomposteTravail);
 
 		String cles=code_poste+"#"+selectedFamille;
@@ -1273,7 +1276,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				String vleurCotation=cotationBean.getValeur_cotation()+"";
 				if("0".equals(vleurCotation))
 					vleurCotation="N/A";
-				//si la famille a déjà été visitée et enregistrée entant que brouillon
+				//si la famille a déjé été visitée et enregistrée entant que brouillon
 				if(familleVisite)
 				{
 					cotation.appendItem(vleurCotation);
@@ -1605,7 +1608,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 							int valeurCotation=getValeurCotation(id_cotation);
 
-							//construction de la requete de la mise à jour de l afiche d'evaluation
+							//construction de la requete de la mise é jour de l afiche d'evaluation
 							//requeteUpdateFicheEvalution=ficheEvaluationModel.updateFicheEvalutionConstructionRequete(id_repertoire_competence,id_employe,id_planning_evaluation,id_cotation,requeteUpdateFicheEvalution);
 							//System.out.println(requeteUpdateFicheEvalution);
 
@@ -1658,14 +1661,14 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 				}//fin de la boucle qui permet de récupérer les données de l'ecran
 				ficheEvaluationJsonBean.setFicheValide(false);
-				//ces deux variables doivent être positionnées quand on gérera l'affichage de plusieurs compagnes pour un employe
+				//ces deux variables doivent étre positionnées quand on gérera l'affichage de plusieurs compagnes pour un employe
 				//				 ficheEvaluationJsonBean.setCompagne_type(compagne_type);
 				//				 ficheEvaluationJsonBean.setDate_evaluation(date_evaluation);
 				ficheEvaluationJsonBean.setId_employe(new Integer(id_employe));
 				ficheEvaluationJsonBean.setId_planning_evaluation(new Integer(id_planning_eval));
 				FicheEvaluationJsonModel ficheJsonModel=new  FicheEvaluationJsonModel();
 				boolean result_fich_eval=ficheJsonModel.updateFicheEvalutionJson(id_employe, id_planning_evaluation, ficheEvaluationJsonBean);
-				//exécution de la requête de mise a jour ou d'enregistrement dans la base
+				//exécution de la requéte de mise a jour ou d'enregistrement dans la base
 				// boolean result_fich_eval=ficheEvaluationModel.updateMultiQuery(requeteJson);
 
 
@@ -1854,6 +1857,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			// debut modif point 2 v3.2 05/07/2018
 			HashMap<String,ArrayList<String>> Mapdirection=mapEmployeEvalueBean.getMapclesdirection().get(direction);
 			ArrayList<String> employelist= Mapdirection.get(poste);
+			if(employelist.size()>0)
 			Collections.sort(employelist);
 
 
@@ -1905,7 +1909,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			evaluateur_lblV.setVisible(false);
 			//Fin Modif NB du 18/02/16 Point 9
 
-			//vider le contenu de la grille associée à l'ancien employé selectionné
+			//vider le contenu de la grille associée é l'ancien employé selectionné
 			if (currentListItemV!=null)
 			{
 				Iterator<Listitem> iterator=currentListItemV.iterator();
@@ -1941,12 +1945,12 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			}
 			employeV.appendItem("sélectionner un employé");
 
-			//1. mise à jour de la liste des employes avec la selection de l'attribut selectionner un employe
+			//1. mise é jour de la liste des employes avec la selection de l'attribut selectionner un employe
 			//avec toutes les conséquences qui doivent se découler de cette de cette selection
 
 			//remplissage du contenu de la combo associée aux postes de travail
 			selectednomposteTravailV=poste_travailV.getSelectedItem().getLabel();
-			if(!selectednomposteTravailV.equals("Tous poste de travail"))
+			if(!selectednomposteTravailV.equals("Tous postes de travail"))
 			{
 				HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeEvalueBean.getMapclesposte();
 				HashMap<String, EmployesAEvaluerBean> mapEmploye=Mapclesposte.get(selectednomposteTravailV);
@@ -2012,9 +2016,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 	//			 }
 	//		 }
 	//		 
-	//		 //recuperer les infos associé à l'employé selectionné
+	//		 //recuperer les infos associé é l'employé selectionné
 	//		 EmployesAEvaluerBean employerAEvaluerBean=mapEmployeEvalueBean.getMapclesnomEmploye().get(selectedEmployeV);
-	//		//recuperation du code_poste associé à l'intitule
+	//		//recuperation du code_poste associé é l'intitule
 	//		 String code_poste=mapintitule_codeposte.get(selectednomposteTravailV);
 	//		 
 	//		 String cles=code_poste+"#"+selectedFamilleV;
@@ -2147,7 +2151,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 	//				 String vleurCotation=cotationBean.getValeur_cotation()+"";
 	//				 if("0".equals(vleurCotation))
 	//					 vleurCotation="N/A";
-	//				 //si la famille a déjà été visitée et enregistrée entant que brouillon
+	//				 //si la famille a déjé été visitée et enregistrée entant que brouillon
 	//				 if(familleVisite)
 	//				 {
 	//					 cotation.appendItem(vleurCotation);
@@ -2231,11 +2235,11 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			}
 		}
 
-		//recuperer les infos associé à l'employé selectionné
+		//recuperer les infos associé é l'employé selectionné
 		EmployesAEvaluerBean employerAEvaluerBean=mapEmployeEvalueBean.getMapclesnomEmploye().get(selectedEmployeV);
 
 
-		//recuperation du code_poste associé à l'intitule
+		//recuperation du code_poste associé é l'intitule
 		//String code_poste=mapintitule_codeposte.get(selectednomposteTravailV);
 
 		//String cles=code_poste+"#"+selectedFamilleV;
@@ -2353,7 +2357,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 		//fin modif NB 18/02/16
 
-		//vider le contenu de la grille associée à l'ancien employé selectionné
+		//vider le contenu de la grille associée é l'ancien employé selectionné
 		if (currentListItemV!=null)
 		{
 			Iterator<Listitem> iterator=currentListItemV.iterator();
@@ -2380,10 +2384,10 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 		mapItemsFamilleV=new 	HashMap<String, ArrayList<Listitem>>();	 
 		employelbV.renderAll();
-		//lors de la selection d'un employé, affichage de la fiche associé à cet employé si elle existe 
+		//lors de la selection d'un employé, affichage de la fiche associé é cet employé si elle existe 
 		//si la fiche n'existe pas , il faut la creer
 
-		//1. affichage des informations relatifs à l'employé
+		//1. affichage des informations relatifs é l'employé
 
 		selectedEmployeV=employeV.getSelectedItem().getLabel();
 
@@ -2416,9 +2420,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 			selectedFamilleV=listFamillePosteV.get(0);
 
-			//afficher toutes les données associées à ce poste de travail
+			//afficher toutes les données associées é ce poste de travail
 
-			//recuperation du code_poste associé à l'intitule
+			//recuperation du code_poste associé é l'intitule
 
 
 			//String cles=code_poste+"#"+selectedFamilleV;
@@ -2512,7 +2516,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		//CompteBean compteUtilisateur=ApplicationFacade.getInstance().getCompteUtilisateur();
 		CompteBean compteUtilisateur=applicationSession.getCompteUtilisateur();
 
-		//récupération de l'id_employé associé à l'id_compte
+		//récupération de l'id_employé associé é l'id_compte
 		FicheEvaluationModel ficheEvaluationModel=new FicheEvaluationModel();
 		//				int id_employe=ficheEvaluationModel.getIdEmploye(compteUtilisateur.getId_compte());
 		compteUtilisateur.setId_employe(id_employe);
@@ -2529,7 +2533,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		//récupération de l'information sur la validité de la fiche de l'employé connecté
 		//				boolean ficheValide=ficheEvaluationModel.getValiditeFiche(id_employe);
 
-		//récupération des informations associées à une fiche d'evaluation à remplir;
+		//récupération des informations associées é une fiche d'evaluation é remplir;
 
 		mapPosteTravailFiche=ficheEvaluationModel.getInfosFicheEvaluationparPoste(compagne_id);
 		FicheEvaluationJsonModel ficheEvaluationJsonModel=new FicheEvaluationJsonModel();		
@@ -2544,15 +2548,15 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		//				nomEmploye.setDisabled(true);
 
 		//remplissage de la combobox famille
-		//si c'est un évaluateur alors on affiche la liste des fiches associés aux employés à évaluer
+		//si c'est un évaluateur alors on affiche la liste des fiches associés aux employés é évaluer
 		boolean est_evaluateur=false;
 		//if(compteUtilisateur.getId_profile()==3)
-		//un administrateur peut être un évaluateur aors on test l'attribut est_evauateur de la table employe
+		//un administrateur peut étre un évaluateur aors on test l'attribut est_evauateur de la table employe
 		est_evaluateur=ficheEvaluationModel.getEstEvauateur(id_employe);
 		if(est_evaluateur)
 		{				
 			//
-			//				//si c'est un évaluateur alors on affiche la liste des fiches associés aux employés à évaluer
+			//				//si c'est un évaluateur alors on affiche la liste des fiches associés aux employés é évaluer
 			//				if(compteUtilisateur.getId_profile()==3)
 			//				{
 
@@ -2575,7 +2579,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				}
 			}
 
-			poste_travail.appendItem("Tous poste de travail");
+			poste_travail.appendItem("Tous postes de travail");
 			while(iterator.hasNext())
 			{
 				String nomPoste=iterator.next();
@@ -2658,7 +2662,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 			if (compteUtilisateur.getId_profile()==3)
 				mapEmployeEvalueBean=ficheEvaluationModel.getListEmployesvalue(id_employe);
 
-			//sinon (administrateur ) lancer une autre méthode qui récupère tous ceux qui ont été évaluées
+			//sinon (administrateur ) lancer une autre méthode qui récupére tous ceux qui ont été évaluées
 			if (compteUtilisateur.getId_profile()==2)
 				mapEmployeEvalueBean=ficheEvaluationModel.getListTousEmployesvalue(compagne_id);
 			HashMap<String, HashMap<String, EmployesAEvaluerBean>> Mapclesposte=mapEmployeEvalueBean.getMapclesposte();
@@ -2677,7 +2681,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 					poste_travailV.removeItemAt(i);
 				}
 			}
-			poste_travailV.appendItem("Tous poste de travail");
+			poste_travailV.appendItem("Tous postes de travail");
 			while(iterator.hasNext())
 			{
 				String nomPoste=iterator.next();
@@ -2894,7 +2898,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 					}
 				}
 				moyenne=new Double(moyenne/nbCompetence);
-				if(moyenne!=0) // au cas où toute les famille est N/A
+				if(moyenne!=0) // au cas oé toute les famille est N/A
 					valeurFamilleMoyenne.add(moyenne);
 
 			}
@@ -2991,7 +2995,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 					try 
 					{
 
-						Messagebox.show("Vos modifications ne peuvent être validées tant que vous n'avez pas évalué toutes les compétences de l'employé", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+						Messagebox.show("Vos modifications ne peuvent étre validées tant que vous n'avez pas évalué toutes les compétences de l'employé", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
 					} 
 					catch (InterruptedException e) 
 					{
@@ -3060,7 +3064,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 							setId_planning_eval(id_planning_evaluation);
 
 							int valeurCotation=getValeurCotation(id_cotation);
-							//ne pas prendre en compte les cotations 0 car ça veut dire non attribué
+							//ne pas prendre en compte les cotations 0 car éa veut dire non attribué
 							if(0!=valeurCotation)
 							{
 								statINIFamille=statINIFamille+valeurCotation;
@@ -3070,7 +3074,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 								statIMI=statIMI+valeurCotation;
 								nombreAptitude++;
 							}
-							//construction de la requete de la mise à jour de l afiche d'evaluation
+							//construction de la requete de la mise é jour de l afiche d'evaluation
 							//requeteUpdateFicheEvalution=ficheEvaluationModel.updateFicheEvalutionConstructionRequete(id_repertoire_competence,id_employe,id_planning_evaluation,id_cotation,requeteUpdateFicheEvalution);
 							//								 ficheEvaluationModel.updateMultiQuery(requeteUpdateFicheEvalution);
 							//								 requeteUpdateFicheEvalution="";
@@ -3127,7 +3131,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 					}
 					ficheEvaluationJsonBean.setFicheValide(true);
-					//ces deux variables doivent être positionnées quand on gérera l'affichage de plusieurs compagnes pour un employe
+					//ces deux variables doivent étre positionnées quand on gérera l'affichage de plusieurs compagnes pour un employe
 					//						 ficheEvaluationJsonBean.setCompagne_type(compagne_type);
 					//						 ficheEvaluationJsonBean.setDate_evaluation(date_evaluation);
 					ficheEvaluationJsonBean.setId_employe(new Integer(id_employe));
@@ -3135,7 +3139,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 					FicheEvaluationJsonModel ficheJsonModel=new  FicheEvaluationJsonModel();
 					boolean result_fich_eval=ficheJsonModel.updateFicheEvalutionJson(id_employe, id_planning_evaluation, ficheEvaluationJsonBean);
 
-					//mise à jour de la fiche d'evaluation (exécution de la requete)
+					//mise é jour de la fiche d'evaluation (exécution de la requete)
 					// boolean result_fich_eval=ficheEvaluationModel.updateMultiQuery(requeteUpdateFicheEvalution);
 
 
@@ -3148,7 +3152,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 					//cette fonction calcul l'IMi en utilisant les notations des apptitudes observales
 					// enregistrerIMIStat(FamilleIMI,statIMI);
 
-					////cette fonction calcul l'IMi en utilisant les calculs de smoyennes pâr competence
+					////cette fonction calcul l'IMi en utilisant les calculs de smoyennes pér competence
 					boolean result_imi_stat=enregistrerIMIMoyenneFamilleutilisantCompetence(mapFamilleCompetence,id_planning_evaluation, id_employe);
 
 					//enregistrement dans la base les stats IMI par competence
@@ -3172,12 +3176,12 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 					else {
 						if(!autorise)
-							Messagebox.show("Vos modifications ne peuvent être validées tant que vous n'avez pas évalué toutes les compétences de l'employé", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+							Messagebox.show("Vos modifications ne peuvent étre validées tant que vous n'avez pas évalué toutes les compétences de l'employé", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
 						else
 							Messagebox.show("La fiche n'a pas été correctement enregistrée", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
 					}
 
-					//mis eà jour calcul imi en prenant en compte les calculs des moyennes par competence
+					//mis eé jour calcul imi en prenant en compte les calculs des moyennes par competence
 
 					//vider le contenu du tableau 
 					//effacer le nom de l'evalué de la combo de cet onglet et le mettre dans l'onglet des personnes déja évaluées
@@ -3222,7 +3226,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				try 
 				{
 
-					Messagebox.show("Vos modifications ne peuvent être validées tant que vous n'avez pas évalué toutes les compétences de l'employé", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
+					Messagebox.show("Vos modifications ne peuvent étre validées tant que vous n'avez pas évalué toutes les compétences de l'employé", "Warning", Messagebox.OK, Messagebox.EXCLAMATION);
 				} 
 				catch (InterruptedException e) 
 				{
@@ -3344,7 +3348,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		}
 
 		System.out.println("fin rattrapage");
-		//si la fiche est déjà validée ==> appeler la methode suivante
+		//si la fiche est déjé validée ==> appeler la methode suivante
 		//executer les actions de validation
 	}
 
@@ -3533,7 +3537,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 			// debut modif point 2 v3.2 05/07/2018
 			HashMap<String, HashMap<String,ArrayList<String>>> Mapdirection=mapEmployeEvalueBean.getMapclesdirection();
-			 HashMap<String,ArrayList<String>> listedirection= Mapdirection.get(direction);
+			 HashMap<String,ArrayList<String>> listedirection= (HashMap) sortByComparator(Mapdirection.get(direction));
 
 			if (listedirection==null  || listedirection.size()==0  ){
 				try {
@@ -3545,7 +3549,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				}
 			}
 
-			poste_travailV.appendItem("Tous poste de travail");
+			poste_travailV.appendItem("Tous postes de travail");
 			for (Entry<String, ArrayList<String>> entry : listedirection.entrySet()) {
 				String poste_travail = entry.getKey();
 				poste_travailV.appendItem(poste_travail);
@@ -3690,7 +3694,26 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		iframe.invalidate();
 	}
 
+	private static Map sortByComparator(Map unsortMap) {
 
+		List list = new LinkedList(unsortMap.entrySet());
+
+		//sort list based on comparator
+		Collections.sort(list, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				return ((Comparable) ((Map.Entry) (o1)).getKey())
+						.compareTo(((Map.Entry) (o2)).getKey());
+			}
+		});
+
+		//put sorted list into map again
+		Map sortedMap = new LinkedHashMap();
+		for (Iterator it = list.iterator(); it.hasNext();) {
+			Map.Entry entry = (Map.Entry)it.next();
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		return sortedMap;
+	}	
 
 
 }
