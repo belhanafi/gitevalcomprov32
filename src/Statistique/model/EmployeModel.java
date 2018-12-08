@@ -151,7 +151,7 @@ public class EmployeModel {
 	}
 
 
-	public List getNombreEmployesParPoste(String code_structure, String code_poste) throws SQLException
+	public List getNombreEmployesParPoste(String code_structure, String code_poste, String filterdirection, int id_compagne ) throws SQLException
 	{
 
 		ArrayList<StatTrancheAgePosteBean>   liststatbean = new ArrayList<StatTrancheAgePosteBean>();
@@ -164,33 +164,70 @@ public class EmployeModel {
 		try 
 		{
 			stmt = (Statement) conn.createStatement();
+			
+			if (filterdirection.equalsIgnoreCase("-1")){
+				
+				select_structure="select p.intitule_poste, CASE"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=18 and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=23 THEN '1'"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=24  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=29  THEN '2'"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=30  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=35  THEN '3'"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=36  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=41  THEN '4'"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=42  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=47  THEN '5'"
+						+ " ELSE '6'    END  as tranche, round(count(e.code_poste)*100/(select count(*) from employe)) as pourcentage"
+						+ " from employe e ,poste_travail_description p, compagne_evaluation c"
+						+ " where p.code_poste=e.code_poste and c.id_compagne=#id_compagne group by intitule_poste,tranche order by tranche" ;
+				
+				select_structure = select_structure.replaceAll("#id_compagne", "'"+ id_compagne+"'");
+				
+			}
 
 			if (code_structure.equalsIgnoreCase("-1")&& code_poste.equalsIgnoreCase("-1")){
-				select_structure="select p.intitule_poste, if ((round( DATEDIFF(curdate(),e.date_naissance)/365))>18" +
-						" and (round( DATEDIFF(curdate(),e.date_naissance)/365))<30 ,'1', if ((round( DATEDIFF(curdate(),e.date_naissance)/365))>30" +
-						" and (round( DATEDIFF(curdate(),e.date_naissance)/365))<46 ,'2','3')) as tranche," +
-						" round(count(e.code_poste)*100/(select count(*) from employe)) as pourcentage from employe e ,poste_travail_description p" +
-						" where p.code_poste=e.code_poste group by intitule_poste,tranche order by tranche ";
-
-			}else if (code_poste.equalsIgnoreCase("-1")){
-				select_structure="select p.intitule_poste, if ((round( DATEDIFF(curdate(),e.date_naissance)/365))>18" +
-						" and (round( DATEDIFF(curdate(),e.date_naissance)/365))<30 ,'1', if ((round( DATEDIFF(curdate(),e.date_naissance)/365))>30" +
-						" and (round( DATEDIFF(curdate(),e.date_naissance)/365))<46 ,'2','3')) as tranche," +
-						" round(count(e.code_poste)*100/(select count(*) from employe where code_structure =#code_structure)) as pourcentage from employe e ,poste_travail_description p" +
-						" where p.code_poste=e.code_poste and  e.code_structure =#code_structure group by intitule_poste,tranche order by tranche ";
-
-				select_structure = select_structure.replaceAll("#code_structure", "'"+ code_structure+"'");
+				
+				select_structure="select p.intitule_poste, CASE"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=18 and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=23 THEN '1'"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=24  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=29  THEN '2'"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=30  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=35  THEN '3'"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=36  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=41  THEN '4'"
+						+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=42  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=47  THEN '5'"
+						+ " ELSE '6'    END  as tranche, round(count(e.code_poste)*100/(select count(*) from employe)) as pourcentage"
+						+ " from employe e ,poste_travail_description p, compagne_evaluation c"
+						+ " where p.code_poste=e.code_poste and c.id_compagne=#id_compagne and "+filterdirection+ " group by intitule_poste,tranche order by tranche" ;
+				
+				select_structure = select_structure.replaceAll("#id_compagne", "'"+ id_compagne+"'");
+				
+			}
+			
+			 if  (!code_structure.equalsIgnoreCase("-1")&& code_poste.equalsIgnoreCase("-1")){
+				 
+				 select_structure="select p.intitule_poste, CASE"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=18 and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=23 THEN '1'"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=24  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=29  THEN '2'"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=30  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=35  THEN '3'"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=36  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=41  THEN '4'"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=42  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=47  THEN '5'"
+							+ " ELSE '6'    END  as tranche, round(count(e.code_poste)*100/(select count(*) from employe where code_structure =#code_structure)) as pourcentage"
+							+ " from employe e ,poste_travail_description p, compagne_evaluation c"
+							+ " where p.code_poste=e.code_poste and  e.code_structure =#code_structure and c.id_compagne=#id_compagne  group by intitule_poste,tranche order by tranche" ;
+					
+					select_structure = select_structure.replaceAll("#id_compagne", "'"+ id_compagne+"'");
+					select_structure = select_structure.replaceAll("#code_structure", "'"+ code_structure+"'");
 
 			}
-			else{
-				select_structure="select p.intitule_poste, if ((round( DATEDIFF(curdate(),e.date_naissance)/365))>18" +
-						" and (round( DATEDIFF(curdate(),e.date_naissance)/365))<30 ,'1', if ((round( DATEDIFF(curdate(),e.date_naissance)/365))>30" +
-						" and (round( DATEDIFF(curdate(),e.date_naissance)/365))<46 ,'2','3')) as tranche," +
-						" round(count(e.code_poste)*100/(select count(*) from employe where code_structure =#code_structure and code_poste=#code_poste)) as pourcentage from employe e ,poste_travail_description p" +
-						" where p.code_poste=e.code_poste and  e.code_structure =#code_structure and e.code_poste=#code_poste group by intitule_poste,tranche order by tranche ";
-
-				select_structure = select_structure.replaceAll("#code_structure", "'"+ code_structure+"'");
-				select_structure = select_structure.replaceAll("#code_poste", "'"+ code_poste+"'");
+			 if((!filterdirection.equalsIgnoreCase("-1"))&& (!code_structure.equalsIgnoreCase("-1"))&& (!code_poste.equalsIgnoreCase("-1"))) {
+				 
+				 select_structure="select p.intitule_poste, CASE"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=18 and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=23 THEN '1'"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=24  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=29  THEN '2'"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=30  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=35  THEN '3'"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=36  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=41  THEN '4'"
+							+ " WHEN  round( DATEDIFF(c.date_debut,e.date_naissance)/365)>=42  and round( DATEDIFF(c.date_debut,e.date_naissance)/365)<=47  THEN '5'"
+							+ " ELSE '6'    END  as tranche, round(count(e.code_poste)*100/(select count(*) from employe where code_structure =#code_structure and e.code_poste=#code_poste)) as pourcentage"
+							+ " from employe e ,poste_travail_description p, compagne_evaluation c"
+							+ " where p.code_poste=e.code_poste and  e.code_structure =#code_structure and e.code_poste=#code_poste and c.id_compagne=#id_compagne  group by intitule_poste,tranche order by tranche" ;
+					
+					select_structure = select_structure.replaceAll("#id_compagne", "'"+ id_compagne+"'");
+					select_structure = select_structure.replaceAll("#code_structure", "'"+ code_structure+"'");
+					select_structure = select_structure.replaceAll("#code_poste", "'"+ code_poste+"'");
 
 
 			}
