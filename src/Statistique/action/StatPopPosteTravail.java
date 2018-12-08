@@ -235,7 +235,7 @@ public class StatPopPosteTravail extends  GenericForwardComposer{
 					structure+="'"+list_code_dir.get(i)+"'";
 			}
 			structure+=")";
-			structure_filter="where e.code_structure in "+structure;
+			structure_filter=" e.code_structure in "+structure;
 		}else{
 
 			structure_filter="";
@@ -247,6 +247,7 @@ public class StatPopPosteTravail extends  GenericForwardComposer{
 			comp_poste_list.getItems().clear();
 			comp_poste_list.appendItem("Tous Postes Travail","-1");
 			//generer le chart pour une direction donnée  indépendement des structures et postes
+			generateChart( "-1","-1", structure_filter);
 
 
 		}
@@ -268,9 +269,11 @@ public class StatPopPosteTravail extends  GenericForwardComposer{
 
 				//profilemodel.add((String) me.getKey());
 			}
+			
+			generateChart( code_structure,"-1", "0");
+
 		}
 
-		generateChart( code_structure,"-1", "0");
 
 	}
 
