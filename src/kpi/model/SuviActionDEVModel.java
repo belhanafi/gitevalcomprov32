@@ -116,15 +116,25 @@ public class SuviActionDEVModel {
 		Statement stmt = null;
 		HashMap map = new HashMap();
 		ResultSet rs=null;
+		String structure_filter="";
 		
-		String structure = "(";
-		for ( int i=0;i<list_direction.size();i++){
-			if (i <list_direction.size()-1)
-		        structure+="'"+list_direction.get(i)+"',";
-			else
-				 structure+="'"+list_direction.get(i)+"'";
+		if (list_direction.size()>0){
+			String structure = "(";
+			for ( int i=0;i<list_direction.size();i++){
+				if (i <list_direction.size()-1)
+			        structure+="'"+list_direction.get(i)+"',";
+				else
+					 structure+="'"+list_direction.get(i)+"'";
+			}
+			structure+=")";
+			structure_filter="where code_structure in "+structure;
+		}else{
+			
+			structure_filter="";
+			
 		}
-		structure+=")";
+		
+		
 		
 		try 
 		{ 
@@ -154,7 +164,7 @@ public class SuviActionDEVModel {
 							" select code_structure,libelle_direction structure_ent from structure_entreprise   " +
 							" where libelle_direction is  not null " +
 							"  and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0 " + 
-							"  and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise where code_structure in "+structure+"  order by structure_ent ";
+							"  and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise  "+structure_filter+"  order by structure_ent ";
 			//System.out.println(db_list);
 			rs = (ResultSet) stmt.executeQuery(db_list);
 

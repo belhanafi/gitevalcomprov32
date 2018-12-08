@@ -244,7 +244,7 @@ public class EmployeModel {
 
 	}
 
-	public List getNombreEmployesCadre(String code_structure, String code_poste) throws SQLException
+	public List getNombreEmployesCadre(String code_structure, String code_poste,String filterdirection) throws SQLException
 	{
 
 		ArrayList<EmployeCadreBean>   liststatbean = new ArrayList<EmployeCadreBean>();
@@ -257,8 +257,10 @@ public class EmployeModel {
 		try 
 		{
 			stmt = (Statement) conn.createStatement();
+			
+			//generer le chart pour toutes les direction indépendement des structures et postes
 
-			if (code_structure.equalsIgnoreCase("-1")&& code_poste.equalsIgnoreCase("-1")){
+			if (filterdirection.equalsIgnoreCase("-1")){
 
 				sql_query="select d.gsp_libelle as is_cadre,round(count(e.code_poste)*100/(select count(*) from employe)) as pourcentage" +
 						"  from employe e,poste_travail_description p, def_gsp d where p.code_poste=e.code_poste and p.gsp_id=d.gsp_id"
@@ -266,7 +268,21 @@ public class EmployeModel {
 
 
 			}
-			else if (code_poste.equalsIgnoreCase("-1")){
+			
+
+			//generer le chart pour une direction donnée  indépendement des structures et postes
+
+			if (code_structure.equalsIgnoreCase("-1")&& code_poste.equalsIgnoreCase("-1")){
+
+				sql_query="select d.gsp_libelle as is_cadre,round(count(e.code_poste)*100/(select count(*) from employe)) as pourcentage" +
+						"  from employe e,poste_travail_description p, def_gsp d where p.code_poste=e.code_poste and p.gsp_id=d.gsp_id"
+						+ " and "+filterdirection+ " group by gsp_libelle";
+
+
+			}
+			//generer le chart pour une structure  donnée  indépendement des postes
+
+			 if (!code_structure.equalsIgnoreCase("-1")&& code_poste.equalsIgnoreCase("-1")){
 				sql_query="select d.gsp_libelle as is_cadre,round(count(e.code_poste)*100/(select count(*) from employe where code_structure =#code_structure )) as pourcentage" +
 						"  from employe e,poste_travail_description p, def_gsp d where p.code_poste=e.code_poste and p.gsp_id=d.gsp_id"
 						+ " and e.code_structure =#code_structure "
@@ -276,7 +292,9 @@ public class EmployeModel {
 				
 			}
 			
-			else {
+			//generer le chart pour une structure  donnée  et un poste donné
+
+			if((!filterdirection.equalsIgnoreCase("-1"))&& (!code_structure.equalsIgnoreCase("-1"))&& (!code_poste.equalsIgnoreCase("-1"))) {
 				sql_query="select d.gsp_libelle as is_cadre,round(count(e.code_poste)*100/(select count(*) from employe where code_structure =#code_structure and code_poste=#code_poste)) as pourcentage" +
 						"  from employe e,poste_travail_description p, def_gsp d where p.code_poste=e.code_poste and p.gsp_id=d.gsp_id"
 						+ " and e.code_structure =#code_structure and e.code_poste=#code_poste"
@@ -654,6 +672,240 @@ public class EmployeModel {
 
 
 		}
+		
+		
+		
+		/**
+		 * cette méthode retrourne  La liste des direction si direction est null dans la table structure_entreprise,
+		 * on recupère la division
+		 *  @return
+		 */
+		public HashMap<String,List<String>> getListDirection()	{
+
+		
+			String query="";
+
+		
+								
+					query="select code_structure, case   when length(trim(direction))=0 then 'DIR NON RENSEIGNEE' ELSE direction END direction "
+							+ " from ("
+							+ "	select code_structure,libelle_direction as direction from structure_entreprise where length(trim(libelle_direction))!=0 "
+							+ " union distinct"
+							+ " select code_structure,libelle_division as direction from structure_entreprise where length(trim(libelle_direction))=0 "
+							+ " )  tb order by direction";
+
+
+			CreateDatabaseCon dbcon=new CreateDatabaseCon();
+			Connection conn=(Connection) dbcon.connectToSecondairesDB();
+			Statement stmt=null;
+			ResultSet rs=null;
+			HashMap<String,List<String>> mapListDir = new HashMap<String,List<String>> ();
+			
+			try 
+			{
+				stmt = (Statement) conn.createStatement();
+
+				rs = (ResultSet) stmt.executeQuery(query);
+				String libelle_direction="";
+			
+				while(rs.next()){
+					
+					libelle_direction=rs.getString("direction");
+					
+					if(mapListDir.get(libelle_direction)== null){
+						List <String> list_code_dir=new ArrayList<String>();
+						list_code_dir.add(rs.getString("code_structure"));
+						mapListDir.put(libelle_direction, list_code_dir);
+									
+					}else{
+						List <String> list_code_dir=mapListDir.get(libelle_direction);
+						list_code_dir.add(rs.getString("code_structure"));
+						mapListDir.put(libelle_direction,list_code_dir );
+						
+						
+					}
+					
+					//listDir.put(libelle_direction_save, list_code_dir);
+					
+					
+				}
+
+
+
+			} catch ( SQLException e ) {
+				System.out.println(e.toString());
+
+			} finally {
+
+				if ( rs != null ) {
+					try {
+						rs.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+
+
+
+				if ( stmt != null ) {
+					try {
+						stmt.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+
+
+				if ( conn != null ) {
+					try {
+						conn.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+			}
+			return mapListDir;
+
+
+		}
+		
+		
+		public Map getStructEntList(List <String> list_direction) throws SQLException
+		{
+			CreateDatabaseCon dbcon=new CreateDatabaseCon();
+			Connection conn=(Connection) dbcon.connectToSecondairesDB();
+			Statement stmt = null;
+			HashMap map = new HashMap();
+			ResultSet rs=null;
+			
+			String structure = "(";
+			for ( int i=0;i<list_direction.size();i++){
+				if (i <list_direction.size()-1)
+			        structure+="'"+list_direction.get(i)+"',";
+				else
+					 structure+="'"+list_direction.get(i)+"'";
+			}
+			structure+=")";
+			
+			try 
+			{ 
+				stmt = (Statement) conn.createStatement();
+				String db_list=		
+						"select code_structure, structure_ent from (" +
+								" select code_structure,libelle_section structure_ent  from structure_entreprise  where libelle_section is  not null "+
+								" and  libelle_section !='null' and  libelle_section !='' " +
+								" union " +
+								" select code_structure,libelle_service structure_ent from structure_entreprise  " +
+								" where libelle_service is  not null" +
+								"  and libelle_service !='null' and libelle_service !=''  and  length(libelle_section) =0   " +
+								" union " +
+								" select code_structure,libelle_departement structure_ent from structure_entreprise  " + 
+								" where libelle_departement is  not null " +
+								"  and libelle_departement !='null' and libelle_departement !='' and length(libelle_service)=0   and  length(libelle_section) =0  " +
+								" union " +
+								" select code_structure,libelle_sous_direction structure_ent from structure_entreprise   " +
+								" where libelle_sous_direction is  not null " +
+								"  and libelle_sous_direction !='null' and libelle_sous_direction !=''  and length(libelle_departement)=0 and length(libelle_service)=0  and  length(libelle_section) =0 " +   
+								" union  " +
+								" select code_structure,libelle_unite structure_ent from structure_entreprise   " +
+								" where libelle_unite is  not null " +
+								"  and libelle_unite !='null' and libelle_unite !=''  and length(libelle_sous_direction)=0 and length(libelle_departement)=0  " +
+								"  and length(libelle_service)=0 and  length(libelle_section) =0    " +
+								" union  " +
+								" select code_structure,libelle_direction structure_ent from structure_entreprise   " +
+								" where libelle_direction is  not null " +
+								"  and libelle_direction !='null' and libelle_direction !=''  and length(libelle_unite)=0 and length(libelle_sous_direction)=0 and length(libelle_departement)=0 " + 
+								"  and length(libelle_service)=0 and  length(libelle_section) =0 ) tmp_structure_entreprise where code_structure in "+structure+"  order by structure_ent ";
+				//System.out.println(db_list);
+				rs = (ResultSet) stmt.executeQuery(db_list);
+
+
+				while(rs.next()){
+					map.put( rs.getString("structure_ent"),rs.getString("code_structure"));
+				}
+				//map.put("Tous",-1);
+				//stmt.close();conn.close();
+			} 
+			catch ( SQLException e ) {
+
+			} finally {
+
+				if ( rs != null ) {
+					try {
+						rs.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+
+				if ( stmt != null ) {
+					try {
+						stmt.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+
+				if ( conn != null ) {
+					try {
+						conn.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+			}
+
+			Map<String, String> treeMap = new TreeMap<String, String>(map);
+			return  treeMap;
+		}
+		
+		
+		public HashMap getCompagneList() throws SQLException
+		{
+			CreateDatabaseCon dbcon=new CreateDatabaseCon();
+			Connection conn=(Connection) dbcon.connectToSecondairesDB();
+			Statement stmt = null;
+			HashMap map = new HashMap();
+			ResultSet rs=null;
+			try 
+			{ 
+				stmt = (Statement) conn.createStatement();
+				//String db_list="select id_compagne,concat(libelle_compagne,'->', 'Du ',cast(date_debut as char)  ,' Au ',cast(date_fin as char) ) as libelle_compagne from compagne_evaluation where now()<=date_fin";
+				String db_list="select id_compagne,concat(libelle_compagne,'->', 'Du ',cast(date_debut as char)  ,' Au ',cast(date_fin as char) ) as libelle_compagne from compagne_evaluation order by id_compagne desc";
+
+
+				rs = (ResultSet) stmt.executeQuery(db_list);
+
+
+				while(rs.next()){
+					map.put( rs.getString("libelle_compagne"),rs.getInt("id_compagne"));
+				}
+				//map.put("Selectionner Compagne",-1);
+				//stmt.close();conn.close();
+			} 
+			catch ( SQLException e ) {
+
+			} finally {
+
+				if ( rs != null ) {
+					try {
+						rs.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+
+				if ( stmt != null ) {
+					try {
+						stmt.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+
+				if ( conn != null ) {
+					try {
+						conn.close();
+					} catch ( SQLException ignore ) {
+					}
+				}
+			}
+
+			return map;
+		}
+
 
 
 }
