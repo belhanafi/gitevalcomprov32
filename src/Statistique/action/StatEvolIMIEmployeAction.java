@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import kpi.bean.TauxCouvertureCompagneBean;
+import kpi.model.KpiSyntheseModel;
+
+import org.ngi.zhighcharts.SimpleExtXYModel;
+import org.ngi.zhighcharts.ZHighCharts;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.CategoryModel;
@@ -53,6 +58,10 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 	Map map_compte=null;
 	Map map_compagne=null;
 	Label message;
+	private ZHighCharts chartComp3;
+	private SimpleExtXYModel dataChartMode3; 
+	Component comp1;
+
 
 
 
@@ -73,7 +82,7 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 		Set set_ent = (init.getStructEntList()).entrySet(); 
 		Iterator itr_ = set_ent.iterator();
 		// Affichage de la liste des strcutures entreprise
-		comp_struct_ent_list.appendItem("Selectionner Structure","-1");
+		comp_struct_ent_list.appendItem("Sélectionner Structure","-1");
 		while(itr_.hasNext()) {
 			Map.Entry me = (Map.Entry)itr_.next();
 
@@ -86,6 +95,7 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 			code_structure_str=(String) comp_struct_ent_list.getSelectedItem().getValue();
 		}
 
+		comp1=comp;
 
 
 	}
@@ -101,10 +111,12 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 
 
 
-	public void onSelect$nom_employe() throws SQLException	 {
-		message.setValue("");
+	public void onSelect$nom_employe() throws Exception	 {
+		
+		
+		createLineChart(comp1, chartComp3);
 
-
+/*
 		String employe_id= (String) map_compte.get((String)nom_employe.getSelectedItem().getLabel());
 
 		SimpleCategoryModel  catmodel = new SimpleCategoryModel();
@@ -132,14 +144,12 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 			message.setValue("Pas de résultat à afficher");
 			mychart.setVisible(false);
 
-		}
+		}*/
 
 	}
 
 
 	public void onSelect$comp_struct_ent_list() throws SQLException {
-
-		message.setValue("");
 
 		CategoryModel catmodel = new SimpleCategoryModel();
 
@@ -162,7 +172,7 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 			Set set = (map_compte).entrySet(); 
 			Iterator i = set.iterator();
 
-			nom_employe.appendItem("Selectionner Employé");
+			nom_employe.appendItem("Sélectionner Employé");
 
 			while(i.hasNext()) {
 				Map.Entry me = (Map.Entry)i.next();
@@ -177,6 +187,61 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 		else {
 			nom_employe.setVisible(false);
 		}
+
+	}
+
+
+	public void createLineChart(Component comp , ZHighCharts chartComp) throws Exception {
+
+		dataChartMode3=null;
+		dataChartMode3= new SimpleExtXYModel();
+		String employe_id= (String) map_compte.get((String)nom_employe.getSelectedItem().getLabel());
+
+
+
+		chartComp = (ZHighCharts) comp.getFellow(chartComp.getContext());
+		chartComp.setType("bar"); //Mandatory!
+		chartComp.setTitle("Evolution IMI par employé");
+		chartComp.setTooltipFormatter("function formatTooltip(obj){ " +
+				"return ''+obj.x  +': '+ obj.y;" +
+				"}");
+
+		StatCotationEmployeModel cotationMoel=new StatCotationEmployeModel();
+		List sect_items=cotationMoel.getEvolIMIEmploye(employe_id);
+		StatEvolIMIEmployeBean cpb;
+		String cat_final="";
+		int counter=0;
+		String cat="";
+
+		Iterator it = sect_items.iterator();
+		float imi=0;
+
+		while (it.hasNext()) {
+			cpb  = (StatEvolIMIEmployeBean) it.next();
+
+			if (counter<sect_items.size()-1){
+				cat="'"+cpb.getDate_evol()+"'"+",";
+			}else
+				cat= "'"+cpb.getDate_evol()+"'";
+
+
+			// courbe lineaire  Taux couverture 
+			dataChartMode3.addValue("IMI", counter, cpb.getImi());
+
+			cat_final=cat_final+cat;
+			counter++;
+
+
+		}
+		
+		chartComp.setxAxisOptions("{" +	"categories: [" +cat_final+	"]" + "}");
+		chartComp.setTooltipFormatter("function formatTooltip(obj){ " +
+				"return ''+obj.x  +': '+ obj.y;" +
+				"}");
+
+		chartComp.setModel(dataChartMode3);
+		chartComp.setPlotOptions("{" +"bar: {" +"dataLabels: {" +"enabled: true" +"}" +	"}" +	"}");
+
 
 	}
 }

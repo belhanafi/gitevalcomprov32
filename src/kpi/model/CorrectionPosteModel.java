@@ -23,6 +23,7 @@ import org.zkoss.zul.Messagebox;
 
 import kpi.bean.ActionDevelopmentBean;
 import kpi.bean.ActionDevelopmentMetierBean;
+import kpi.bean.ActionFormationBean;
 import kpi.bean.EchelleMaitrise;
 import common.ApplicationFacade;
 import common.CreateDatabaseCon;
@@ -369,26 +370,7 @@ public class CorrectionPosteModel {
 
 					
 
-					
-					/*query="select distinct p.id_action_comp_post, i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet, "+ 
-							 " libelle_action_formation,libelle_action_ori_prof, "+  
-							 " libelle_action_disipline,libelle_action_mobilite,  a.id_action, p.proposee,p.validee,p.programmee,p.realisee  "+ 
-							 " from       " +entry.getKey()+".imi_stats i ,   " +entry.getKey()+".employe e,   " +entry.getKey()+".actionsdev_poste p  ,     " +entry.getKey()+".actions_developpement a "+  
-							 " where a.id_action=p.id_action and p.id_compagne= "+idCompagne+ 
-							 " and id_echelle="+idEchelle+"   and i.id_compagne="+idCompagne+" and e.code_poste='"+codePosteTravail+"'  and i.id_employe=e.id_employe "+
-							 " and e.code_poste=p.code_poste and      "+comparaison; */
-			
-					
-					/*query="select distinct p.id_action_comp_post, i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet, "+ 
-							 " libelle_action_formation,libelle_action_ori_prof, "+  
-							 " libelle_action_disipline,libelle_action_mobilite,  a.id_action, d.proposee,d.validee,d.programmee,d.realisee  "+ 
-							 " from       " +entry.getKey()+".imi_stats i ,   " +entry.getKey()+".employe e,     " +entry.getKey()+".actions_developpement a, "+entry.getKey()+".actionsdev_poste p"
-							 +" LEFT OUTER JOIN "+entry.getKey()+".actionsdev_employe d on  d.id_action_comp_post=p.id_action_comp_post"+
-							 " where a.id_action=p.id_action and p.id_compagne= "+idCompagne+ 
-							 " and id_echelle="+idEchelle+"   and i.id_compagne="+idCompagne+" and e.code_poste='"+codePosteTravail+"'  and i.id_employe=e.id_employe "+
-							 " and e.code_poste=p.code_poste and      "+comparaison; */
-					
-					
+									
 					query="select distinct p.id_action, i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,"
 							+ " p.libelle_action_formation,p.libelle_action_ori_prof,  p.libelle_action_disipline,p.libelle_action_mobilite,"
 							+ " p.id_action, d.proposee,d.validee,d.programmee,d.realisee"
@@ -579,6 +561,122 @@ public class CorrectionPosteModel {
 		return resultat;
 	}
 	
+	
+public HashMap<String, ArrayList<ActionFormationBean>> getFormationEvalue(HashMap<String, HashMap<String, Integer>> listDb, String idCompagne, String codePosteTravail,String idEchelle,String idEvalue ){
+		
+		HashMap<String, ArrayList<ActionFormationBean>> resultat= new HashMap<String, ArrayList<ActionFormationBean>>();
+
+		
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToPrincipalDB();
+		Statement stmt = null;
+		
+		String comparaison="";
+		
+		if("1".equals(idEchelle)){
+			comparaison=" imi >1 and imi <=3  ";
+		}else if(("2".equals(idEchelle))){
+			comparaison=" imi >3 and imi <=4   ";
+		}else if("3".equals(idEchelle)){
+			comparaison=" imi>4 ";
+		}
+
+		ResultSet rs=null;
+		String query="";
+		try 
+		{
+			stmt = (Statement) conn.createStatement();
+
+			for (Entry<String, HashMap<String, Integer>> entry : listDb.entrySet()) {
+
+			
+
+				for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
+					
+					query="select distinct  i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,"
+							+ "	d.action_formation, d.proposee,d.validee,d.programmee,d.realisee"
+							+ " from  "+entry.getKey()+".imi_stats i,   "+entry.getKey()+".employe e,  "+entry.getKey()+".actionsforma_employe d"
+							+ " where d.id_echelle="+idEchelle+"   and i.id_compagne="+idCompagne+"  and e.code_poste='"+codePosteTravail+"' "
+							+ " and i.id_employe=e.id_employe and d.id_employe=e.id_employe and  e.id_employe='"+idEvalue+"'" +" and     "+comparaison 
+							+ " union"
+							+ " select distinct  i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,'', '','','',''"
+							+ " from  "+entry.getKey()+".imi_stats i,    "+entry.getKey()+".employe e"
+							+ " where i.id_compagne="+idCompagne+"  and e.code_poste='"+codePosteTravail+"'  and i.id_employe=e.id_employe  and e.id_employe='"+idEvalue+"'" +" and     "+comparaison +" order by 3"; 
+					
+					
+					/*query="select distinct  e.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,"
+						+ " action_formation, d.proposee,d.validee,d.programmee,d.realisee from " +entry.getKey()+".actionsforma_employe d,"
+						+  entry.getKey()+".employe e where d.id_employe='"+idEvalue+"'" +" and e.id_employe=d.id_employe and  e.code_poste='"+codePosteTravail+"'  and d.id_compagne="+idCompagne;
+					*/
+				
+								
+					break;
+
+				}
+				break;
+
+			}
+
+
+
+
+			rs = (ResultSet) stmt.executeQuery(query);
+
+
+			while(rs.next()){
+				ActionFormationBean actionDevelopment =new ActionFormationBean();
+				
+				actionDevelopment.setLibelleFormation(rs.getString("action_formation"));
+				actionDevelopment.setPropose(rs.getString("proposee"));
+				actionDevelopment.setValidee(rs.getString("validee"));
+				actionDevelopment.setProgrammee(rs.getString("programmee"));
+				actionDevelopment.setRealisee(rs.getString("realisee"));
+				actionDevelopment.setEvalue(rs.getString("nomcomplet"));
+				actionDevelopment.setIdEvalue(Integer.toString(rs.getInt("id_employe")));
+				
+				if(resultat.containsKey(actionDevelopment.getIdEvalue())){
+					
+					resultat.get(actionDevelopment.getIdEvalue()).add(actionDevelopment);
+				}else{
+					
+					ArrayList<ActionFormationBean> listeAction=new ArrayList <ActionFormationBean>();
+					listeAction.add(actionDevelopment);
+					resultat.put(actionDevelopment.getIdEvalue(),listeAction );					
+					
+				}
+			}
+
+		}
+		catch ( SQLException e ) {
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+
+		return resultat;
+	}
+	
+
 	public HashMap<String, String> getListeSuiviSort(HashMap<String, HashMap<String, Integer>> listDb)	{
 
 		HashMap <String, String> retour=new HashMap<String, String>();
@@ -1100,4 +1198,107 @@ public class CorrectionPosteModel {
 
 		return resultat_update;
 	}
+	
+	
+public HashMap<String, ActionFormationBean> getDevelopmentEvalueForma(HashMap<String, HashMap<String, Integer>> listDb, String idCompagne, String codePosteTravail,String idEchelle ){
+		
+		HashMap<String,  ActionFormationBean> resultat= new HashMap<String,  ActionFormationBean>();
+
+		
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToPrincipalDB();
+		Statement stmt = null;
+		
+		String comparaison="";
+		
+		if("1".equals(idEchelle)){
+			comparaison=" imi >1 and imi <=3  ";
+		}else if(("2".equals(idEchelle))){
+			comparaison=" imi >3 and imi <=4   ";
+		}else if("3".equals(idEchelle)){
+			comparaison=" imi>4 ";
+		}
+
+		ResultSet rs=null;
+		String query="";
+		try 
+		{
+			stmt = (Statement) conn.createStatement();
+
+			for (Entry<String, HashMap<String, Integer>> entry : listDb.entrySet()) {
+
+				int map_size=listDb.entrySet().size();
+
+				for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
+					String vague = pair.getKey();
+					Integer idcompagne = pair.getValue();
+					
+					query="select distinct d.id_echelle, i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,"
+							+ "	d.action_formation, d.proposee,d.validee,d.programmee,d.realisee"
+							+ " from  "+entry.getKey()+".imi_stats i,   "+entry.getKey()+".employe e,  "+entry.getKey()+".actionsforma_employe d"
+							+ " where d.id_echelle="+idEchelle+"   and i.id_compagne="+idCompagne+"  and e.code_poste='"+codePosteTravail+"' "
+							+ " and i.id_employe=e.id_employe and d.id_employe=e.id_employe and     "+comparaison 
+							+ " union"
+							+ " select distinct "+idEchelle+", i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,'', '','','',''"
+							+ " from  "+entry.getKey()+".imi_stats i,    "+entry.getKey()+".employe e"
+							+ " where i.id_compagne="+idCompagne+"  and e.code_poste='"+codePosteTravail+"'  and i.id_employe=e.id_employe  and     "+comparaison +" order by 3";   
+
+								
+					break;
+
+				}
+				break;
+
+			}
+			rs = (ResultSet) stmt.executeQuery(query);
+
+
+			while(rs.next()){
+				
+				ActionFormationBean actionDevelopment =new ActionFormationBean();
+				actionDevelopment.setIdEchelle(idEchelle);
+				actionDevelopment.setLibelleFormation(rs.getString("action_formation"));
+				actionDevelopment.setPropose(rs.getString("proposee"));
+				actionDevelopment.setValidee(rs.getString("validee"));
+				actionDevelopment.setProgrammee(rs.getString("programmee"));
+				actionDevelopment.setRealisee(rs.getString("realisee"));
+				actionDevelopment.setEvalue(rs.getString("nomcomplet"));
+				actionDevelopment.setIdEvalue(Integer.toString(rs.getInt("id_employe")));
+				resultat.put(actionDevelopment.getIdEvalue(),actionDevelopment );					
+					
+				
+			}
+
+		}
+		catch ( SQLException e ) {
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+
+		return resultat;
+	}
+	
+	
+	
 }

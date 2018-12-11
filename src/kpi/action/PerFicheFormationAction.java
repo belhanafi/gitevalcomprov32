@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import kpi.bean.ActionDevelopmentBean;
-import kpi.bean.ActionDevelopmentMetierBean;
+import kpi.bean.ActionFormationBean;
 import kpi.bean.ListeCompagneVagueBean;
 import kpi.bean.EchelleMaitrise;
 import kpi.model.CorrectionPosteModel;
@@ -35,11 +35,10 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
 import org.zkoss.zul.Window;
 
-import administration.bean.CompteBean;
 import common.ApplicationSession;
 import compagne.bean.EmployesAEvaluerBean;
 
-public class PerFicheIndividuelleAction extends GenericForwardComposer {
+public class PerFicheFormationAction extends GenericForwardComposer {
 
 	/**
 	 * 
@@ -61,6 +60,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 	private Include iframe;
 	Button exporterWord;
 	Button enregistrerAssociation;
+	Button new_record;
 	Window win;
  
 	private HashMap <String, Radio> selectedRadio;
@@ -68,8 +68,8 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 	private  Radio selectedRadioEvalue;
 	private List<ListeCompagneVagueBean> model = new ArrayList<ListeCompagneVagueBean>();
 	private List<EchelleMaitrise> modelEchelle = new ArrayList<EchelleMaitrise>();
-	private List<ActionDevelopmentBean> modelEvalue = new ArrayList<ActionDevelopmentBean>();
-	private List<ActionDevelopmentBean> modelActionDevelopment = new ArrayList<ActionDevelopmentBean>();
+	private List<ActionFormationBean> modelEvalue = new ArrayList<ActionFormationBean>();
+	private List<ActionFormationBean> modelActionDevelopment = new ArrayList<ActionFormationBean>();
 	private List<String> suiviSort=new ArrayList<String>();
 	private HashMap<String, String> listSuiviSort;
 	
@@ -81,7 +81,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 	private Map map_poste=null;
 	private CorrectionPosteModel correctionPosteMoel=new CorrectionPosteModel();
 	private String selected_id_compagne="1";
-	private HashMap<String, ArrayList<ActionDevelopmentBean>> mapEvalueAction=null;
+	private HashMap<String, ArrayList<ActionFormationBean>> mapEvalueAction=null;
 	private Integer idcompagne;
 	private String selectedPosteTravail=null;
 	private Listbox direction1;
@@ -90,7 +90,6 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 	
 	@SuppressWarnings("deprecation")
 	public void doAfterCompose(Component comp) throws Exception {
-		
 		//System.out.println("doAfterCompose executed");
 
 
@@ -105,28 +104,13 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		// Affichage de la liste des compagnes
 		KpiSyntheseModel init= new KpiSyntheseModel();
 		model=init.getListeValidCampgneBase(); 
-		//chargement du contenu de la table action_development
-		selectedRadio=new HashMap <String, Radio>();
+		
 
-		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
-		CompteBean compteUtilisateur=applicationSession.getCompteUtilisateur();
+		//chargement du contenu de la table action_development
+
 		
-		//cas evaluateur colonnes  grisées (validée, programmée et réalisée)
-		if (compteUtilisateur.getId_profile()==3){
-		    list_valide.setDisabled(true);
-			list_programme.setDisabled(true);
-			list_realise.setDisabled(true);
-			exporterWord.setVisible(false);
-				
-		}
+		selectedRadio=new HashMap <String, Radio>();
 		
-		// cas Service RH de la direction de rattachement,colonnes  grisées (proposée et réalisée)
-		if(compteUtilisateur.getId_profile()==5){
-			list_realise.setDisabled(true);
-			list_propose.setDisabled(true);
-			exporterWord.setVisible(false);
-		}
-    		
 		binder = new AnnotateDataBinder(comp);
 		binder.loadAll();
 
@@ -140,7 +124,21 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 
 
 
+	@SuppressWarnings("deprecation")
+	public void onClick$new_record() throws InterruptedException
+	{
+		
+		Listitem listitem = new Listitem();
+		
+		Listcell listce = new Listcell();
 
+		
+		listitem.setLabel("COL");
+		listitem.setValue("COL");
+			
+		liste_action_development.appendChild(listitem);
+
+	}
 
 	
 
@@ -213,7 +211,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 					 //correctionPosteMoel.updateActionDevEmploye(listDb,actionDev);
 				}
 			}
-			if (Messagebox.show("Voulez vous enregister les actions de développement pour cet employé ?", "Prompt", Messagebox.YES|Messagebox.NO,
+			if (Messagebox.show("Voulez vous enregister les actions de formation pour cet employé ?", "Prompt", Messagebox.YES|Messagebox.NO,
 					Messagebox.QUESTION) == Messagebox.YES) {
 				
 				correctionPosteMoel.updateBatchActionDevEmploye(listDb,listActionUpdate);
@@ -271,11 +269,11 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		return modelEchelle;
 	}
 	
-	public List<ActionDevelopmentBean> getModelEvalue() {
+	public List<ActionFormationBean> getModelEvalue() {
 		return modelEvalue;
 	}
 	
-	public List<ActionDevelopmentBean> getModelActionDevelopment() {
+	public List<ActionFormationBean> getModelActionDevelopment() {
 		return modelActionDevelopment;
 	}
 	
@@ -409,37 +407,15 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 				selectedRadioEchelle=radio;
 				String idEchelle=radio.getContext();
 				
-				//chargement du contenu de la table action_development 
-/*				mapEvalueAction=correctionPosteMoel.getDevelopmentEvalue(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail,idEchelle);
-				
-				
-				
-				if(mapEvalueAction==null || mapEvalueAction.size()==0){
-					Messagebox.show("Aucun employé ne répond aux critères des filtres ou aucune action n'a été définie au niveau de l'ecran perspectives (Fiche Métier)", "Information",Messagebox.OK, Messagebox.INFORMATION);
-					//si la grille est remplie ==> la vider
-					modelActionDevelopment=new ArrayList<ActionDevelopmentBean>();
-					ListModelList listModel = new ListModelList(modelActionDevelopment);
-					liste_action_development.setModel(listModel);
-					
-					modelEvalue=new ArrayList<ActionDevelopmentBean>();
+					modelEvalue=new ArrayList<ActionFormationBean>(getListAllEvalue().values());
 					
 					ListModelList listModelEvalue = new ListModelList(modelEvalue);
-					liste_evalue.setModel(listModelEvalue);
-					exporterWord.setDisabled(true);
-					enregistrerAssociation.setDisabled(true);
-					
-				}else{*/
-					
-
-					modelEvalue=new ArrayList<ActionDevelopmentBean>(getListAllEvalue().values());
-					
-					ListModelList listModelEvalue = new ListModelList(modelEvalue);
-					listModelEvalue.sort(new Comparator<ActionDevelopmentBean>() {  
+					listModelEvalue.sort(new Comparator<ActionFormationBean>() {  
 					   
 
 						@Override
-						public int compare(ActionDevelopmentBean arg0,
-								ActionDevelopmentBean arg1) {
+						public int compare(ActionFormationBean arg0,
+								ActionFormationBean arg1) {
 							return arg0.getEvalue().compareTo(arg1.getEvalue());
 							
 						}  
@@ -491,7 +467,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 			{
 				selectedRadioEvalue=radio;
 
-				mapEvalueAction=correctionPosteMoel.getDevelopmentEvalue(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail,selectedRadioEchelle.getContext(),selectedRadioEvalue.getContext());
+				mapEvalueAction=correctionPosteMoel.getFormationEvalue(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail,selectedRadioEchelle.getContext(),selectedRadioEvalue.getContext());
 				
 				modelActionDevelopment=mapEvalueAction.get(selectedRadioEvalue.getContext());
 			
@@ -554,7 +530,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		}
 	}
 	
-	private void initListBoxSuiviSelection(List< ActionDevelopmentBean>  listAction, String idEvaue){
+	private void initListBoxSuiviSelection(List< ActionFormationBean>  listAction, String idEvaue){
 		
 		List <Listitem>listeSelection=liste_action_development.getItems();
 
@@ -574,7 +550,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 			
 			
 
-			ActionDevelopmentBean actionDeveloppement=getActionDev(selectedCompACtion,listAction);
+			ActionFormationBean actionDeveloppement=getActionDev(selectedCompACtion,listAction);
 			if(actionDeveloppement.getIdEvalue().equals(idEvaue)){
 				//TODO trouver l'ordre de getPropose ...
 				setIdSortFromSelection(listcell,5, actionDeveloppement.getPropose());
@@ -616,8 +592,8 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		}
 
 
-		public HashMap<String, ActionDevelopmentBean> getListAllEvalue(){
-			HashMap<String, ActionDevelopmentBean> retour=correctionPosteMoel.getDevelopmentEvalue2(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail,selectedRadioEchelle.getContext());
+		public HashMap<String, ActionFormationBean> getListAllEvalue(){
+			HashMap<String, ActionFormationBean> retour=correctionPosteMoel.getDevelopmentEvalueForma(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail,selectedRadioEchelle.getContext());
 
 //			Collection<ActionDevelopmentBean> set = listActionDevelopment.values( );
 //			
@@ -632,10 +608,10 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 			return retour;
 		}
 		
-		public ActionDevelopmentBean getActionDev(String selectedCompACtion,  List<ActionDevelopmentBean> listAction){
+		public ActionFormationBean getActionDev(String selectedCompACtion,  List<ActionFormationBean> listAction){
 			
-			for (Iterator <ActionDevelopmentBean> iterator = listAction.iterator(); iterator.hasNext();) {
-				ActionDevelopmentBean actionDevelopmentBean = (ActionDevelopmentBean) iterator
+			for (Iterator <ActionFormationBean> iterator = listAction.iterator(); iterator.hasNext();) {
+				ActionFormationBean actionDevelopmentBean = (ActionFormationBean) iterator
 						.next();
 				if(actionDevelopmentBean.getIdActionCompPost().equals(selectedCompACtion))
 					return actionDevelopmentBean;

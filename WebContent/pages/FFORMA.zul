@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+
+
+	<window id="win" border="normal" width="100%"
+		apply="kpi.action.PerFicheFormationAction">
+		<!-- **************************************** -->
+
+
+		<hbox>
+			<div>
+				<listbox id="listcompagne" model="@{winCtrl.model}"
+					multiple="false" height="120px" rows="10" selectedItem="@{winCtrl.selected}"
+					width="450px" mold="paging" pageSize="30" nonselectableTags="*">
+
+
+
+					<listhead sizable="true">
+						<listheader label="" height="5px" width="40px"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listheader label="Vague" height="5px" width="120px"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listheader label="Libellé Campagne" height="5px"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listheader label="idcompagne" visible="false" />
+						<listheader label="nominstance" visible="false" />
+
+					</listhead>
+
+					<listitem self="@{each=listvaleur}">
+
+						<listcell id="listcheckbox2">
+							<radio value="@{listvaleur.nombase}" context="@{listvaleur.compagne_id}"
+								sclass="@{listvaleur.nominstance}" forward="onCheck=onModifyCompagne, onCreate=onCreation" />
+
+						</listcell>
+
+						<listcell label="@{listvaleur.nombase}"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listcell label="@{listvaleur.libelle_compagne}"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listcell label="@{listvaleur.compagne_id}" visible="false"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listcell label="@{listvaleur.nominstance}" visible="false"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					</listitem>
+				</listbox>
+			</div>
+			<div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<div></div>
+				<vlayout spacing="10px">
+					<hlayout spacing="36px">
+						<label value="Direction :" />
+						<listbox id="direction1" mold="select" width="180px"
+							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					</hlayout>
+					<hlayout>
+						<label value="Poste de travail:" />
+						<listbox id="poste_travail" mold="select" width="180px"
+							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					</hlayout>
+
+					<hlayout spacing="100px">
+						
+					</hlayout>
+
+
+				</vlayout>
+			</div>
+			<div>
+				<listbox id="liste_echelle" model="@{winCtrl.modelEchelle}"
+					multiple="false" height="120px" rows="3" selectedItem="@{winCtrl.selectedEchelle}"
+					width="200px" mold="paging" pageSize="30" nonselectableTags="*">
+
+					<listhead sizable="true">
+						<listheader label="" height="5px" width="40px"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listheader label="Echelle de maitrise IMG" height="5px"
+							width="260px"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listheader label="idechelle" visible="false" />
+
+					</listhead>
+
+					<listitem self="@{each=listvaleur}">
+
+						<listcell id="listcheckbox">
+							<radio value="@{listvaleur.libelleEchelle}" context="@{listvaleur.idEchelle}"
+								sclass="@{listvaleur.idEchelle}" forward="onCheck=onModifyEchelle, onCreate=onCreation" />
+
+						</listcell>
+
+						<listcell label="@{listvaleur.libelleEchelle}"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+
+						<listcell label="@{listvaleur.idEchelle}" visible="false"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+					</listitem>
+				</listbox>
+			</div>
+			<div>
+				<listbox id="liste_evalue" model="@{winCtrl.modelEvalue}"
+					multiple="false" height="120px" rows="3" selectedItem="@{winCtrl.selectedEvalue}"
+					width="250px" mold="paging" pageSize="30" nonselectableTags="*">
+
+					<listhead sizable="true">
+						<listheader label="" height="5px" width="40px"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listheader label="Liste des évalués" height="5px"
+							width="220px"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+						<listheader label="idEvalue" visible="false" />
+
+					</listhead>
+
+					<listitem self="@{each=listvaleur}">
+
+						<listcell id="listcheckboxEvalue">
+							<radio value="@{listvaleur.evalue}" context="@{listvaleur.idEvalue}"
+								sclass="@{listvaleur.idEvalue}" forward="onCheck=onModifyEvalue, onCreate=onCreation" />
+
+						</listcell>
+
+						<listcell label="@{listvaleur.evalue}"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+
+						<listcell label="@{listvaleur.idEvalue}" visible="false"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+					</listitem>
+				</listbox>
+			</div>
+		</hbox>
+
+
+
+
+
+		<listbox id="liste_action_development" rows="1"
+			model="@{winCtrl.modelActionDevelopment}" width="100%" mold="paging"
+			pageSize="500" height="400px">
+			<listhead sizable="true">
+
+
+
+				<listheader label="Formation" width="400px" sort="auto"
+					align="center" />
+
+
+				<listheader label="Proposée" width="100px" sort="auto"
+					align="center" />
+
+				<listheader label="Validée" width="109px" sort="auto"
+					align="center" />
+
+				<listheader label="Programée" width="100px" sort="auto"
+					align="center" />
+
+				<listheader label="Réalisée" width="100px" sort="auto"
+					align="center" />
+
+				<listheader label="idActionCompPost" width="0px" sort="auto"
+					align="center" visible="false" />
+
+			</listhead>
+
+			<listitem self="@{each=listvaleur}">
+				
+
+				<listcell>
+					<textbox id="lib_formation" width="400px" height="30px"
+						value="@{listvaleur.libelleFormation}" disabled="false"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+				</listcell>
+
+				<listcell>
+					<listbox id="list_propose" mold="select" width="80px"
+						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				</listcell>
+				<listcell>
+					<listbox id="list_valide" mold="select" width="80px"
+						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				</listcell>
+				<listcell>
+					<listbox id="list_programme" mold="select" width="80px"
+						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				</listcell>
+				<listcell>
+					<listbox id="list_realise" mold="select" width="80px"
+						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				</listcell>
+				<listcell label="@{listvaleur.idActionCompPost}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			</listitem>
+		</listbox>
+
+		<include id="iframe" width="200%" height="300%" visible="false" />
+
+		<!-- ************************************* -->
+
+		<hbox pack="center" width="100%" spacing="40">
+
+			<div>
+			
+			<button id="new_record" image="/image/add-icon.png"  height="100%"
+							tooltiptext="Ajouter une formation"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<!-- button id="exporterWord"
+					tooltiptext="Exporter la fiche Individuelle employé selectionné"
+					image="/image/word-icon32.png"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" /-->
+			</div>
+
+			<div>
+				<button id="enregistrerAssociation" image="/image/save.png"
+					tooltiptext="Enregister les actions de développement pour cet employé"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+			</div>
+
+		</hbox>
+	</window>
+</zk>
