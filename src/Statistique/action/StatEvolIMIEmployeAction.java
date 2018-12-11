@@ -200,7 +200,7 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 
 
 		chartComp = (ZHighCharts) comp.getFellow(chartComp.getContext());
-		chartComp.setType("bar"); //Mandatory!
+		chartComp.setType("column"); //Mandatory!
 		chartComp.setTitle("Evolution IMI par employé");
 		chartComp.setTooltipFormatter("function formatTooltip(obj){ " +
 				"return ''+obj.x  +': '+ obj.y;" +
@@ -240,7 +240,12 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 				"}");
 
 		chartComp.setModel(dataChartMode3);
-		chartComp.setPlotOptions("{" +"bar: {" +"dataLabels: {" +"enabled: true" +"}" +	"}" +	"}");
+		chartComp.setPlotOptions("{" +
+				"column: {" +
+				"pointPadding: 0.2," +
+				"borderWidth: 0" +
+			"}" +
+		"}");
 
 
 	}
