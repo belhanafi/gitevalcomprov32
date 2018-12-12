@@ -116,35 +116,6 @@ public class StatEvolIMIEmployeAction extends  GenericForwardComposer{
 		
 		createLineChart(comp1, chartComp3);
 
-/*
-		String employe_id= (String) map_compte.get((String)nom_employe.getSelectedItem().getLabel());
-
-		SimpleCategoryModel  catmodel = new SimpleCategoryModel();
-
-		StatEvolIMIEmployeBean cpb;
-		Iterator it;
-		StatCotationEmployeModel cotationMoel=new StatCotationEmployeModel();
-		List sect_items=cotationMoel.getEvolIMIEmploye(employe_id);
-		it = sect_items.iterator();
-		float imi=0;
-		if (sect_items.size()>0){
-			mychart.setVisible(true);
-			while (it.hasNext()){
-				cpb  = (StatEvolIMIEmployeBean) it.next();
-				catmodel.setValue("",cpb.getDate_evol(),cpb.getImi());
-			}
-
-			mychart.setModel(catmodel);
-			//mychart.setYAxis("IMI"); 
-			//ChartEngine d=mychart.getEngine();
-			//image=d.drawChart(mychart);
-			mychart.setType("line");
-		}else{
-			message.setVisible(true);
-			message.setValue("Pas de résultat à afficher");
-			mychart.setVisible(false);
-
-		}*/
 
 	}
 

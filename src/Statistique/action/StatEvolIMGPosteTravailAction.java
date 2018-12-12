@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.ngi.zhighcharts.SimpleExtXYModel;
+import org.ngi.zhighcharts.ZHighCharts;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.CategoryModel;
@@ -50,6 +52,10 @@ public class StatEvolIMGPosteTravailAction extends  GenericForwardComposer{
 
 	Map map_poste=null;
 	Label message;
+	private ZHighCharts chartComp3;
+	private SimpleExtXYModel dataChartMode3; 
+	Component comp1;
+
 
 
 
@@ -76,6 +82,10 @@ public class StatEvolIMGPosteTravailAction extends  GenericForwardComposer{
 
 		if(poste_travail.getItemCount()>0)
 			poste_travail.setSelectedIndex(0);
+		
+		
+		comp1=comp;
+
 
 
 
@@ -95,43 +105,68 @@ public class StatEvolIMGPosteTravailAction extends  GenericForwardComposer{
 
 
 
-	public void onSelect$poste_travail() throws SQLException	 {
+	public void onSelect$poste_travail() throws Exception	 {
 		
-		message.setValue("");
+		createLineChart(comp1, chartComp3);
+	}
+	
+	
+	public void createLineChart(Component comp , ZHighCharts chartComp) throws Exception {
 
-
+		dataChartMode3=null;
+		dataChartMode3= new SimpleExtXYModel();
 		String code_poste= (String) map_poste.get((String)poste_travail.getSelectedItem().getLabel());
 
-		SimpleCategoryModel catmodel = new SimpleCategoryModel();
 
-		StatEvolIMGBean cpb;
-		Iterator it;
+
+		chartComp = (ZHighCharts) comp.getFellow(chartComp.getContext());
+		chartComp.setType("column"); //Mandatory!
+		chartComp.setTitle("Evolution IMG par Poste de Travail");
+		chartComp.setTooltipFormatter("function formatTooltip(obj){ " +
+				"return ''+obj.x  +': '+ obj.y;" +
+				"}");
+
 		StatCotationEmployeModel cotationMoel=new StatCotationEmployeModel();
 		List sect_items=cotationMoel.getEvolIMGPoste(code_poste);
-		it = sect_items.iterator();
+
+		StatEvolIMGBean cpb;
+		String cat_final="";
+		int counter=0;
+		String cat="";
+
+		Iterator it = sect_items.iterator();
 		float imi=0;
-		if (sect_items.size()>0){
-			mychart.setVisible(true);
-			while (it.hasNext()){
-				cpb  = (StatEvolIMGBean)it.next();
-				catmodel.setValue("",cpb.getDate_evol(),cpb.getImg());
 
-				//catmodel.setValue("IMI","indice de maitrise individuel",3);
-				//mychart.setModel(catmodel);
+		while (it.hasNext()) {
+			cpb  = (StatEvolIMGBean) it.next();
+
+			if (counter<sect_items.size()-1){
+				cat="'"+cpb.getDate_evol()+"'"+",";
+			}else
+				cat= "'"+cpb.getDate_evol()+"'";
 
 
+			// courbe lineaire  Taux couverture 
+			dataChartMode3.addValue("IMG", counter, cpb.getImg());
 
-			}
+			cat_final=cat_final+cat;
+			counter++;
 
-			mychart.setModel(catmodel);
-			mychart.setType("line");
 
 		}
-		else{
-			message.setVisible(true);
-			message.setValue("Pas de résultat à afficher");
-			mychart.setVisible(false);
-		}
+		
+		chartComp.setxAxisOptions("{" +	"categories: [" +cat_final+	"]" + "}");
+		chartComp.setTooltipFormatter("function formatTooltip(obj){ " +
+				"return ''+obj.x  +': '+ obj.y;" +
+				"}");
+
+		chartComp.setModel(dataChartMode3);
+		chartComp.setPlotOptions("{" +
+				"column: {" +
+				"pointPadding: 0.2," +
+				"borderWidth: 0" +
+			"}" +
+		"}");
 
 
 	}

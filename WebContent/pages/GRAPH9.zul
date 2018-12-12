@@ -1,43 +1,47 @@
-<window id="winGraph2" border="normal" height="100%" apply="Statistique.action.StatEvolIMGPosteTravailAction" contentStyle="overflow:auto">
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul">
+	<window id="winGraph2" border="normal" height="100%"
+		apply="Statistique.action.StatEvolIMGPosteTravailAction" contentStyle="overflow:auto">
 
-<style>
-.textboxdetail  {font-family: Verdana, Arial,Helvetica,sans-serif;
- font-size: 10px;font-weight: ;
-}
+		<style>
+			.textboxdetail {font-family: Verdana, Arial,Helvetica,sans-serif;
+			font-size: 10px;font-weight: ;
+			}
 
-.z-combobox ,.z-combobox-inp ,.z-comboitem-text, .z-combobox-rounded-pp
-		.z-comboitem-btn, .z-combobox-pp .z-comboitem-text,
-		.z-combobox-pp .z-comboitem-btn {
-		font-family: Verdana, Arial,Helvetica,sans-serif;
- font-size: 10px;font-weight:;}
+			.z-combobox ,.z-combobox-inp ,.z-comboitem-text, .z-combobox-rounded-pp
+			.z-comboitem-btn, .z-combobox-pp .z-comboitem-text,
+			.z-combobox-pp .z-comboitem-btn {
+			font-family: Verdana, Arial,Helvetica,sans-serif;
+			font-size: 10px;font-weight:;}
 
-</style>
+		</style>
 
-	<groupbox id="gb" mold="3d" width="100%" height="500">
-        <caption label="Evolution IMG par poste de travail" />
-        	<vlayout spacing="5px">
-         		<hlayout spacing ="54px">
-        			<label value="Poste de travail:   "  sclass="textboxdetail"/>
- 					<combobox id="poste_travail"  autodrop="true"   width="250px"  readonly="true" />
- 				</hlayout>	
-			
-        			
-			</vlayout>	   	
-    </groupbox>
-    
-   
-    
-	<vbox>
-	    <label id="message" visible="false" style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 16px;font-weight:bold ;" />
-	
-		<flashchart id="mychart" width="800" height="400"  style="font-weight:bold"/>
-			
-		<menupopup id="editPopup">      
-        	<menuitem id= "downloadimage" label="Enregistrer l'image..." />
-    	</menupopup>
-			
-	</vbox>
-	
+		<div id="listboxpart" visible="${empty user}">
+			<groupbox id="gb" mold="3d" width="100%" height="500">
+				<caption label="Evolution IMG par poste de travail" />
+				<vlayout spacing="5px">
+					<hlayout spacing="54px">
+						<label value="Poste de travail:   " sclass="textboxdetail" />
+						<combobox id="poste_travail" autodrop="true" width="250px"
+							readonly="true" />
+					</hlayout>
 
 
-</window>
+				</vlayout>
+			</groupbox>
+		</div>
+
+
+
+		<div id="listboxpart1" visible="${empty user}">
+			<div style="background:#FFFFFF">
+				<zhighcharts id="chartComp3" visible="true" context="chartComp3" />
+			</div>
+		</div>
+
+
+
+
+
+	</window>
+</zk>
