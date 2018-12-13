@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import kpi.bean.ActionDevelopmentMetierBean;
 import kpi.bean.ListeCompagneVagueBean;
@@ -28,6 +29,7 @@ import org.zkoss.zul.Include;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
+import org.zkoss.zul.Listheader;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
@@ -57,7 +59,7 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	Button exporterWord;
 	Button EnregistrerAssociation;
 	Window win;
- 
+
 	private HashMap <String, Radio> selectedRadio;
 	private  Radio selectedRadioEchelle;
 	private List<ListeCompagneVagueBean> model = new ArrayList<ListeCompagneVagueBean>();
@@ -65,7 +67,7 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	private List<ActionDevelopmentMetierBean> modelActionDevelopment = new ArrayList<ActionDevelopmentMetierBean>();
 	private List<String> suiviSort=new ArrayList<String>();
 	private HashMap<String, String> listSuiviSort;
-	
+
 	private ListeCompagneVagueBean selected;
 	private EchelleMaitrise selectedEchelle;
 	//private ActionDevelopmentMetierBean selectedActionDevelopment;
@@ -78,8 +80,14 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	private String selectedPosteTravail=null;
 	private Listbox direction1;
 	Map map_direction=null;
-	
-	
+	Listheader lbl_propose;
+	Listheader lbl_valide;
+	Listheader lbl_programme;
+	Listheader lbl_realise;
+
+
+
+
 	@SuppressWarnings("deprecation")
 	public void doAfterCompose(Component comp) throws Exception {
 		//System.out.println("doAfterCompose executed");
@@ -92,25 +100,24 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 		//récupération de la liste des compagnes
 
 
-		
+
 		// Affichage de la liste des compagnes
 		KpiSyntheseModel init= new KpiSyntheseModel();
 		model=init.getListeCampgneVague(); 
-		
+
 
 		//chargement du contenu de la table action_development
 
-		
+
 		selectedRadio=new HashMap <String, Radio>();
-		
+
 		binder = new AnnotateDataBinder(comp);
 		binder.loadAll();
 
-//		if(listcompagne.getItemCount()!=0)
-//			listcompagne.setSelectedIndex(0);
+		//		if(listcompagne.getItemCount()!=0)
+		//			listcompagne.setSelectedIndex(0);
 
-
-		comp1=comp;
+		
 
 	}
 
@@ -124,7 +131,7 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 
 		if (Messagebox.show("Voulez vous exporter la liste des employés ?", "Prompt", Messagebox.YES|Messagebox.NO,
 				Messagebox.QUESTION) == Messagebox.YES) {
-			
+
 
 			return;
 		}
@@ -137,41 +144,41 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	public void onClick$enregistrerAssociation() throws InterruptedException, ParsePropertyException, InvalidFormatException, IOException
 	{
 		List <Listitem>listeSelection=liste_action_development.getItems();
-		
-		
-		
+
+
+
 
 		Iterator iterateur=listeSelection.iterator();
 		//prcourir l'ensemble de la grid
 		ArrayList<ActionDevelopmentMetierBean> listActionUpdate=new ArrayList<ActionDevelopmentMetierBean>();
 		while (iterateur.hasNext()){
 			Listitem item=(Listitem)iterateur.next();
-			
-			List <Listcell> listcell=item.getChildren();
-			
-			if(listcell.size()==10){
-			
-			Listcell cellAction=listcell.get(0);
-			String selectedACtion=(String)cellAction.getLabel();
-			
-			Listcell cellAction1=listcell.get(1);
-			String effectifs=(String)cellAction1.getLabel();
-			
-			 // String effectifs=getIdSortFromSelection(listcell,1);
-			 String propose=getIdSortFromSelection(listcell,6);
-			 
-			 String valide=getIdSortFromSelection(listcell,7);
-			 
-			 String programme=getIdSortFromSelection(listcell,8);
-			 
-			 String realise=getIdSortFromSelection(listcell,9);
 
-			 ActionDevelopmentMetierBean actionDev=new ActionDevelopmentMetierBean(selectedACtion,idcompagne.toString(),selectedPosteTravail,propose, valide, programme, realise,effectifs);
-			 listActionUpdate.add(actionDev);
-			 
+			List <Listcell> listcell=item.getChildren();
+
+			if(listcell.size()==10){
+
+				Listcell cellAction=listcell.get(0);
+				String selectedACtion=(String)cellAction.getLabel();
+
+				Listcell cellAction1=listcell.get(1);
+				String effectifs=(String)cellAction1.getLabel();
+
+				// String effectifs=getIdSortFromSelection(listcell,1);
+				String propose=getIdSortFromSelection(listcell,6);
+
+				String valide=getIdSortFromSelection(listcell,7);
+
+				String programme=getIdSortFromSelection(listcell,8);
+
+				String realise=getIdSortFromSelection(listcell,9);
+
+				ActionDevelopmentMetierBean actionDev=new ActionDevelopmentMetierBean(selectedACtion,idcompagne.toString(),selectedPosteTravail,propose, valide, programme, realise,effectifs);
+				listActionUpdate.add(actionDev);
+
 			}
 		}
-		
+
 		if (Messagebox.show("Voulez vous créer des actions pour le poste sélectionné ?", "Prompt", Messagebox.YES|Messagebox.NO,
 				Messagebox.QUESTION) == Messagebox.YES) {
 			correctionPosteMoel.updateActionDevPoste(listDb,listActionUpdate);
@@ -182,10 +189,10 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 		else{
 			return;
 		}
-		
+
 
 	}
-	
+
 	private String getIdSortFromSelection(List<Listcell> llistcell, int index)
 	{
 
@@ -194,15 +201,15 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 		List <Listbox> listeSortSelected= cellSelected.getChildren();
 		Listbox  listeSelected=listeSortSelected.get(0);
 		int indexSelected=listeSelected.getSelectedIndex();
-		 if(indexSelected==-1)
-			 return "";
+		if(indexSelected==-1)
+			return "";
 		String valeur=(String)arraySortKey.get(indexSelected);
 
-		
-			
+
+
 		return valeur;
 	}
-	
+
 	private void setIdSortFromSelection(List<Listcell> llistcell,int index, String toSelect)
 	{
 
@@ -210,25 +217,25 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 		Listcell cellSelected=llistcell.get(index);
 		List <Listbox> listeSortSelected= cellSelected.getChildren();
 		Listbox  listeSelected=listeSortSelected.get(0);
-		
+
 		List listitem=listeSelected.getItems();
-		
+
 		int indexToSelect=(int)arraySortKey.indexOf(toSelect);
 		if(indexToSelect!=-1) 
 			listeSelected.setSelectedIndex(indexToSelect);
 
 	}
-	
-	
+
+
 	public List<EchelleMaitrise> getModelEchelle() {
 		return modelEchelle;
 	}
-	
+
 	public List<ActionDevelopmentMetierBean> getModelActionDevelopment() {
 		return modelActionDevelopment;
 	}
-	
-	
+
+
 	public EchelleMaitrise getSelectedEchelle() {
 		return selectedEchelle;
 	}
@@ -236,9 +243,9 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	public void setSelectedEchelle(EchelleMaitrise selectedEchelle) {
 		this.selectedEchelle = selectedEchelle;
 	}
-	
-	
-	
+
+
+
 	public List<ListeCompagneVagueBean> getModel() {
 		return model;
 	}
@@ -249,23 +256,55 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	public void setSelected(ListeCompagneVagueBean selected) {
 		this.selected = selected;
 	}
-	
-	
+
+
 
 	public void onSelect$poste_travail() throws SQLException
 	{
 		selectedPosteTravail= (String)poste_travail.getSelectedItem().getValue();
-		
+
 		ListModelList listModel = new ListModelList(modelEchelle);
 		liste_echelle.setModel(listModel);
-		
-		
+
+
 		ListModelList listModel2 = new ListModelList(new ArrayList<ActionDevelopmentMetierBean>());
 		liste_action_development.setModel(listModel2);
 		initListBoxSuivi( listSuiviSort);
+		HashMap<String,  Integer> resultat=correctionPosteMoel.getComptageActionDevMetier(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail);
+
+		for (Entry<String, Integer> pair : resultat.entrySet()) {
+
+			String action = pair.getKey();
+			Integer comptage = pair.getValue();
+
+			if(action.equalsIgnoreCase("proposee")){
+
+				String lbl="Proposée"+"-> "+comptage;
+				lbl_propose.setLabel(lbl);
+
+			}else if(action.equalsIgnoreCase("validee")){
+
+				String lbl="Validée"+"-> "+comptage;
+				lbl_valide.setLabel(lbl);
+
+			}else if(action.equalsIgnoreCase("programmee")){
+
+				String lbl="Programmée"+"-> "+comptage;
+				lbl_programme.setLabel(lbl);
+
+			}else{
+
+				String lbl="Réalisée"+"-> "+comptage;
+				lbl_realise.setLabel(lbl);
+
+			}
+
+		}
+		
+
 
 	}
-	
+
 	public void onModifyCompagne(ForwardEvent event) throws SQLException{
 		Radio radio = (Radio) event.getOrigin().getTarget();
 
@@ -305,7 +344,7 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 
 			if (selectedRadio.get(cles).isChecked()){
 
-				 idcompagne=Integer.parseInt(selectedRadio.get(cles).getContext());
+				idcompagne=Integer.parseInt(selectedRadio.get(cles).getContext());
 				String nominstance=selectedRadio.get(cles).getSclass();
 				String vague=selectedRadio.get(cles).getValue();
 
@@ -324,10 +363,10 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 
 
 		}
-		
+
 		if (direction1.getSelectedItems().size()>0) 
 			direction1.getItems().clear();
-		
+
 		KpiSyntheseModel kpi=new KpiSyntheseModel();
 		map_direction=kpi.getListDirection(listDb);
 		Set set = (map_direction).entrySet(); 
@@ -338,48 +377,48 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 		}
 
 		direction1.setSelectedIndex(0);
-		
 
 
-		
 
-		
+
+
+
 	}
-	
-	
-public void onSelect$direction1() throws SQLException	{
-		
+
+
+	public void onSelect$direction1() throws SQLException	{
+
 		poste_travail.getItems().clear();
-		
+
 		poste_travail.appendItem("Tous Postes Travail","tous");
-		
+
 		String libelle_direction=(String)direction1.getSelectedItem().getValue();
 		List <String> list_code_dir=(List)map_direction.get(libelle_direction);
-		
+
 		KpiSyntheseModel kpi=new KpiSyntheseModel();
 		map_poste=kpi.getListPostTravailValid(listDb,list_code_dir);
 		Set set = (map_poste).entrySet(); 
-		
+
 		Iterator i = set.iterator();
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
 			poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
 		}
-		
-		
-		
+
+
+
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
 			poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
 		}
 
 		poste_travail.setSelectedIndex(0);
-		
-		
+
+
 		//chargement des d'echelles
 		modelEchelle=correctionPosteMoel.getListeEchelleMaitrise(listDb);
-		
-		
+
+
 
 		//binder.loadComponent(poste_travail);
 		//binder.loadAll();
@@ -393,37 +432,37 @@ public void onSelect$direction1() throws SQLException	{
 		liste_action_development.setModel(listModel2);
 		selectedPosteTravail=null;
 
-		
+
 	}
 
-	
+
 	public void onModifyEchelle(ForwardEvent event) throws SQLException, InterruptedException{
 		if(selectedPosteTravail!=null){
 			Radio radio = (Radio) event.getOrigin().getTarget();
 			if( selectedRadioEchelle!=null)
 				selectedRadioEchelle.setChecked(false);
-	
+
 			if (radio.isChecked())
 			{
 				String idEchelle=radio.getContext();
-				
+
 				//chargement du contenu de la table action_development 
 				mapEchelleDevAction=correctionPosteMoel.getDevelopmentAction(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail,idEchelle);
-				
+
 				mapEchelleDevAction.get(selectedEchelle);
 				HashMap <String, ActionDevelopmentMetierBean> mapActionDevelopment =mapEchelleDevAction.get(idEchelle);
 				Collection set =mapActionDevelopment.values();
-					
-				
+
+
 				modelActionDevelopment=new ArrayList<ActionDevelopmentMetierBean>(set);
-	
+
 				ListModelList listModel = new ListModelList(modelActionDevelopment);
 				liste_action_development.setModel(listModel);
-				
+
 				initListBoxSuivi( listSuiviSort);
 				//initListBoxSuiviSelection(mapEchelleDevAction);
 				selectedRadioEchelle=radio;
-				
+
 			}
 		}else{
 			Messagebox.show("Merci de selectionner le poste de travail d'abord", "Information",Messagebox.OK, Messagebox.INFORMATION);
@@ -432,99 +471,102 @@ public void onSelect$direction1() throws SQLException	{
 			radio.setChecked(false);
 		}
 		
+		
+
+
 
 	}
-	
+
 	private void initListBoxSuiviSelection(HashMap<String, HashMap<String, ActionDevelopmentMetierBean>>  mapEchelleDevAction){
-		
+
 		List <Listitem>listeSelection=liste_action_development.getItems();
 
 		Iterator iterateur=listeSelection.iterator();
 		//prcourir l'ensemble de la grid
-		
+
 		while (iterateur.hasNext()){
 			Listitem item=(Listitem)iterateur.next();
-			
+
 			List <Listcell> listcell=item.getChildren();
-			
+
 			if(listcell.size()==10){
-			
-			Listcell cellAction=listcell.get(0);
-			String selectedACtion=(String)cellAction.getLabel();
-			HashMap<String, ActionDevelopmentMetierBean> listeEchelleSort=mapEchelleDevAction.get(selectedRadioEchelle.getContext());
-			
-			ActionDevelopmentMetierBean actionDeveloppement=listeEchelleSort.get(selectedACtion);
-			
-			//TODO trouver l'ordre de getPropose ...
-			setIdSortFromSelection(listcell,6, actionDeveloppement.getPropose());
-			
-			setIdSortFromSelection(listcell,7, actionDeveloppement.getValidee());
-			
-			setIdSortFromSelection(listcell,8, actionDeveloppement.getProgrammee());
-			
-			setIdSortFromSelection(listcell,9, actionDeveloppement.getRealisee());
-			 
+
+				Listcell cellAction=listcell.get(0);
+				String selectedACtion=(String)cellAction.getLabel();
+				HashMap<String, ActionDevelopmentMetierBean> listeEchelleSort=mapEchelleDevAction.get(selectedRadioEchelle.getContext());
+
+				ActionDevelopmentMetierBean actionDeveloppement=listeEchelleSort.get(selectedACtion);
+
+				//TODO trouver l'ordre de getPropose ...
+				setIdSortFromSelection(listcell,6, actionDeveloppement.getPropose());
+
+				setIdSortFromSelection(listcell,7, actionDeveloppement.getValidee());
+
+				setIdSortFromSelection(listcell,8, actionDeveloppement.getProgrammee());
+
+				setIdSortFromSelection(listcell,9, actionDeveloppement.getRealisee());
+
 
 
 			}
 		}
 	}
 
-		private void initListBoxSuivi( HashMap<String,String> listSuiviSort)
-		{
+	private void initListBoxSuivi( HashMap<String,String> listSuiviSort)
+	{
 
-			//vider le contenu des listes pour les initialier
-			Collection set =listSuiviSort.values();
-			suiviSort=new ArrayList<String>(set);
-			
-			
-			ListModelList listModel = new ListModelList(suiviSort);
-			list_propose.setModel(listModel);
-			
-			list_programme.setModel(listModel);
-			list_realise.setModel(listModel);
-			list_valide.setModel(listModel);
-			
+		//vider le contenu des listes pour les initialier
+		Collection set =listSuiviSort.values();
+		suiviSort=new ArrayList<String>(set);
 
+
+		ListModelList listModel = new ListModelList(suiviSort);
+		list_propose.setModel(listModel);
+
+		list_programme.setModel(listModel);
+		list_realise.setModel(listModel);
+		list_valide.setModel(listModel);
+
+
+	}
+	public void onAfterRender$liste_action_development(ForwardEvent event) {
+		initListBoxSuiviSelection(mapEchelleDevAction);
+		//System.out.println("ouverture de la listebox");
+		//System.out.println("################onAfterRender$lst_test::Active Page: " + ((Listbox)event.getOrigin().getTarget()).getActivePage());
+	}
+
+
+	public void onClick$btReportpg3() throws Exception
+	{
+
+
+		if (Messagebox.show("Voulez vous exporter les persectives développement du poste ?", "Prompt", Messagebox.YES|Messagebox.NO,
+				Messagebox.QUESTION) == Messagebox.YES) {
+
+			ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
+			applicationSession.setListDb(listDb);
+			String code_poste=selectedPosteTravail= (String)poste_travail.getSelectedItem().getValue();
+			applicationSession.setCode_poste(code_poste);
+			String url = "/run?__report=perspectiveDevPoste.rptdesign&formatRapport=doc";
+			iframe3.setSrc(url);
+			iframe3.invalidate();
+
+
+			return;
 		}
-		public void onAfterRender$liste_action_development(ForwardEvent event) {
-			initListBoxSuiviSelection(mapEchelleDevAction);
-			//System.out.println("ouverture de la listebox");
-			//System.out.println("################onAfterRender$lst_test::Active Page: " + ((Listbox)event.getOrigin().getTarget()).getActivePage());
+
+		else{
+			return;
 		}
 
 
-		public void onClick$btReportpg3() throws Exception
-		{
+	}
 
-			
-			if (Messagebox.show("Voulez vous exporter les persectives développement du poste ?", "Prompt", Messagebox.YES|Messagebox.NO,
-					Messagebox.QUESTION) == Messagebox.YES) {
-				
-				ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
-				applicationSession.setListDb(listDb);
-				String code_poste=selectedPosteTravail= (String)poste_travail.getSelectedItem().getValue();
-				applicationSession.setCode_poste(code_poste);
-				String url = "/run?__report=perspectiveDevPoste.rptdesign&formatRapport=doc";
-				iframe3.setSrc(url);
-				iframe3.invalidate();
-				
 
-				return;
-			}
 
-			else{
-				return;
-			}
-			
-		
-		}
-		
-		
-		
-		
- 
- 
+
+
+
 
 }
 

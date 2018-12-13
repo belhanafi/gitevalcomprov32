@@ -7,9 +7,15 @@ import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.text.html.ListView;
@@ -268,7 +274,7 @@ public class KpiSyntheseModel {
 
 
 
-	
+
 	/**
 	 * cette méthode retrourne la liste des campagnes d'évaluation d'une base de  données selectionnée à la connexion
 	 * 	 * 	 * @return
@@ -280,7 +286,7 @@ public class KpiSyntheseModel {
 		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
 		int database_id=applicationSession.getClient_database_id();
 
-	
+
 		String query_finale="";
 		int counter=1;
 
@@ -596,9 +602,9 @@ public class KpiSyntheseModel {
 		String structure = "(";
 		for ( int i=0;i<list_code_dir.size();i++){
 			if (i <list_code_dir.size()-1)
-		        structure+="'"+list_code_dir.get(i)+"',";
+				structure+="'"+list_code_dir.get(i)+"',";
 			else
-				 structure+="'"+list_code_dir.get(i)+"'";
+				structure+="'"+list_code_dir.get(i)+"'";
 		}
 		structure+=")";
 		try 
@@ -662,7 +668,7 @@ public class KpiSyntheseModel {
 			}
 		}
 
-		return map;
+		return (HashMap) sortByComparator(map);
 	}
 
 
@@ -1406,16 +1412,16 @@ public class KpiSyntheseModel {
 
 			for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
 				String vague = pair.getKey();
-//
-//			query="SELECT t.login,'"+vague+"' vague, concat (nom, concat(' ',prenom)) evaluateur, t.nomEmploye evalue, round(avg(round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60)),2) AS duree"
-//						+ " FROM common_evalcom.compte h, "+entry.getKey()+"."+"histo_fiche_evaluation t  JOIN "+entry.getKey()+"."+"histo_fiche_evaluation v ON t.login = (v.login)"
-//						+ " and t.date_histo<v.date_histo and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))<10 and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))>3"
-//					+ " where h.login=t.login "
-//					+ " group by 1,2";
-//				
-				
-				
-				
+				//
+				//			query="SELECT t.login,'"+vague+"' vague, concat (nom, concat(' ',prenom)) evaluateur, t.nomEmploye evalue, round(avg(round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60)),2) AS duree"
+				//						+ " FROM common_evalcom.compte h, "+entry.getKey()+"."+"histo_fiche_evaluation t  JOIN "+entry.getKey()+"."+"histo_fiche_evaluation v ON t.login = (v.login)"
+				//						+ " and t.date_histo<v.date_histo and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))<10 and (round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60))>3"
+				//					+ " where h.login=t.login "
+				//					+ " group by 1,2";
+				//				
+
+
+
 				query=" select h.login,'"+vague+"' vague, concat (h.nom, concat(' ',h.prenom)) evaluateur,evalue, intitule_poste,libelle_direction,structure_ent, sum(duree) duree"
 						+ " from("
 						+ "      select t.login,t.nomEmploye evalue,round(avg(round(TIMESTAMPDIFF(SECOND,t.date_histo,v.date_histo)/60)),2) AS duree"
@@ -1448,7 +1454,7 @@ public class KpiSyntheseModel {
 						+ "  			where  duree >3 and duree<10 and h.login=aggreg_table.login and e.id_compte=h.id_compte and e.code_poste=p.code_poste and t.code_structure=e.code_structure"
 						+ "			group by 1";
 
-				
+
 
 				if (counter<map_size){
 					query_finale=query_finale+query +" union ";
@@ -1486,7 +1492,7 @@ public class KpiSyntheseModel {
 				bean.setStructure_entreprise(rs.getString("structure_ent"));
 				bean.setPoste_travail(rs.getString("intitule_poste"));
 				bean.setLibelle_direction(rs.getString("libelle_direction"));
-				
+
 				listbean.add(bean);
 
 
@@ -1528,8 +1534,8 @@ public class KpiSyntheseModel {
 
 	}
 
-	
-	
+
+
 	/**
 	 * cette méthode retrourne  La liste des direction si direction est null dans la table structure_entreprise,
 	 * on recupère la division
@@ -1537,15 +1543,15 @@ public class KpiSyntheseModel {
 	 */
 	public HashMap<String,List<String>> getListDirection(HashMap<String, HashMap<String, Integer>> listDb)	{
 
-	
+
 		String query="";
 
 		for (Entry<String, HashMap<String, Integer>> entry : listDb.entrySet()) {
 
-	
+
 
 			for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
-							
+
 				query="select code_structure, case   when length(trim(direction))=0 then 'DIR NON RENSEIGNEE' ELSE direction END direction "
 						+ " from ("
 						+ "	select code_structure,libelle_direction as direction from "+entry.getKey()+"."+"structure_entreprise where length(trim(libelle_direction))!=0 "
@@ -1562,34 +1568,34 @@ public class KpiSyntheseModel {
 		Statement stmt=null;
 		ResultSet rs=null;
 		HashMap<String,List<String>> mapListDir = new HashMap<String,List<String>> ();
-		
+
 		try 
 		{
 			stmt = (Statement) conn.createStatement();
 
 			rs = (ResultSet) stmt.executeQuery(query);
 			String libelle_direction="";
-		
+
 			while(rs.next()){
-				
+
 				libelle_direction=rs.getString("direction");
-				
+
 				if(mapListDir.get(libelle_direction)== null){
 					List <String> list_code_dir=new ArrayList<String>();
 					list_code_dir.add(rs.getString("code_structure"));
 					mapListDir.put(libelle_direction, list_code_dir);
-								
+
 				}else{
 					List <String> list_code_dir=mapListDir.get(libelle_direction);
 					list_code_dir.add(rs.getString("code_structure"));
 					mapListDir.put(libelle_direction,list_code_dir );
-					
-					
+
+
 				}
-				
+
 				//listDir.put(libelle_direction_save, list_code_dir);
-				
-				
+
+
 			}
 
 
@@ -1697,7 +1703,28 @@ public class KpiSyntheseModel {
 		return map;
 	}
 
-	
+
+
+	private static Map sortByComparator(Map unsortMap) {
+
+		List list = new LinkedList(unsortMap.entrySet());
+
+		//sort list based on comparator
+		Collections.sort(list, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				return ((Comparable) ((Map.Entry) (o1)).getKey())
+						.compareTo(((Map.Entry) (o2)).getKey());
+			}
+		});
+
+		//put sorted list into map again
+		Map sortedMap = new LinkedHashMap();
+		for (Iterator it = list.iterator(); it.hasNext();) {
+			Map.Entry entry = (Map.Entry)it.next();
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		return sortedMap;
+	}	
 
 
 }

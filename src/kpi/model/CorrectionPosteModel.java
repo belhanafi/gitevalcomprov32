@@ -9,9 +9,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -1298,6 +1303,122 @@ public HashMap<String, ActionFormationBean> getDevelopmentEvalueForma(HashMap<St
 
 		return resultat;
 	}
+
+
+public HashMap<String, Integer> getComptageActionDevMetier(HashMap<String, HashMap<String, Integer>> listDb, String idCompagne, String codePosteTravail){
+	
+	HashMap<String,  Integer> resultat= new HashMap<String,  Integer>();
+
+	
+	CreateDatabaseCon dbcon=new CreateDatabaseCon();
+	Connection conn=(Connection) dbcon.connectToPrincipalDB();
+	Statement stmt = null;
+	
+
+
+	ResultSet rs=null;
+	String query="";
+	try 
+	{
+		stmt = (Statement) conn.createStatement();
+
+		for (Entry<String, HashMap<String, Integer>> entry : listDb.entrySet()) {
+
+			int map_size=listDb.entrySet().size();
+
+			for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
+				String vague = pair.getKey();
+				Integer idcompagne = pair.getValue();
+				
+				
+				query="select sum(proposee) proposee,sum(validee) validee,sum(programmee) programmee,sum(realisee) realisee from ("
+						+ "  select id_action,count(proposee)proposee,0 validee,0 programmee,0  realisee from "+entry.getKey()+".actionsdev_employe"
+						+ "  where proposee='O' and  id_compagne="+idCompagne+" and id_employe in (select id_employe from "+entry.getKey()+".employe where code_poste='"+codePosteTravail+"') group by 1"
+					+ "	union"
+						+ "	select id_action,0 proposee,count(validee) validee,0 programmee,0 realisee from "+entry.getKey()+".actionsdev_employe"
+						+ " where validee='O' and  id_compagne="+idCompagne+" and id_employe in (select id_employe from "+entry.getKey()+".employe where code_poste='"+codePosteTravail+"') group by 1"
+					+ " union"
+						+ "	select id_action,0 proposee,0 validee,count( programmee) programmee,0 realisee from "+entry.getKey()+".actionsdev_employe"
+						+ " where programmee='O' and  id_compagne="+idCompagne+" and id_employe in (select id_employe from "+entry.getKey()+".employe where code_poste='"+codePosteTravail+"') group by 1"
+					+ "	union"
+						+ "	select id_action,0 proposee,0 validee,0 programmee,count( realisee) realisee from "+entry.getKey()+".actionsdev_employe"
+						+ " where realisee='O' and  id_compagne="+idCompagne+" and id_employe in (select id_employe from "+entry.getKey()+".employe where code_poste='"+codePosteTravail+"') group by 1"
+					+ "	) tab ";
+						
+							
+				break;
+
+			}
+			break;
+
+		}
+		rs = (ResultSet) stmt.executeQuery(query);
+
+
+		while(rs.next()){
+			
+			resultat.put("proposee",rs.getInt("proposee"));
+			resultat.put("validee",rs.getInt("validee"));
+			resultat.put("programmee",rs.getInt("programmee"));
+			resultat.put("realisee",rs.getInt("realisee"));
+
+							
+			
+		}
+
+	}
+	catch ( SQLException e ) {
+
+	} finally {
+
+		if ( rs != null ) {
+			try {
+				rs.close();
+			} catch ( SQLException ignore ) {
+			}
+		}
+
+		if ( stmt != null ) {
+			try {
+				stmt.close();
+			} catch ( SQLException ignore ) {
+			}
+		}
+
+		if ( conn != null ) {
+			try {
+				conn.close();
+			} catch ( SQLException ignore ) {
+			}
+		}
+	}
+
+	return resultat;
+}
+
+
+
+private static Map sortByComparator(Map unsortMap) {
+
+	List list = new LinkedList(unsortMap.entrySet());
+
+	//sort list based on comparator
+	Collections.sort(list, new Comparator() {
+		public int compare(Object o1, Object o2) {
+			return ((Comparable) ((Map.Entry) (o1)).getValue())
+					.compareTo(((Map.Entry) (o2)).getValue());
+		}
+	});
+
+	//put sorted list into map again
+	Map sortedMap = new LinkedHashMap();
+	for (Iterator it = list.iterator(); it.hasNext();) {
+		Map.Entry entry = (Map.Entry)it.next();
+		sortedMap.put(entry.getKey(), entry.getValue());
+	}
+	return sortedMap;
+}	
+
 	
 	
 	
