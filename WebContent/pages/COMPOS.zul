@@ -22,7 +22,7 @@
         	
 			<combobox id="nom_groupe" autodrop="true" mold="rounded" buttonVisible="true" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
 			
-			<label value="CompÃ©tence :   "  sclass="textboxdetail" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+			<label value="Compétence :   "  sclass="textboxdetail" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
         	
 			<combobox id="nom_competence" autodrop="true" mold="rounded" buttonVisible="true" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
     	</hbox>

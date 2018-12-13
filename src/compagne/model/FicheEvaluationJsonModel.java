@@ -422,17 +422,27 @@ public class FicheEvaluationJsonModel {
 
 	// cette ethoderetourne la liste des compétences (clé == le code compétence)
 
-	public HashMap<String, String > getListCompetence()
+	public HashMap<String, String > getListCompetence(int id_compagne) throws ParseException
 	{
 		HashMap<String, String> mapcode_libelleCompetence=new HashMap<String, String>();
 		CreateDatabaseCon dbcon=new CreateDatabaseCon();
 		Connection conn=(Connection) dbcon.connectToSecondairesDB();
 		Statement stmt=null;
 		ResultSet rs=null;
+		String select_structure="";
 		try 
 		{
 			stmt = (Statement) conn.createStatement();
-			String select_structure="Select distinct libelle_competence,code_competence from repertoire_competence  ";
+			
+			
+			
+			if (verifDateDebCampVsDateJour(id_compagne)){
+				
+				select_structure="Select distinct libelle_competence,code_competence from repertoire_competence  ";
+				
+			}else{
+				select_structure="Select distinct libelle_competence,code_competence from repertoire_competence  where affichable='O' ";
+			}
 
 
 			rs = (ResultSet) stmt.executeQuery(select_structure);

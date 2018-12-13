@@ -277,7 +277,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		id_employe=ficheEvaluationModel.getIdEmploye(compteUtilisateur.getId_compte());
 		compteUtilisateur.setId_employe(id_employe);
 
-		mapcodeCompetenceLibelleCompetence=ficheEvaluationJsonModel.getListCompetence();
+		mapcodeCompetenceLibelleCompetence=ficheEvaluationJsonModel.getListCompetence(compagne_id);
 		mapidRepCompetence_ApptitudeObservable=ficheEvaluationJsonModel.getListapptitudeObservable(compagne_id);
 		//récuperation de la description des poste pour le bouton help
 
