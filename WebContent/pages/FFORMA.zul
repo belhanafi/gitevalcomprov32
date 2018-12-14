@@ -64,18 +64,31 @@
 						<listbox id="direction1" mold="select" width="180px"
 							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 					</hlayout>
-					<hlayout>
+					<hlayout >
 						<label value="Poste de travail:" />
 						<listbox id="poste_travail" mold="select" width="180px"
 							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 					</hlayout>
 
+					<hlayout spacing="20px">
+                     <label width="150px"></label><label width="150px"></label><label width="150px"></label><label width="150px"></label><label width="150px"></label>
+						<button id="delete_record" image="/image/delete_lineitem.png"
+							height="100%" tooltiptext="Supprimer une formation"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+
+						<button id="new_record" image="/image/add-icon.png" height="100%"
+							tooltiptext="Ajouter une formation"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					</hlayout>
+
 					<hlayout spacing="100px">
-						
+
 					</hlayout>
 
 
 				</vlayout>
+			
 			</div>
 			<div>
 				<listbox id="liste_echelle" model="@{winCtrl.modelEchelle}"
@@ -177,12 +190,12 @@
 					align="center" />
 
 				<listheader label="idActionCompPost" width="0px" sort="auto"
-					align="center" visible="false" />  
+					align="center" visible="false" />
 
 			</listhead>
 
 			<listitem self="@{each=listvaleur}">
-				
+
 
 				<listcell>
 					<textbox id="lib_formation" width="400px" height="30px"
@@ -208,7 +221,7 @@
 						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 				<listcell label="@{listvaleur.idActionCompPost}"
-					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />  
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			</listitem>
 		</listbox>
 
@@ -219,17 +232,10 @@
 		<hbox pack="center" width="100%" spacing="40">
 
 			<div>
-			
-			<button id="delete_record" image="/image/cross.png"  height="100%"
-							tooltiptext="Supprimer une formation"
-							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-			<button id="new_record" image="/image/add-icon.png"  height="100%"
-							tooltiptext="Ajouter une formation"
-							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-				<!-- button id="exporterWord"
-					tooltiptext="Exporter la fiche Individuelle employé selectionné"
-					image="/image/word-icon32.png"
-					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" /-->
+
+				<!-- button id="exporterWord" tooltiptext="Exporter la fiche Individuelle 
+					employé selectionné" image="/image/word-icon32.png" style="font-family: Verdana, 
+					Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" / -->
 			</div>
 
 			<div>
