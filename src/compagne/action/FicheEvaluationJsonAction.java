@@ -1838,11 +1838,12 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 
 	/**
 	 * evenement a gerer lors de la selection d'un poste de travail dans l'onglet des fiche valide
+	 * @throws InterruptedException 
 	 */
-	public void onSelect$poste_travailV()
+	public void onSelect$poste_travailV() throws InterruptedException
 	{
 		
-
+		try{
 		//modif point 2 v3.2 05/07/2018 ajout combo direction uniquement pour le profil super admin and admin
 		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
 		CompteBean compteUtilisateur=applicationSession.getCompteUtilisateur();
@@ -1990,6 +1991,9 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 				if(employeV.getItemCount()>0)
 					employeV.setSelectedIndex(0);
 			}
+		}
+		}catch(Exception e){
+			Messagebox.show("Merci de selectionner une direction ", "Erreur", Messagebox.OK, Messagebox.ERROR);;
 		}
 	}
 
@@ -3521,7 +3525,7 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 	}
 
 	//modif v3.2 point 2 ajout de la combo direction
-	public void onSelect$directionV() throws SQLException
+	public void onSelect$directionV() throws SQLException, InterruptedException
 	{
 
 		
@@ -3694,25 +3698,34 @@ public class FicheEvaluationJsonAction extends GenericForwardComposer{
 		iframe.invalidate();
 	}
 
-	private static Map sortByComparator(Map unsortMap) {
+	private static Map sortByComparator(Map unsortMap) throws InterruptedException {
 
-		List list = new LinkedList(unsortMap.entrySet());
-
-		//sort list based on comparator
-		Collections.sort(list, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				return ((Comparable) ((Map.Entry) (o1)).getKey())
-						.compareTo(((Map.Entry) (o2)).getKey());
-			}
-		});
-
-		//put sorted list into map again
 		Map sortedMap = new LinkedHashMap();
-		for (Iterator it = list.iterator(); it.hasNext();) {
-			Map.Entry entry = (Map.Entry)it.next();
-			sortedMap.put(entry.getKey(), entry.getValue());
+		try{
+			List list = new LinkedList(unsortMap.entrySet());
+	
+			//sort list based on comparator
+			Collections.sort(list, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					return ((Comparable) ((Map.Entry) (o1)).getKey())
+							.compareTo(((Map.Entry) (o2)).getKey());
+				}
+			});
+	
+			//put sorted list into map again
+			
+			for (Iterator it = list.iterator(); it.hasNext();) {
+				Map.Entry entry = (Map.Entry)it.next();
+				sortedMap.put(entry.getKey(), entry.getValue());
+			}
+			
+		}catch (Exception e){
+		
+				Messagebox.show("Merci de selectionner une compagne! ", "Information",Messagebox.OK, Messagebox.ERROR);
+		
 		}
 		return sortedMap;
+		
 	}	
 
 

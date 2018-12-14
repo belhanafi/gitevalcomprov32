@@ -33,6 +33,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Radio;
+import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import common.ApplicationSession;
@@ -128,15 +129,27 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 	public void onClick$new_record() throws InterruptedException
 	{
 		
-		Listitem listitem = new Listitem();
+		ActionFormationBean actionFormationBean=new ActionFormationBean();
 		
-		Listcell listce = new Listcell();
+		modelActionDevelopment.add(actionFormationBean);	
 
+		ListModelList listModel2 = new ListModelList(modelActionDevelopment);
+		liste_action_development.setModel(listModel2);
 		
-		listitem.setLabel("COL");
-		listitem.setValue("COL");
+
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void onClick$delete_record() throws InterruptedException
+	{
+		if(modelActionDevelopment!=null && modelActionDevelopment.size()>0){
 			
-		liste_action_development.appendChild(listitem);
+			modelActionDevelopment.remove(modelActionDevelopment.size()-1);	
+	
+			ListModelList listModel2 = new ListModelList(modelActionDevelopment);
+			liste_action_development.setModel(listModel2);
+		}
+		
 
 	}
 

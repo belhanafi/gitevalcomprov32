@@ -177,7 +177,7 @@
 					align="center" />
 
 				<listheader label="idActionCompPost" width="0px" sort="auto"
-					align="center" visible="false" />
+					align="center" visible="false" />  
 
 			</listhead>
 
@@ -208,7 +208,7 @@
 						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 				<listcell label="@{listvaleur.idActionCompPost}"
-					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />  
 			</listitem>
 		</listbox>
 
@@ -220,6 +220,9 @@
 
 			<div>
 			
+			<button id="delete_record" image="/image/cross.png"  height="100%"
+							tooltiptext="Supprimer une formation"
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			<button id="new_record" image="/image/add-icon.png"  height="100%"
 							tooltiptext="Ajouter une formation"
 							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
