@@ -3,10 +3,10 @@ package kpi.bean;
 public class ActionFormationBean {
 
 
-	private String idAction ;
+	
 	private String idEchelle;
 	private String libelleFormation;
-	private String nbeffectif;
+
 	
 	
 	//variabes utilisées pour la sauvegarde des actions/dev dans la base de données
@@ -27,15 +27,27 @@ public class ActionFormationBean {
 
 
 
+	public ActionFormationBean( String idEchelle,
+			String libelleFormation,  String propose,
+			String validee, String programmee, String realisee,
+			String idCompagne, String codePosteTravail, 
+			String idEvalue) {
+		super();
+		
+		this.idEchelle = idEchelle;
+		this.libelleFormation = libelleFormation;
+		this.propose = propose;
+		this.validee = validee;
+		this.programmee = programmee;
+		this.realisee = realisee;
+		this.idCompagne = idCompagne;
+		this.codePosteTravail = codePosteTravail;
+		this.idEvalue = idEvalue;
+	}
 	public ActionFormationBean(){
 		super();
 	}
-	public String getIdAction() {
-		return idAction;
-	}
-	public void setIdAction(String idAction) {
-		this.idAction = idAction;
-	}
+
 	public String getIdEchelle() {
 		return idEchelle;
 	}

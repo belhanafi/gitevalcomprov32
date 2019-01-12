@@ -203,7 +203,7 @@ public class AdministrationLoginModel {
 
 	}
 
-	public ArrayList<AdministrationLoginBean> filtreLoginBean(String condition1, String valeur_condition1, String condition2, String valeur_condition2 ) throws SQLException{
+	public ArrayList<AdministrationLoginBean> filtreLoginBean(String condition1, String valeur_condition1, String condition2, String valeur_condition2 ) throws SQLException, ParseException{
 
 		PwdCrypt pwdcrypt=new PwdCrypt();
 		listlogin = new ArrayList<AdministrationLoginBean>();
@@ -219,17 +219,26 @@ public class AdministrationLoginModel {
 			if(valeur_condition1!=null && !"".equals(valeur_condition1))
 			{  
 				if (condition1.equalsIgnoreCase("c.val_date_fin")){
-					whereClause1= " and DATE_FORMAT(val_date_fin,'%d/%m/%Y') = '"+ valeur_condition1+"'";
+					Date initDate = new SimpleDateFormat("dd/MM/yyyy").parse(valeur_condition1);
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+					String parsedDate = formatter.format(initDate);
+				
+					
+					whereClause1= " and val_date_fin = '"+ parsedDate+"'";
 				}else{
-					whereClause1= " and upper("+condition1+") like upper('"+valeur_condition1+"%')";
+					whereClause1= " and upper("+condition1+") like upper('%"+valeur_condition1+"%')";
 				}
 			}
 			if(valeur_condition2!=null && !"".equals(valeur_condition2))
 			{
 				if (condition2.equalsIgnoreCase("c.val_date_fin")){
-					whereClause2= " and DATE_FORMAT(val_date_fin,'%d/%m/%Y') = '"+ valeur_condition2+"'";
+					Date initDate = new SimpleDateFormat("dd/MM/yyyy").parse(valeur_condition2);
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+					String parsedDate = formatter.format(initDate);
+					
+					whereClause2= " and val_date_fin = '"+ parsedDate+"'";
 				}else{
-					whereClause2= " and upper("+condition2+") like upper('"+valeur_condition2+"%')";
+					whereClause2= " and upper("+condition2+") like upper('%"+valeur_condition2+"%')";
 				}
 			}
 
@@ -240,7 +249,6 @@ public class AdministrationLoginModel {
 
 			/*ResultSet*/ rs = (ResultSet) stmt.executeQuery(sel_compte);
 
-			SimpleDateFormat formatDateJour = new SimpleDateFormat("yyyy/MM/dd");
 
 
 			while(rs.next()){
@@ -263,15 +271,10 @@ public class AdministrationLoginModel {
 
 
 			}
-			//			stmt.close();
-			//			conn.close();
+			
 
 		}
-		//		catch (SQLException e) {
-		//			stmt.close();
-		//			conn.close();
-		//			
-		//		}
+
 		catch ( SQLException e ) {
 
 		} finally {

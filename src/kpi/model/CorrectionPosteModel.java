@@ -1419,6 +1419,135 @@ private static Map sortByComparator(Map unsortMap) {
 	return sortedMap;
 }	
 
+
+public Boolean updateBatchActionDevForma(HashMap<String, HashMap<String, Integer>> listDb,ArrayList<ActionFormationBean> listActionUpdate)
+{
+	String requete="";
+	boolean resultat=true;
+
+	try {
+
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToPrincipalDB();
+		PreparedStatement stmtInsert = null;
+		PreparedStatement stmtUpadte=null; 
+		
+		ResultSet rs=null;
+		String query="";
+
+		conn.setAutoCommit(false);
+		try 
+		{	
+
+			Iterator<ActionFormationBean> iterateur =listActionUpdate.iterator();
+			
+			
+				
+			for (Entry<String, HashMap<String, Integer>> entry : listDb.entrySet()) {
+	
+				for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
+
+					stmtUpadte= conn.prepareStatement("UPDATE  "+entry.getKey()+".actionsdev_employe SET proposee=?,validee=?, programmee=?,realisee=? WHERE id_action=?  and id_employe=? and id_compagne=?");
+					stmtInsert= conn.prepareStatement("INSERT INTO "+entry.getKey()+".actionsdev_employe (id_action,id_employe, proposee, validee, programmee, realisee,id_compagne) VALUES (?,?, ?, ?, ?, ?,?)");
+					
+					while(iterateur.hasNext()){
+						ActionFormationBean actionDev=iterateur.next();
+						
+						
+						stmtUpadte.setString(1, actionDev.getPropose());
+						stmtUpadte.setString(2, actionDev.getValidee());
+						stmtUpadte.setString(3, actionDev.getProgrammee());
+						stmtUpadte.setString(4, actionDev.getRealisee());
+						
+						
+						
+						
+						stmtUpadte.setInt(5,  new Integer(actionDev.getIdActionCompPost()));
+						stmtUpadte.setInt(6, new Integer(actionDev.getIdEvalue()));
+						stmtUpadte.setString(7, actionDev.getIdCompagne());
+
+						
+
+						stmtUpadte.addBatch();
+						
+						
+							
+							
+							stmtInsert.setInt(1,  new Integer(actionDev.getIdActionCompPost()));
+							stmtInsert.setInt(2, new Integer(actionDev.getIdEvalue()));
+							stmtInsert.setString(3, actionDev.getPropose());
+							stmtInsert.setString(4, actionDev.getValidee());
+							stmtInsert.setString(5, actionDev.getProgrammee());
+							stmtInsert.setString(6, actionDev.getRealisee());
+							stmtInsert.setString(7, actionDev.getIdCompagne());
+							
+							stmtInsert.addBatch();
+
+					}
+					break;
+				}
+				break;
+			}
+
+			int [] updateCounts = stmtUpadte.executeBatch();
+
+
+			int total_update=processUpdateCounts(updateCounts);
+			
+			
+			if(total_update==0){
+				stmtInsert.executeBatch();
+				
+			}
+			conn.commit();
+			
+			conn.close();
+			
+			resultat=true;
+		} 
+		catch ( SQLException e ) {
+			try 
+			{
+				Messagebox.show("La modification n'a pas été prise en compte", "Erreur",Messagebox.OK, Messagebox.ERROR);
+			} 
+			catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+			resultat=false;
+
+		} finally {
+			if ( stmtUpadte != null ) {
+				try {
+					stmtUpadte.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+			if ( stmtInsert != null ) {
+				try {
+					stmtInsert.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+		return resultat;
+
+	} catch (Exception e) {
+		e.printStackTrace();
+		//TODO logger l'exception 
+	}
+	return resultat;
+
+
+}
 	
 	
 	

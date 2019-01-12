@@ -639,7 +639,7 @@ return false;]]></method>
             <row id="151">
                 <cell id="152">
                     <property name="colSpan">1</property>
-                    <property name="rowSpan">14</property>
+                    <property name="rowSpan">13</property>
                     <property name="borderBottomStyle">none</property>
                     <property name="borderLeftStyle">none</property>
                     <property name="borderRightStyle">none</property>
@@ -678,7 +678,7 @@ return false;]]></method>
                 </cell>
                 <cell id="155">
                     <property name="colSpan">1</property>
-                    <property name="rowSpan">14</property>
+                    <property name="rowSpan">13</property>
                     <property name="backgroundColor">#C0C0C0</property>
                     <text id="280">
                         <property name="backgroundColor">#C0C0C0</property>
@@ -961,19 +961,6 @@ return false;]]></method>
                         <property name="resultSetColumn">columnType_contrat</property>
                     </data>
                 </cell>
-            </row>
-            <row id="201">
-                <cell id="203">
-                    <text id="272">
-                        <property name="fontFamily">"Calibri"</property>
-                        <property name="fontSize">8pt</property>
-                        <property name="fontWeight">bold</property>
-                        <property name="textAlign">left</property>
-                        <property name="contentType">auto</property>
-                        <text-property name="content"><![CDATA[Situation familiale :]]></text-property>
-                    </text>
-                </cell>
-                <cell id="204"/>
             </row>
             <row id="206">
                 <cell id="208">

@@ -1079,7 +1079,7 @@ public class GestionEmployesModel {
 	}	
 
 
-	public List  filtreEmployes(String condition1, String valeur_condition1, String condition2,  String valeur_condition2) throws SQLException{
+	public List  filtreEmployes(String condition1, String valeur_condition1, String condition2,  String valeur_condition2) throws SQLException, ParseException{
 
 
 		listcompagne = new ArrayList<GestionEmployesBean>();
@@ -1097,17 +1097,25 @@ public class GestionEmployesModel {
 			if(valeur_condition1!=null && !"".equals(valeur_condition1))
 			{  
 				if (condition1.equalsIgnoreCase("date_recrutement")){
-					whereClause1= " and DATE_FORMAT(date_recrutement,'%d/%m/%Y') = '"+ valeur_condition1+"'";
+					Date initDate = new SimpleDateFormat("dd/MM/yyyy").parse(valeur_condition1);
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+					String parsedDate = formatter.format(initDate);
+					
+					whereClause1= " and date_recrutement = '"+ parsedDate+"'";
 				}else{
-					whereClause1= " and upper("+condition1+") like upper('"+valeur_condition1+"%')";
+					whereClause1= " and upper("+condition1+") like upper('%"+valeur_condition1+"%')";
 				}
 			}
 			if(valeur_condition2!=null && !"".equals(valeur_condition2))
 			{
 				if (condition2.equalsIgnoreCase("date_recrutement")){
-					whereClause2= " and DATE_FORMAT(date_recrutement,'%d/%m/%Y') = '"+ valeur_condition2+"'";
+					Date initDate = new SimpleDateFormat("dd/MM/yyyy").parse(valeur_condition2);
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+					String parsedDate = formatter.format(initDate);
+					
+					whereClause2= " and date_recrutement = '"+ parsedDate+"'";
 				}else{
-					whereClause2= " and upper("+condition2+") like upper('"+valeur_condition2+"%')";
+					whereClause2= " and upper("+condition2+") like upper('%"+valeur_condition2+"%')";
 				}
 			}
 			

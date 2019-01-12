@@ -64,18 +64,22 @@
 						<listbox id="direction1" mold="select" width="180px"
 							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 					</hlayout>
-					<hlayout >
+					<hlayout>
 						<label value="Poste de travail:" />
 						<listbox id="poste_travail" mold="select" width="180px"
 							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 					</hlayout>
 
 					<hlayout spacing="20px">
-                     <label width="150px"></label><label width="150px"></label><label width="150px"></label><label width="150px"></label><label width="150px"></label>
+						<label width="150px"></label>
+						<label width="150px"></label>
+						<label width="150px"></label>
+						<label width="150px"></label>
+						<label width="150px"></label>
 						<button id="delete_record" image="/image/delete_lineitem.png"
 							height="100%" tooltiptext="Supprimer une formation"
 							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-					
+
 
 						<button id="new_record" image="/image/add-icon.png" height="100%"
 							tooltiptext="Ajouter une formation"
@@ -88,7 +92,7 @@
 
 
 				</vlayout>
-			
+
 			</div>
 			<div>
 				<listbox id="liste_echelle" model="@{winCtrl.modelEchelle}"
@@ -168,7 +172,7 @@
 
 		<listbox id="liste_action_development" rows="1"
 			model="@{winCtrl.modelActionDevelopment}" width="100%" mold="paging"
-			pageSize="500" height="400px">
+			pageSize="500" height="400px" selectedItem="@{winCtrl.selected}">
 			<listhead sizable="true">
 
 
@@ -205,19 +209,26 @@
 				</listcell>
 
 				<listcell>
-					<listbox id="list_propose" mold="select" width="80px"
+					<listbox id="propose" mold="select" width="80px"
+						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;">
+						<listitem label="" />
+						<listitem label="Oui" />
+						<listitem label="Non" />
+					</listbox>
+				</listcell>
+				<listcell>
+					<listbox id="validee" mold="select" width="80px"
+						value="@{listvaleur.validee}"
 						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 				<listcell>
-					<listbox id="list_valide" mold="select" width="80px"
+					<listbox id="programmee" mold="select" width="80px"
+						value="@{listvaleur.programmee}"
 						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 				<listcell>
-					<listbox id="list_programme" mold="select" width="80px"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-				</listcell>
-				<listcell>
-					<listbox id="list_realise" mold="select" width="80px"
+					<listbox id="realisee" mold="select" width="80px"
+						value="@{listvaleur.realisee}"
 						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 				<listcell label="@{listvaleur.idActionCompPost}"
@@ -231,6 +242,11 @@
 
 		<hbox pack="center" width="100%" spacing="40">
 
+			<button id="enregistrerAssociation" image="/image/save.png"
+				tooltiptext="Enregister les actions de développement pour cet employé"
+				style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
+
 			<div>
 
 				<!-- button id="exporterWord" tooltiptext="Exporter la fiche Individuelle 
@@ -238,11 +254,7 @@
 					Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" / -->
 			</div>
 
-			<div>
-				<button id="enregistrerAssociation" image="/image/save.png"
-					tooltiptext="Enregister les actions de développement pour cet employé"
-					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-			</div>
+
 
 		</hbox>
 	</window>

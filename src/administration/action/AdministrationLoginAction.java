@@ -113,7 +113,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 		//remplissage de la combobox filtre1
 		map_listfilter.put( "Matricule","c.login");
 		map_listfilter.put( "Nom","nom");
-		map_listfilter.put( "Division","nom_base");
+		map_listfilter.put( "Vague","nom_base");
 		map_listfilter.put( "Date fin validité","c.val_date_fin");
 		map_listfilter.put( "Profil","libelle_profile");
 
@@ -525,7 +525,7 @@ public class AdministrationLoginAction extends GenericForwardComposer {
 
 	}
 
-	public void onClick$buttonRechercher() throws InterruptedException, SQLException {
+	public void onClick$buttonRechercher() throws InterruptedException, SQLException, ParseException {
 
 		AdministrationLoginModel admini_login_model =new AdministrationLoginModel();
 		//recherche des elements selectionnées

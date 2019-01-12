@@ -881,7 +881,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		libelle_direction.setText(gestionEmployeModel.getDirection(codestructure));
 		//System.out.println("id_compte_int>>>"+id_compte_int);
 	}
-	 public void onClick$buttonRechercher() throws InterruptedException, SQLException {
+	 public void onClick$buttonRechercher() throws InterruptedException, SQLException, ParseException {
 
 		 GestionEmployesModel gestionEmployeModel =new GestionEmployesModel();
 			//recherche des elements selectionnées
