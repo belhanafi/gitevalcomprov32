@@ -19,17 +19,13 @@ public class SuiviActionDevBean {
 	private String libelle_action_ori_prof ;
 	private String libelle_action_disipline ;
 	private String libelle_action_mobilite;
-	private String evaluateur;
+	private String ddr;
+	private String imi;
+	private String realisee;
+	private String proposee;
+	private String programmee;
+	private String validee;
 
-	
-
-
-	public SuiviActionDevBean( int pourcentage, String evalue) {
-		super();
-		
-		this.pourcentage = pourcentage;
-		this.evalue = evalue;
-	}
 
 	public SuiviActionDevBean() {
 		
@@ -122,27 +118,7 @@ public class SuiviActionDevBean {
 	}
 
 	
-	public SuiviActionDevBean(int pourcentage, String progres, String evalue,
-			String login, String libelle_direction, String structure_ent,
-			String poste_travail, String actionDev,
-			String libelle_action_formation, String libelle_action_ori_prof,
-			String libelle_action_disipline, String libelle_action_mobilite,
-			String evaluateur) {
-		super();
-		this.pourcentage = pourcentage;
-		this.progres = progres;
-		this.evalue = evalue;
-		this.login = login;
-		this.libelle_direction = libelle_direction;
-		this.structure_ent = structure_ent;
-		this.poste_travail = poste_travail;
-		this.actionDev = actionDev;
-		this.libelle_action_formation = libelle_action_formation;
-		this.libelle_action_ori_prof = libelle_action_ori_prof;
-		this.libelle_action_disipline = libelle_action_disipline;
-		this.libelle_action_mobilite = libelle_action_mobilite;
-		this.evaluateur = evaluateur;
-	}
+	
 
 	public String getProgres() {
 		return progres;
@@ -152,14 +128,56 @@ public class SuiviActionDevBean {
 		this.progres = progres;
 	}
 
-	public String getEvaluateur() {
-		return evaluateur;
+	public String getDdr() {
+		return ddr;
 	}
 
-	public void setEvaluateur(String evaluateur) {
-		this.evaluateur = evaluateur;
+	public void setDdr(String ddr) {
+		this.ddr = ddr;
 	}
 
+	public String getImi() {
+		return imi;
+	}
 
+	public void setImi(String imi) {
+		this.imi = imi;
+	}
+
+	public String getRealisee() {
+		return realisee;
+	}
+
+	public void setRealisee(String realisee) {
+		this.realisee = realisee;
+	}
+
+	public String getProposee() {
+		return proposee;
+	}
+
+	public void setProposee(String proposee) {
+		this.proposee = proposee;
+	}
+
+	public String getProgrammee() {
+		return programmee;
+	}
+
+	public void setProgrammee(String programmee) {
+		this.programmee = programmee;
+	}
+
+	public String getValidee() {
+		return validee;
+	}
+
+	public void setValidee(String validee) {
+		this.validee = validee;
+	}
+	
+	
+
+	
 	
 }

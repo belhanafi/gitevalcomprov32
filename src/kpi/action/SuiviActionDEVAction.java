@@ -6,10 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,7 +19,7 @@ import java.util.Set;
 import kpi.bean.ProgresActionDevBean;
 import kpi.bean.SuiviActionDevBean;
 import kpi.model.FicheIndividuelleModel;
-import kpi.model.KpiSyntheseModel;
+
 import kpi.model.SuviActionDEVModel;
 import net.sf.jxls.exception.ParsePropertyException;
 import net.sf.jxls.transformer.XLSTransformer;
@@ -41,8 +40,6 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Popup;
 import org.zkoss.zul.Progressmeter;
-
-import compagne.bean.SuiviCompagneBean;
 import compagne.model.SuiviCompagneModel;
 import Statistique.model.EmployeModel;
 
@@ -344,7 +341,6 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 		String reportLocation1 = Sessions.getCurrent().getWebApp().getRealPath("WebContent");
 
 		Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_suivi_action_dev.xls"), beans);
-      //Workbook workbook = transformer.transformXLS(new FileInputStream(reportLocation+ "/template_suivi_action_dev.xls"), beans);
 		workbook.write(fOut);
 		fOut.flush();
 		fOut.close();

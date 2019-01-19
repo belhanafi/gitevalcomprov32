@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.zkoss.util.media.Media;
@@ -24,12 +25,14 @@ import org.zkoss.zul.Columns;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Div;
 import org.zkoss.zul.Fileupload;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
+import compagne.model.SuiviCompagneModel;
 import administration.bean.AptitudePosteTravailBean;
 import administration.bean.CompetencePosteTravailBean;
 //import administration.bean.CompetencePosteTravailBean.MapFamille;
@@ -74,6 +77,10 @@ public class CompetencePosteTravailAction extends GenericForwardComposer {
 	HashMap <String, Checkbox> unselectedCheckBox;
 	Component comp1;
 	Div divupdown;
+	Map map = new HashMap();
+	Combobox comp_list;
+
+
 
 
 	public CompetencePosteTravailAction() {
@@ -83,6 +90,26 @@ public class CompetencePosteTravailAction extends GenericForwardComposer {
 	@SuppressWarnings("deprecation")
 	public void doAfterCompose(Component comp) throws Exception {
 		super.doAfterCompose(comp);
+		Integer compagne_id=0;
+		CompetencePosteTravailModel model=new CompetencePosteTravailModel();
+		
+		/*map=model.getCompagneList();
+
+		Set set = (model.getCompagneList()).entrySet(); 
+		Iterator itr = set.iterator();
+
+		// Affichage de la liste des compagnes
+		while(itr.hasNext()) {
+			Map.Entry me = (Map.Entry)itr.next();
+
+			comp_list.appendItem((String) me.getKey());
+			
+			//profilemodel.add((String) me.getKey());
+		}
+		if(comp_list.getItemCount()>0){
+			comp_list.setSelectedIndex(0);
+			compagne_id= (Integer) map.get((String)comp_list.getSelectedItem().getLabel());
+		}*/
 
 		//récupération des données à partir de la base
 
@@ -90,7 +117,7 @@ public class CompetencePosteTravailAction extends GenericForwardComposer {
 		unselectedCheckBox=new HashMap <String, Checkbox>();
 
 		AptitudePosteTravailBean aptitudePosteTravailBean=new AptitudePosteTravailBean();
-		CompetencePosteTravailModel model=new CompetencePosteTravailModel();
+		
 		aptitudePosteTravailBean=model.getAptitudePosteTravailBean();
 		/*récupérer les aptitudes observables associés à chaque compétence*/
 		mapComptetenceAptitudeObservable=model.getListAptitudeObservable();

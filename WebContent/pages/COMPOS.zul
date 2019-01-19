@@ -14,7 +14,10 @@
 
         
         <hbox spacing ="100">
-        	<label value="Famille :   "  sclass="textboxdetail" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+        	<!-- label value="Campagne: " sclass="textboxdetail" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+            <combobox id="comp_list"  width="310px" autodrop="true" mold="rounded" buttonVisible="true" readonly="true" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
+	        
+        	<label value="Famille :   "  sclass="textboxdetail" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/-->
         	
 			<combobox id="nom_famille" autodrop="true" mold="rounded" buttonVisible="true" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"/>
 

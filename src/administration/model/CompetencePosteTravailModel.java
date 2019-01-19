@@ -361,15 +361,19 @@ public class CompetencePosteTravailModel {
 		ArrayList<String> listposteTravail = new ArrayList<String>();
 		CreateDatabaseCon dbcon=new CreateDatabaseCon();
 		Connection conn=(Connection) dbcon.connectToSecondairesDB();
-		Statement stmt=null;
+		PreparedStatement pstmt = null;
 		ResultSet rs=null;
 		try 
 		{
-			stmt = (Statement) conn.createStatement();
-			String select_structure="SELECT intitule_poste  FROM poste_travail_description where code_poste in(select distinct code_poste from compagne_poste_travail p, compagne_evaluation c" +
-					" where c.id_compagne=p.id_compagne and now()<=date_fin) ";
+			
+			String select_structure="SELECT intitule_poste  FROM poste_travail_description where code_poste in(select distinct code_poste from compagne_poste_travail p" +
+					" where p.id_compagne in(select max(id_compagne) from compagne_evaluation ))";
+			//and now()<=date_fin) ";
+			
+			pstmt = conn.prepareStatement(select_structure);
+			rs =  pstmt.executeQuery();
 
-			rs = (ResultSet) stmt.executeQuery(select_structure);
+		
 
 
 			while(rs.next())
@@ -397,9 +401,9 @@ public class CompetencePosteTravailModel {
 				}
 			}
 
-			if ( stmt != null ) {
+			if ( pstmt != null ) {
 				try {
-					stmt.close();
+					pstmt.close();
 				} catch ( SQLException ignore ) {
 				}
 			}
@@ -420,18 +424,20 @@ public class CompetencePosteTravailModel {
 
 		CreateDatabaseCon dbcon=new CreateDatabaseCon();
 		Connection conn=(Connection) dbcon.connectToSecondairesDB();
-		Statement stmt=null;
+		PreparedStatement pstmt=null;
 		HashMap<String, String > mapcode_poste=new HashMap<String, String >();
 		ResultSet rs=null;
 		try 
 		{
-			stmt = (Statement) conn.createStatement();
+			;
 			//String select_structure="SELECT intitule_poste,  code_poste FROM poste_travail_description where code_poste in(select distinct code_poste from planning_evaluation) ";
-			String select_structure="SELECT intitule_poste,  code_poste FROM poste_travail_description where code_poste in(select distinct code_poste from compagne_poste_travail p, compagne_evaluation c" +
-					" where c.id_compagne=p.id_compagne and now()<=date_fin) ";
+			String select_structure="SELECT intitule_poste,  code_poste FROM poste_travail_description where code_poste in(select distinct code_poste from compagne_poste_travail p" +
+					" where p.id_compagne in(select max(id_compagne) from compagne_evaluation ))";
+					//and now()<=date_fin) ";
 
-			rs = (ResultSet) stmt.executeQuery(select_structure);
-
+			//rs = (ResultSet) stmt.executeQuery(select_structure);
+			pstmt = conn.prepareStatement(select_structure);
+			rs =  pstmt.executeQuery();
 
 			while(rs.next())
 			{
@@ -461,9 +467,9 @@ public class CompetencePosteTravailModel {
 				}
 			}
 
-			if ( stmt != null ) {
+			if ( pstmt != null ) {
 				try {
-					stmt.close();
+					pstmt.close();
 				} catch ( SQLException ignore ) {
 				}
 			}
@@ -484,19 +490,21 @@ public class CompetencePosteTravailModel {
 
 		CreateDatabaseCon dbcon=new CreateDatabaseCon();
 		Connection conn=(Connection) dbcon.connectToSecondairesDB();
-		Statement stmt=null;
+		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		HashMap<String, String > mapcode_poste=new HashMap<String, String >();
 		try 
 		{
-			stmt = (Statement) conn.createStatement();
+			//stmt = (Statement) conn.createStatement();
 			//String select_structure="SELECT intitule_poste,  code_poste FROM poste_travail_description where code_poste in(select distinct code_poste from planning_evaluation) ";
-			String select_structure="SELECT intitule_poste,  code_poste FROM poste_travail_description where code_poste in(select distinct code_poste from compagne_poste_travail p, compagne_evaluation c" +
-					" where c.id_compagne=p.id_compagne and now()<=date_fin) ";
+			String select_structure="SELECT intitule_poste,  code_poste FROM poste_travail_description where code_poste in(select distinct code_poste from compagne_poste_travail p" +
+					" where p.id_compagne in(select max(id_compagne) from compagne_evaluation ))";
+			//and now()<=date_fin) ";
 
+			pstmt = conn.prepareStatement(select_structure);
+			rs =  pstmt.executeQuery();
 
-
-			rs = (ResultSet) stmt.executeQuery(select_structure);
+			//rs = (ResultSet) stmt.executeQuery(select_structure);
 
 
 			while(rs.next())
@@ -527,9 +535,9 @@ public class CompetencePosteTravailModel {
 				}
 			}
 
-			if ( stmt != null ) {
+			if ( pstmt != null ) {
 				try {
-					stmt.close();
+					pstmt.close();
 				} catch ( SQLException ignore ) {
 				}
 			}
@@ -637,8 +645,8 @@ public class CompetencePosteTravailModel {
 					" on ( a.code_competence=a.code_competence) where e.code_poste in(select distinct code_poste from compagne_poste_travail p, compagne_evaluation c" +
 					" where c.id_compagne=p.id_compagne and now()<=date_fin) and a.affichable='O'";*/
 			String select_structure="select distinct a.id_repertoire_competence, a.code_competence, a.famille, a.groupe, a.libelle_competence, e.intitule_poste" +
-					" from  poste_travail_description e ,repertoire_competence a LEFT OUTER  JOIN poste_travail_competence b" +
-					" on ( a.code_competence=a.code_competence) where e.code_poste in(select distinct code_poste from compagne_poste_travail p) and a.affichable='O'";
+					" from  poste_travail_description e ,repertoire_competence a LEFT OUTER  JOIN poste_travail_comptence_aptitudeobservable b" +
+					" on ( a.code_competence=a.code_competence) where e.code_poste in(select distinct code_poste from compagne_poste_travail where id_compagne in ( select max(id_compagne) from compagne_evaluation) ) and a.affichable='O'";
 
 
 			rs = (ResultSet) stmt.executeQuery(select_structure);
@@ -777,25 +785,32 @@ public class CompetencePosteTravailModel {
 		CreateDatabaseCon dbcon=new CreateDatabaseCon();
 		Connection conn=(Connection) dbcon.connectToSecondairesDB();
 		CompetencePosteTravailBean competencePosteTravailBean=new CompetencePosteTravailBean();
-		Statement stmt=null;
+		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		try
 		{
 
-			stmt = (Statement) conn.createStatement();
+			//stmt = (Statement) conn.createStatement();
 			//String select_structure="select distinct a.id_repertoire_competence, a.famille, a.groupe, a.libelle_competence, e.intitule_poste from repertoire_competence a, poste_travail_competence b, poste_travail_description e where a.code_competence=b.code_competence and e.code_poste=b.code_poste and e.code_poste in(select distinct code_poste from planning_evaluation)"; 
 			//String select_structure="select distinct  a.code_competence, a.famille, a.groupe, a.libelle_competence, e.intitule_poste from repertoire_competence a, poste_travail_competence b, poste_travail_description e where a.code_competence=b.code_competence and e.code_poste=b.code_poste and e.code_poste in(select distinct code_poste from planning_evaluation)";
 			/*String select_structure="select distinct  a.code_competence, a.famille, a.groupe, a.libelle_competence, e.intitule_poste" +
 			" from  poste_travail_description e ,repertoire_competence a LEFT OUTER  JOIN poste_travail_competence b" +
 			" on ( a.code_competence=a.code_competence) where e.code_poste in(select distinct code_poste from planning_evaluation)";*/
 
+//			String select_structure="select distinct  a.code_competence, a.famille, a.groupe, a.libelle_competence, e.intitule_poste" +
+//					" from  poste_travail_description e ,repertoire_competence a LEFT OUTER  JOIN poste_travail_competence b" +
+//					" on ( a.code_competence=a.code_competence) where e.code_poste in(select distinct code_poste from compagne_poste_travail p, compagne_evaluation c" +
+//					" where c.id_compagne=p.id_compagne and now()<=date_fin) and a.affichable='O'";
+
 			String select_structure="select distinct  a.code_competence, a.famille, a.groupe, a.libelle_competence, e.intitule_poste" +
 					" from  poste_travail_description e ,repertoire_competence a LEFT OUTER  JOIN poste_travail_competence b" +
-					" on ( a.code_competence=a.code_competence) where e.code_poste in(select distinct code_poste from compagne_poste_travail p, compagne_evaluation c" +
-					" where c.id_compagne=p.id_compagne and now()<=date_fin) and a.affichable='O'";
+					" on ( a.code_competence=a.code_competence) where e.code_poste in(select distinct code_poste from compagne_poste_travail p" +
+					" where p.id_compagne in(select max(id_compagne) from compagne_evaluation ) ) and a.affichable='O'";
 
-
-			rs = (ResultSet) stmt.executeQuery(select_structure);
+			//rs = (ResultSet) stmt.executeQuery(select_structure);
+			
+			pstmt = conn.prepareStatement(select_structure);
+			rs =  pstmt.executeQuery();
 
 
 			HashMap <String,HashMap<String, HashMap<String, ArrayList<String>> >> mapFamille=new HashMap <String,HashMap<String, HashMap<String, ArrayList<String>> >>();
@@ -884,9 +899,9 @@ public class CompetencePosteTravailModel {
 				}
 			}
 
-			if ( stmt != null ) {
+			if ( pstmt != null ) {
 				try {
-					stmt.close();
+					pstmt.close();
 				} catch ( SQLException ignore ) {
 				}
 			}
@@ -2271,4 +2286,57 @@ public class CompetencePosteTravailModel {
 		
 		return result;
 }
+	
+	
+	public HashMap getCompagneList() throws SQLException
+	{
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToSecondairesDB();
+		Statement stmt = null;
+		HashMap map = new HashMap();
+		ResultSet rs=null;
+		try 
+		{ 
+			stmt = (Statement) conn.createStatement();
+			//String db_list="select id_compagne,concat(libelle_compagne,'->', 'Du ',cast(date_debut as char)  ,' Au ',cast(date_fin as char) ) as libelle_compagne from compagne_evaluation where now()<=date_fin";
+			String db_list="select id_compagne,concat(libelle_compagne,'->', 'Du ',cast(date_debut as char)  ,' Au ',cast(date_fin as char) ) as libelle_compagne from compagne_evaluation order by id_compagne desc";
+
+
+			rs = (ResultSet) stmt.executeQuery(db_list);
+
+
+			while(rs.next()){
+				map.put( rs.getString("libelle_compagne"),rs.getInt("id_compagne"));
+			}
+			//map.put("Selectionner Compagne",-1);
+			//stmt.close();conn.close();
+		} 
+		catch ( SQLException e ) {
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+
+		return map;
+	}
 }

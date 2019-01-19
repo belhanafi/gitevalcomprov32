@@ -619,10 +619,13 @@ public class KpiSyntheseModel {
 					String vague = pair.getKey();
 					Integer idcompagne = pair.getValue();
 
-					query="select  distinct t.code_poste,t.intitule_poste  from "+entry.getKey()+"."+"compagne_evaluation e, "+entry.getKey()+"."+"planning_evaluation p, "+entry.getKey()+"."+"poste_travail_description t" +
+					/*query="select  distinct t.code_poste,t.intitule_poste  from "+entry.getKey()+"."+"compagne_evaluation e, "+entry.getKey()+"."+"planning_evaluation p, "+entry.getKey()+"."+"poste_travail_description t" +
 							" where e.id_compagne in (select id_compagne from "+entry.getKey()+"."+"compagne_validation where compagne_valide=1) " +
 							" and p.id_compagne=e.id_compagne  and t.code_poste=p.code_poste and e.id_compagne="+idcompagne+
-							" and t.code_structure in "+structure;
+							" and t.code_structure in "+structure;*/
+					
+					query="select  distinct t.code_poste,t.intitule_poste from   evalcom_mtn.employe p, evalcom_mtn.poste_travail_description t"
+							+ " where t.code_poste=p.code_poste	and p.code_structure in "+structure;
 					//System.out.println(">>>"+query);
 
 				}
