@@ -152,16 +152,16 @@
 					align="center" visible="false" />
 
 
-				<listheader label="Formation" width="250px" sort="auto"
+				<listheader id="formationHeader" label="Formation" width="250px" sort="auto"
 					align="center" />
 
-				<listheader label="Orientation professionnelle" width="250px"
+				<listheader id="OrientationProHeader" label="Orientation professionnelle" width="250px"
 					sort="auto" align="center" />
 
-				<listheader label="Discipline" width="250px" sort="auto"
+				<listheader id="DisciplineHeader" label="Discipline" width="250px" sort="auto"
 					align="center" />
 
-				<listheader label="Mobilité interne" width="180px" sort="auto"
+				<listheader  id="MobilitéHeader" label="Mobilité interne" width="180px" sort="auto"
 					align="center" />
 
 				<listheader label="Proposée" width="100px" sort="auto"
@@ -185,17 +185,17 @@
 				<listcell label="@{listvaleur.idAction}"
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
-				<listcell label="@{listvaleur.libelleFormation}"
+				<listcell id ="libelleFormation" label="@{listvaleur.libelleFormation}"
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
-				<listcell label="@{listvaleur.libelleOriProf}"
+				<listcell id ="libelleOriProf" label="@{listvaleur.libelleOriProf}"
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
 
-				<listcell label="@{listvaleur.libelleDiscipline}"
+				<listcell id ="libelleDiscipline" label="@{listvaleur.libelleDiscipline}"
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
-				<listcell label="@{listvaleur.libelleMobilite}"
+				<listcell id ="libelleMobilite" label="@{listvaleur.libelleMobilite}"
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				<listcell>
 					<listbox id="list_propose" mold="select" width="80px"
