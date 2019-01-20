@@ -78,6 +78,11 @@
                     <property name="name">columnAntecedent_disciplinaire</property>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="position">14</property>
+                    <property name="name">columnCsp</property>
+                    <property name="dataType">string</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -131,6 +136,10 @@
                 <structure>
                     <property name="columnName">columnAntecedent_disciplinaire</property>
                     <text-property name="displayName">antecedent_disciplinaire</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">columnCsp</property>
+                    <text-property name="displayName">csp</text-property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -200,6 +209,11 @@
                         <property name="name">columnAntecedent_disciplinaire</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">14</property>
+                        <property name="name">columnCsp</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">scriptedDS</property>
@@ -226,6 +240,7 @@ taux = gsh.getInfoGeneralEmploye();]]></method>
       row["columnLibelle_direction"] = taux.get(count).getLibelle_direction();
       row["columnEvolution_carriere"] = taux.get(count).getEvolution_carriere();
       row["columnAntecedent_disciplinaire"] = taux.get(count).getAntecedent_disciplinaire();
+      row["columnCsp"] = taux.get(count).getCsp();
      
        count++;
        return true;
@@ -632,6 +647,15 @@ return false;]]></method>
             </row>
         </grid>
         <grid id="146">
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">Column Binding</property>
+                    <text-property name="displayName">csp</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["columnCsp"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
             <column id="147"/>
             <column id="148"/>
             <column id="149"/>
@@ -639,7 +663,7 @@ return false;]]></method>
             <row id="151">
                 <cell id="152">
                     <property name="colSpan">1</property>
-                    <property name="rowSpan">13</property>
+                    <property name="rowSpan">14</property>
                     <property name="borderBottomStyle">none</property>
                     <property name="borderLeftStyle">none</property>
                     <property name="borderRightStyle">none</property>
@@ -678,7 +702,7 @@ return false;]]></method>
                 </cell>
                 <cell id="155">
                     <property name="colSpan">1</property>
-                    <property name="rowSpan">13</property>
+                    <property name="rowSpan">14</property>
                     <property name="backgroundColor">#C0C0C0</property>
                     <text id="280">
                         <property name="backgroundColor">#C0C0C0</property>
@@ -890,6 +914,33 @@ return false;]]></method>
                             </structure>
                         </list-property>
                         <property name="resultSetColumn">columnIntitule_poste</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="622">
+                <cell id="624">
+                    <text id="627">
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">8pt</property>
+                        <property name="fontWeight">bold</property>
+                        <property name="contentType">auto</property>
+                        <text-property name="content"><![CDATA[CSP]]></text-property>
+                    </text>
+                </cell>
+                <cell id="625">
+                    <data id="630">
+                        <property name="fontFamily">"Calibri"</property>
+                        <property name="fontSize">8pt</property>
+                        <property name="dataSet">dataSetFicheIndivInfoGen</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">columnCsp</property>
+                                <text-property name="displayName">csp</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["columnCsp"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">columnCsp</property>
                     </data>
                 </cell>
             </row>
@@ -9198,11 +9249,6 @@ return false;]]></method>
                 </row>
             </footer>
         </table>
-        <extended-item extensionName="Crosstab" extensionVersion="3.7.0" id="287">
-            <property name="header">
-                <extended-item extensionName="CrosstabCell" id="288"/>
-            </property>
-        </extended-item>
     </body>
     <list-property name="images">
         <structure>

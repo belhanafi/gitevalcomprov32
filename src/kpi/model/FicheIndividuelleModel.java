@@ -73,7 +73,7 @@ public class FicheIndividuelleModel {
 					sql_query="select c.login matricule,e.nom,e.prenom, id_employe,date_naissance,date_recrutement ,concat(d.niv_for_libelle,'-',libelle_diplome) as libelle_formation,p.intitule_poste, email,"
 
 					+ " t.structure_ent libelle_structure,sexe_lbl,type_contrat_lbl,case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
-					+ " else libelle_direction end as libelle_direction,e.evolution_carriere,e.antecedent_disciplinaire"
+					+ " else libelle_direction end as libelle_direction,e.evolution_carriere,e.antecedent_disciplinaire,csp"
 					+ " from "+entry.getKey()+"."+"employe e  ,"+entry.getKey()+"."+"sexe s, "+entry.getKey()+"."+"type_contrat t,"+entry.getKey()+"."+"poste_travail_description p,"+entry.getKey()+"."+"formation f,common_evalcom.compte c  ,"
 					+ " "+entry.getKey()+"."+"def_niv_formation d,(select code_structure, structure_ent,libelle_direction from ("
 					+ " select code_structure,libelle_section structure_ent,libelle_direction  from "+entry.getKey()+"."+"structure_entreprise  where libelle_section is  not null"
@@ -135,6 +135,7 @@ public class FicheIndividuelleModel {
 
 				bean.setAntecedent_disciplinaire(rs.getString("antecedent_disciplinaire"));
 				bean.setEvolution_carriere(rs.getString("evolution_carriere"));
+				bean.setCsp(rs.getString("csp"));
 
 				liststatbean.add(bean);
 			}

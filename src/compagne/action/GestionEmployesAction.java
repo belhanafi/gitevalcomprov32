@@ -79,6 +79,8 @@ public class GestionEmployesAction extends GenericForwardComposer {
 	
 	Textbox evolution_carriere;
 	Textbox antecedent_disciplinaire;
+	Textbox csp;
+
 
 
 	Listbox sexe;
@@ -357,6 +359,8 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		
 		addedData.setAntecedent_disciplinaire(getSelectedAntecedent_disciplinaire());
 		addedData.setEvolution_carriere(getSelectedEvolution_carriere());
+		addedData.setCsp(getSelectedCsp());
+
 
 
 
@@ -447,6 +451,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 		
 		selected.setAntecedent_disciplinaire(getSelectedAntecedent_disciplinaire());
 		selected.setEvolution_carriere(getSelectedEvolution_carriere());
+		selected.setCsp(getSelectedCsp());
 
 
 
@@ -692,7 +697,15 @@ public class GestionEmployesAction extends GenericForwardComposer {
 	private String getSelectedEvolution_carriere() throws WrongValueException {
 		String name=evolution_carriere.getValue();
 		if (name==null) {
-			throw new WrongValueException(libelle_direction, "Merci de saisir Libelle direction valide!");
+			throw new WrongValueException(evolution_carriere, "Merci de saisir Evolution de carriere valide!");
+		}
+		return name;
+	}
+	
+	private String getSelectedCsp() throws WrongValueException {
+		String name=csp.getValue();
+		if (name==null) {
+			throw new WrongValueException(csp, "Merci de saisir CSP valide!");
 		}
 		return name;
 	}
@@ -700,7 +713,7 @@ public class GestionEmployesAction extends GenericForwardComposer {
 	private String getSelectedAntecedent_disciplinaire() throws WrongValueException {
 		String name=antecedent_disciplinaire.getValue();
 		if (name==null) {
-			throw new WrongValueException(libelle_direction, "Merci de saisir Libelle direction valide!");
+			throw new WrongValueException(antecedent_disciplinaire, "Merci de saisir antécédent disciplinaire valide!");
 		}
 		return name;
 	}

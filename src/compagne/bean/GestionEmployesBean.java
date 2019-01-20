@@ -39,6 +39,8 @@ public class GestionEmployesBean implements Comparable {
 	
 	private String login;
 	private String libelle_direction;
+	private String csp;
+
 
 
 
@@ -295,5 +297,13 @@ public class GestionEmployesBean implements Comparable {
 		this.evolution_carriere = evolution_carriere;
 	}
 
+
+	public String getCsp() {
+		return csp;
+	}
+
+	public void setCsp(String csp) {
+		this.csp = csp;
+	}
 	
 }

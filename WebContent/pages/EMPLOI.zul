@@ -85,6 +85,9 @@
 					align="center" />
 				<listheader label="Antécédents disciplinaires" width="80px"
 					align="center" />
+					
+				<listheader label="CSP" width="40px"
+					align="center" />
 
 
 			</listhead>
@@ -123,7 +126,8 @@
 				<listcell label="@{listcompagne.antecedent_disciplinaire}"
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
-
+				<listcell label="@{listcompagne.csp}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
 
 			</listitem>
@@ -156,7 +160,8 @@
 				<column label="Evolution de carrière" width="180px" align="center" />
 				<column label="Antécédents disciplinaires" width="180px"
 					align="center" />
-
+				<column label="CSP" width="180px"
+					align="center" />
 
 
 			</columns>
@@ -204,6 +209,9 @@
 						value="@{winCtrl.selected.evolution_carriere,save-when=none}" />
 					<textbox id="antecedent_disciplinaire" width="180px" sclass="textboxdetail"
 						value="@{winCtrl.selected.antecedent_disciplinaire,save-when=none}" />
+						
+					<textbox id="csp" width="180px" sclass="textboxdetail"
+						value="@{winCtrl.selected.csp,save-when=none}" />
 				</row>
 				<row>
 					<!-- label id="structure_lbl" width="400px" sclass="textboxdetail" / -->
