@@ -30,6 +30,8 @@ public class EmployeCompteBean {
 	private String code_contrat;
 	private String evolution_carriere;
 	private String antecedent_disciplinaire;
+	private String csp;
+
 
 	
 	
@@ -209,6 +211,12 @@ public class EmployeCompteBean {
 	}
 	public void setAntecedent_disciplinaire(String antecedent_disciplinaire) {
 		this.antecedent_disciplinaire = antecedent_disciplinaire;
+	}
+	public String getCsp() {
+		return csp;
+	}
+	public void setCsp(String csp) {
+		this.csp = csp;
 	}
 	
 	

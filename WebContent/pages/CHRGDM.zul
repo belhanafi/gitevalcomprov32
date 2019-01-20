@@ -127,6 +127,8 @@
 					<listheader label="Code Sexe" width="100px" align="center"    />
 					<listheader label="Evolution de Carriere" width="100px" align="center"    />
 					<listheader label="Antecedent discplinaire" width="100px" align="center"    />
+					<listheader label="CSP" width="100px" align="center"    />
+					
 	         
 				</listhead>
 				<listitem self="@{each=listcompagne}">
@@ -152,6 +154,7 @@
 					<listcell label="@{listcompagne.code_contrat}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
 					<listcell label="@{listcompagne.evolution_carriere}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
 					<listcell label="@{listcompagne.antecedent_disciplinaire}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
+					<listcell label="@{listcompagne.csp}" style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;"  />
 					
 					
 					
