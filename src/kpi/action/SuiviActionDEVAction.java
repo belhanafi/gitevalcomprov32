@@ -74,7 +74,9 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 
 	AnnotateDataBinder binder1;
 	Component comp1;
-	Button executeexp;
+	Button execut_prog;
+	Button execute_suivi;
+
 	Map map = new HashMap();
 	Listbox poste_travail;
 	Map map_poste=null;
@@ -389,12 +391,32 @@ public class SuiviActionDEVAction extends GenericForwardComposer{
 
 	}
 
-	public void onClick$executeexp() throws Exception {
+	
+	
+	public void onClick$execut_prog() throws Exception {
 
-		if (Messagebox.show("Voulez vous exporter le rapport de suivi des actions de développement et de progression ?", "Prompt", Messagebox.YES|Messagebox.NO,
+		if (Messagebox.show("Voulez vous exporter le rapport de progression des actions de développement ?", "Prompt", Messagebox.YES|Messagebox.NO,
 				Messagebox.QUESTION) == Messagebox.YES) {
 			//exportMatriceCotationExlFileV2();
 			genExportProgressActionExcel();
+			
+
+			return;
+		}
+
+		else{
+			return;
+		}
+
+
+	}
+	
+	public void onClick$execute_suivi() throws Exception {
+
+		if (Messagebox.show("Voulez vous exporter le rapport de suivi des actions de développement ?", "Prompt", Messagebox.YES|Messagebox.NO,
+				Messagebox.QUESTION) == Messagebox.YES) {
+			
+			
 			genExportExcel();
 
 			return;

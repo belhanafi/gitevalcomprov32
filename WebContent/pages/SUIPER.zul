@@ -39,11 +39,11 @@
 
 						<label />
 						<label />
-						
-							<label value="Direction:" />
-							<listbox id="direction" mold="select" width="180px"
-								style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-						
+
+						<label value="Direction:" />
+						<listbox id="direction" mold="select" width="180px"
+							style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+
 
 						<label value="  Structure:" width="50px" />
 						<listbox id="comp_struct_ent_list" mold="select" width="200px"
@@ -136,11 +136,16 @@
 							;font-size: 8pt ;color: black ;background-color: #00CC00 ;" visible="false" 
 							/ -->
 					</column>
+
+					<column width="100px"></column>
 					<column>
-						<button id="executeexp" image="/image/excel_32.png"
-							visible="true" tooltiptext="Exporter rapport suvi actions de développement" />
+						<button id="execut_prog" label="Rapp.Progression" visible="true"
+							tooltiptext="Exporter rapport suvi actions de développement" />
+						<button id="execute_suivi" label="Suvi.Actions" visible="true"
+							tooltiptext="Exporter rapport suvi actions de développement" />
 					</column>
 
+					
 				</columns>
 			</grid>
 		</div>

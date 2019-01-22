@@ -913,7 +913,10 @@ public class FicheIndividuelleModel {
 						double taux= 100 * nb_realsee / nb_proposee;
 						int taille_liste=listmoyfam.size();					
 						for  (int i=taille_liste-11;i <=taille_liste-1;i++){
-							listmoyfam.get(i).setProgres(f.format(taux));
+							if (taux>0){
+								listmoyfam.get(i).setProgres(f.format(taux));
+							}
+							
 						}
 						nb_realsee=0;
 						nb_proposee=0;
