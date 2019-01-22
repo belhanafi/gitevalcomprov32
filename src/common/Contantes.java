@@ -7,7 +7,7 @@ public class Contantes {
 	public static String nom_fichier_extraction_xls="Extraction_Donnees_Evalcom.xls";
 	public static String nom_fichier_rejected_xls="Donnees_Rejetees_Evalcom.xls";
 	public static String onglet_planning_evaluation="planning evaluation";
-	public static String onglet_compagne_evaluation="compagne evaluation";
+	public static String onglet_compagne_evaluation="campagne evaluation";
 	public static String onglet_posteTravailAptitude="poste travail vs aptitude";
 
 

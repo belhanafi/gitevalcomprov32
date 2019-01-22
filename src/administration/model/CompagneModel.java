@@ -67,7 +67,7 @@ public class CompagneModel
 		try
 		{
 			stmt = (Statement) conn.createStatement();
-			String select_all_compagne =  "select max(id_compagne),libelle_compagne,compagne_type,DATE_FORMAT(date_debut, '%Y-%m-%d')as date_debut,DATE_FORMAT(date_fin, '%Y-%m-%d') as date_fin,c.id_compagne_type,t.compagne_type  from compagne_evaluation c,compagne_type t" +
+			String select_all_compagne =  "select max(id_compagne) id_compagne,libelle_compagne,compagne_type,DATE_FORMAT(date_debut, '%Y-%m-%d')as date_debut,DATE_FORMAT(date_fin, '%Y-%m-%d') as date_fin,c.id_compagne_type,t.compagne_type  from compagne_evaluation c,compagne_type t" +
 					" where c.id_compagne_type=t.id_compagne_type";
 
 			rs = (ResultSet) stmt.executeQuery( select_all_compagne );
@@ -98,6 +98,7 @@ public class CompagneModel
 			// stmt.close(); conn.close();
 		}
 		catch ( SQLException e ) {
+			System.out.println(e.toString());
 
 		} finally {
 
