@@ -84,6 +84,12 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 	Listheader lbl_valide;
 	Listheader lbl_programme;
 	Listheader lbl_realise;
+	Listheader img_proposee;
+	Listheader img_validee;
+	Listheader img_programee;
+	Listheader img_realisee;
+	Listbox  liste_img;
+
 
 
 
@@ -108,7 +114,7 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 
 		//chargement du contenu de la table action_development
 
-
+		liste_img.setVisible(false);
 		selectedRadio=new HashMap <String, Radio>();
 
 		binder = new AnnotateDataBinder(comp);
@@ -279,25 +285,27 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 
 			if(action.equalsIgnoreCase("proposee")){
 
-				String lbl="Proposée"+"-> "+comptage;
-				lbl_propose.setLabel(lbl);
+				
+				img_proposee.setLabel(comptage.toString());
 
 			}else if(action.equalsIgnoreCase("validee")){
 
-				String lbl="Validée"+"-> "+comptage;
-				lbl_valide.setLabel(lbl);
+				
+				img_validee.setLabel(comptage.toString());
 
 			}else if(action.equalsIgnoreCase("programmee")){
 
-				String lbl="Programmée"+"-> "+comptage;
-				lbl_programme.setLabel(lbl);
+				
+				img_programee.setLabel(comptage.toString());
 
 			}else{
 
-				String lbl="Réalisée"+"-> "+comptage;
-				lbl_realise.setLabel(lbl);
+				img_realisee.setLabel(comptage.toString());
 
 			}
+			
+			
+
 
 		}
 		
@@ -472,7 +480,7 @@ public class CorrectionPosteAction extends GenericForwardComposer {
 		}
 		
 		
-
+		liste_img.setVisible(true);
 
 
 	}

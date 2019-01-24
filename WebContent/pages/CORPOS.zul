@@ -2,11 +2,14 @@
 <zk xmlns="http://www.zkoss.org/2005/zul">
 
 
+
 	<window id="win" border="normal" width="100%"
 		apply="kpi.action.CorrectionPosteAction">
 		<!-- **************************************** -->
 
-
+		<style>
+			.highPriority {background:white !important};
+		</style>
 
 
 		<hbox>
@@ -105,14 +108,14 @@
 
 		<listbox id="liste_action_development" rows="1"
 			model="@{winCtrl.modelActionDevelopment}" width="100%" mold="paging"
-			pageSize="500" height="420px">
+			pageSize="11" height="330px">
 			<listhead sizable="true">
 
 				<listheader label="idAction" width="0px" sort="auto"
 					align="center" visible="false" />
 
 				<listheader label="Effectifs" width="60px" sort="auto"
-					align="center" />
+					align="center"  />
 
 				<listheader label="Formation" width="200px" sort="auto"
 					align="center" />
@@ -126,16 +129,16 @@
 				<listheader label="Mobilité interne" width="200px" sort="auto"
 					align="center" />
 
-				<listheader id="lbl_propose" label="" width="100px" sort="auto"
+				<listheader id="lbl_propose" label="Proposée" width="100px" sort="auto"
 					align="center" />
 
-				<listheader id="lbl_valide" label="" width="100px" sort="auto"
+				<listheader id="lbl_valide" label="Validée" width="100px" sort="auto"
 					align="center" />
 
-				<listheader id="lbl_programme" label="" width="100px"
+				<listheader id="lbl_programme" label="Programmée" width="100px"
 					sort="auto" align="center" />
 
-				<listheader id="lbl_realise" label="" width="100px" sort="auto"
+				<listheader id="lbl_realise" label="Réalisée" width="100px" sort="auto"
 					align="center" />
 
 			</listhead>
@@ -161,26 +164,62 @@
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				<listcell>
 					<listbox id="list_propose" mold="select" width="80px"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+						style="background-color: silver;color:white;font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 				<listcell>
 					<listbox id="list_valide" mold="select" width="80px"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+						style="background-color: blue;color:white;font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 				<listcell>
 					<listbox id="list_programme" mold="select" width="80px"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+						style="background-color: brown;color:white;font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 				<listcell>
 					<listbox id="list_realise" mold="select" width="80px"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+						style="background-color: green;color:white;font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 				</listcell>
 			</listitem>
+
 		</listbox>
 
 
-		<hbox pack="center" width="100%" spacing="40">
-			<div height="50px">
+		<hbox pack="center" align="center"  >
+			<listbox id="liste_img" width="100%"  rows="1">
+			
+			<listhead sizable="true">
+
+				<listheader label="idAction" width="0px" sort="auto"
+					align="center" visible="false" style="background-color: white"  />
+
+				<listheader label="Statut du suvi du sort :" width="865px" 
+					align="center" style="background-color: white"  />
+
+				
+
+				<listheader id="img_proposee" label="5" width="100px" sort="auto"
+					align="center"  style="background-color: silver;color:white;font-weight: bold;font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight: ;text-align: center"/>
+
+				<listheader id="img_validee" label="5" width="100px" sort="auto"
+					align="center" style="background-color: blue;color:white;font-weight: bold;font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight: ;text-align: center"/>
+
+				<listheader id="img_programee" label="5" width="100px"
+					sort="auto" align="center" style="background-color: brown;color:white;font-weight: bold;font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight: ;text-align: center"/>
+
+				<listheader id="img_realisee" label="5" width="100px" sort="auto"
+					align="center" style="background-color: green;color:white;font-weight: bold;font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight: ;text-align: center" />
+
+			</listhead>
+			
+			
+
+			</listbox>
+
+		</hbox>
+
+		<hbox pack="center" width="100%" spacing="100">
+
+
+			<div height="50px" width="100px">
 				<button id="btReportpg3" image="/image/word-icon32.png"
 					tooltiptext="Exporter perspectives fiche métier" />
 				<button id="enregistrerAssociation" image="/image/save.png"
@@ -190,15 +229,7 @@
 		</hbox>
 
 
-
-
-
-
 		<!-- ************************************* -->
-		<hbox pack="center" width="100%" spacing="40" height="50px">
-
-
-		</hbox>
 
 
 	</window>
