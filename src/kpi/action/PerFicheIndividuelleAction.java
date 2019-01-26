@@ -96,7 +96,8 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 	private String selectedPosteTravail=null;
 	private Listbox direction1;
 	Map map_direction=null;
-
+	ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
+	CompteBean compteUtilisateur=applicationSession.getCompteUtilisateur();
 
 	@SuppressWarnings("deprecation")
 	public void doAfterCompose(Component comp) throws Exception {
@@ -118,8 +119,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		//chargement du contenu de la table action_development
 		selectedRadio=new HashMap <String, Radio>();
 
-		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
-		CompteBean compteUtilisateur=applicationSession.getCompteUtilisateur();
+	
 
 		//cas evaluateur colonnes  grisées (validée, programmée et réalisée)
 		if (compteUtilisateur.getId_profile()==3){
@@ -256,7 +256,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 
 		}
 		else{
-			Messagebox.show("Merci de selectionner un employé d'abord ", "Information",Messagebox.OK, Messagebox.INFORMATION);
+			Messagebox.show("Merci de sélectionner un employé d'abord ", "Information",Messagebox.OK, Messagebox.INFORMATION);
 		}
 
 	}
@@ -411,7 +411,8 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 			direction1.getItems().clear();
 
 		KpiSyntheseModel kpi=new KpiSyntheseModel();
-		map_direction=kpi.getListDirection(listDb);
+		map_direction=kpi.getListDirectionFicheIndiv(listDb,compteUtilisateur.getId_profile(),compteUtilisateur.getLogin());
+		direction1.appendItem("Sélectionner direction", "Sélectionner direction");
 		Set set = (map_direction).entrySet(); 
 		Iterator i = set.iterator();
 		while(i.hasNext()) {
@@ -494,7 +495,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 
 			}
 		}else{
-			Messagebox.show("Merci de selectionner le poste de travail d'abord", "Information",Messagebox.OK, Messagebox.INFORMATION);
+			Messagebox.show("Merci de sélectionner le poste de travail d'abord", "Information",Messagebox.OK, Messagebox.INFORMATION);
 			initListBoxSuivi( listSuiviSort);
 			Radio radio = (Radio) event.getOrigin().getTarget();
 			radio.setChecked(false);
@@ -538,7 +539,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 
 			}
 		}else{
-			Messagebox.show("Merci de selectionner le poste de travail d'abord", "Information",Messagebox.OK, Messagebox.INFORMATION);
+			Messagebox.show("Merci de sélectionner le poste de travail d'abord", "Information",Messagebox.OK, Messagebox.INFORMATION);
 			initListBoxSuivi( listSuiviSort);
 			Radio radio = (Radio) event.getOrigin().getTarget();
 			radio.setChecked(false);
@@ -645,7 +646,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 
 
 	public HashMap<String, ActionDevelopmentBean> getListAllEvalue(){
-		HashMap<String, ActionDevelopmentBean> retour=correctionPosteMoel.getDevelopmentEvalue2(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail,selectedRadioEchelle.getContext());
+		HashMap<String, ActionDevelopmentBean> retour=correctionPosteMoel.getDevelopmentEvalue2(listDb,(new Integer(idcompagne)).toString(),selectedPosteTravail,selectedRadioEchelle.getContext(),compteUtilisateur.getId_profile(),compteUtilisateur.getLogin());
 
 		//			Collection<ActionDevelopmentBean> set = listActionDevelopment.values( );
 		//			
@@ -682,20 +683,18 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		List <String> list_code_dir=(List)map_direction.get(libelle_direction);
 
 		KpiSyntheseModel kpi=new KpiSyntheseModel();
-		map_poste=kpi.getListPostTravailValid(listDb,list_code_dir);
+		
+		map_poste=kpi.getListPostTravailValidFicheIndiv(listDb,list_code_dir,compteUtilisateur.getId_profile(),compteUtilisateur.getLogin());
 		Set set = (map_poste).entrySet(); 
 
 		Iterator i = set.iterator();
+		
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
 			poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
 		}
 
-		while(i.hasNext()) {
-			Map.Entry me = (Map.Entry)i.next();
-			poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
-		}
-
+	
 		poste_travail.setSelectedIndex(0);
 
 

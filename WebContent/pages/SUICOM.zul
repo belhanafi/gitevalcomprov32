@@ -22,14 +22,13 @@ background-color: #00CC00 ;
 </style>  	
 	
        
-<window  id="win" title="Suivi des campagnes d'évaluation" apply="compagne.action.SuiviCompagneAction" width="100%" height="100%" border="normal" contentStyle="overflow:auto"
- closable="true"  onClose="self.visible = false; event.stopPropagation();">
+<window  id="win" title="Suivi des campagnes d'évaluation" apply="compagne.action.SuiviCompagneAction" border="normal" width="100%">
  
 
 		
 <div id="listboxpart"  visible="${empty user}">
 
-<groupbox width="100%" mold="3d">
+
           
      <hbox>  
 		<hbox  pack="start" align="start" height="90%" width="100%">
@@ -48,7 +47,7 @@ background-color: #00CC00 ;
 			
 	     </hbox>
     
- </groupbox>
+
  
  
 </div>

@@ -1,6 +1,8 @@
-<?page title="Reinitialisation Mot de Passe" contentType="text/html;charset=UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<zk>
+<window border="none" width="400px"  sclass="body" apply="administration.action.ReinitPwdAction" position="center" mode="overlapped">
+
+
 <style >
 body{
 background-image:url('../image/fond-site_new.jpg'); background-repeat:no-repeat;  
@@ -8,7 +10,7 @@ background-image:url('../image/fond-site_new.jpg'); background-repeat:no-repeat;
 	
 </style>          
 
-	<window border="none" width="400px"  sclass="body" apply="administration.action.ReinitPwdAction" position="center" mode="overlapped">
+	
 	
 <style dynamic="true"> 
 
@@ -37,12 +39,12 @@ border-bottom: none;
 					</row>
 					<row>
 						 Ancien Mot de passe   :
-						<textbox id="ancienPwd"  width="100px"  maxlength="10"  type="password"  value="" /> <button id="aide" image="/image/help.gif" tooltiptext="Contacter votre administrateur" />
+						<textbox id="ancienPwd"  width="100px"  maxlength="10"  type="password"  value="" /> <button id="aide" image="/image/help.gif" tooltiptext="Merci de contacter votre administrateur" />
 					</row>
 					
 					<row>
 						 Nouveau Mot de passe   :
-						<textbox id="nouveauPwd"  width="100px" maxlength="10"   type="password"  value=""   /> <button id="aide1" image="/image/help.gif" tooltiptext="Mot de passe doit avoir 8 caracteres" />
+						<textbox id="nouveauPwd"  width="100px" maxlength="10"   type="password"  value=""   /> <button id="aide1" image="/image/help.gif" tooltiptext="Mot de passe doit contenir 10  caractéres" />
 					</row>
 					
 					<row>
@@ -71,15 +73,14 @@ border-bottom: none;
 		
 		<popup id="info_admin">
 	
-		<label  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight:bold ;"> Si vous n'avez pas ou oublié votre mot de passe, merci de contacter votre administrateur a la DRH </label>	
+		<label  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight:bold ;"> Si vous n'avez pas ou  vous avez oublié votre mot de passe, merci de contacter votre administrateur à la DRHF </label>	
 	  
        </popup>
        
        <popup id="info_admin1">
 	
-		<label  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight:bold ;"> Le mot de passe doit avoir 8 caractéres </label>	
+		<label  style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 12px;font-weight:bold ;"> Le mot de passe doit avoir 10 caractéres </label>	
 	  
        </popup>
 		
 	</window>
-</zk>

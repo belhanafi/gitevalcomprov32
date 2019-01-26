@@ -340,7 +340,7 @@ public class CorrectionPosteModel {
 		return resultat;
 	}
 	
-	public HashMap<String, ActionDevelopmentBean> getDevelopmentEvalue2(HashMap<String, HashMap<String, Integer>> listDb, String idCompagne, String codePosteTravail,String idEchelle ){
+	public HashMap<String, ActionDevelopmentBean> getDevelopmentEvalue2(HashMap<String, HashMap<String, Integer>> listDb, String idCompagne, String codePosteTravail,String idEchelle, int id_profile, String  login_evaluateur ){
 		
 		HashMap<String,  ActionDevelopmentBean> resultat= new HashMap<String,  ActionDevelopmentBean>();
 
@@ -373,15 +373,28 @@ public class CorrectionPosteModel {
 					String vague = pair.getKey();
 					Integer idcompagne = pair.getValue();
 
-					
+					if (id_profile==3){
+						
+						query="select distinct p.id_action, i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,"
+								+ " p.libelle_action_formation,p.libelle_action_ori_prof,  p.libelle_action_disipline,p.libelle_action_mobilite,"
+								+ " p.id_action, d.proposee,d.validee,d.programmee,d.realisee"
+								+ " from   "+entry.getKey()+".planning_evaluation n, "+entry.getKey()+".imi_stats i,    "+entry.getKey()+".employe e,"+entry.getKey()+".actions_developpement p LEFT OUTER JOIN "+entry.getKey()+".actionsdev_employe d on d.id_action=p.id_action" 
+								+ " where id_echelle="+idEchelle+"   and n.id_compagne=i.id_compagne  "
+								+ " and  n.id_evaluateur in (select id_employe  from "+entry.getKey()+".employe where id_compte in (select id_compte from common_evalcom.compte where login="+"'"+login_evaluateur+"')) " 
+								+ " and e.code_poste=n.code_poste  and   n.id_employe=i.id_employe and i.id_compagne="+idCompagne+" and e.code_poste='"+codePosteTravail+"'  and i.id_employe=e.id_employe and        "+comparaison +" order by 3";   
+				
+						
+					}else{
+						query="select distinct p.id_action, i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,"
+								+ " p.libelle_action_formation,p.libelle_action_ori_prof,  p.libelle_action_disipline,p.libelle_action_mobilite,"
+								+ " p.id_action, d.proposee,d.validee,d.programmee,d.realisee"
+								+ " from      "+entry.getKey()+".imi_stats i,    "+entry.getKey()+".employe e,"+entry.getKey()+".actions_developpement p LEFT OUTER JOIN "+entry.getKey()+".actionsdev_employe d on d.id_action=p.id_action"
+								+ " where id_echelle="+idEchelle+"   and i.id_compagne="+idCompagne+" and e.code_poste='"+codePosteTravail+"'  and i.id_employe=e.id_employe and        "+comparaison +" order by 3";   
+						 
+						
+					}
 
 									
-					query="select distinct p.id_action, i.id_employe, concat(nom,concat( ' ',prenom))nomcomplet,"
-							+ " p.libelle_action_formation,p.libelle_action_ori_prof,  p.libelle_action_disipline,p.libelle_action_mobilite,"
-							+ " p.id_action, d.proposee,d.validee,d.programmee,d.realisee"
-							+ " from      "+entry.getKey()+".imi_stats i,    "+entry.getKey()+".employe e,"+entry.getKey()+".actions_developpement p LEFT OUTER JOIN "+entry.getKey()+".actionsdev_employe d on d.id_action=p.id_action"
-							+ " where id_echelle="+idEchelle+"   and i.id_compagne="+idCompagne+" and e.code_poste='"+codePosteTravail+"'  and i.id_employe=e.id_employe and        "+comparaison +" order by 3";   
-					 
 					
 								
 					break;

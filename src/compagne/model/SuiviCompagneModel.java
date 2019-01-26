@@ -957,7 +957,7 @@ public class SuiviCompagneModel {
 		
 		sqlquery="select  c.login,e.id_employe,concat (e.nom ,' ',e.prenom) as nom_evaluateur , intitule_poste,email, case    when length(trim(libelle_direction))=0 then 'DIR NON RENSEIGNEE'"
 				+ " else libelle_direction end as libelle_direction,structure_ent,round(sum(nbfichevalide)*100/ sum(totalemploye)) as progress ,"
-				+ "	 sum(totalemploye-nbfichevalide)fichenoncote, sum(nbfichevalide)fichecote, h.date_alert as dateExtract"
+				+ "	 sum(totalemploye-nbfichevalide)fichenoncote, sum(nbfichevalide)fichecote, h.date_alert  dateExtract"
 				+ "	 from (	select id_evaluateur as evaluateur ,count(r.id_employe) as nbfichevalide,0 as totalemploye from planning_evaluation t ,fiche_validation r"
 				+ "  where t.id_planning_evaluation=r.id_planning_evaluation  and t.id_employe=r.id_employe  and fiche_valide=1  and  t.id_compagne=#compgane"
 				+ "  group by id_evaluateur   union select id_evaluateur as evaluateur ,0 as nbfichevalide ,count(t.id_employe)as totalemploye"
