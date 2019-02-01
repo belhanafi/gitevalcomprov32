@@ -76,14 +76,14 @@
 						<label width="150px"></label>
 						<label width="150px"></label>
 						<label width="150px"></label>
-						<button id="delete_record" image="/image/delete_lineitem.png"
+						<!-- <button id="delete_record" image="/image/delete_lineitem.png"
 							height="100%" tooltiptext="Supprimer une formation"
 							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
 
 						<button id="new_record" image="/image/add-icon.png" height="100%"
 							tooltiptext="Ajouter une formation"
-							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+							style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" /> -->
 					</hlayout>
 
 					<hlayout spacing="100px">
@@ -170,12 +170,16 @@
 
 
 
-		<listbox id="liste_action_development" rows="1"
-			model="@{winCtrl.modelActionDevelopment}" width="100%" mold="paging"
-			pageSize="500" height="400px" selectedItem="@{winCtrl.selected}">
+		<listbox id="liste_action_formation"  rows="1"
+			model="@{winCtrl.modelActionFormation}" width="100%" mold="paging"
+			pageSize="400" height="250px" selectedItem="@{winCtrl.selected}">
 			<listhead sizable="true">
 
-
+				<listheader label="Domaine formation" width="200px" sort="auto"
+					align="center" />
+					
+				<listheader label="Type formation" width="200px" sort="auto"
+					align="center" />
 
 				<listheader label="Formation" width="400px" sort="auto"
 					align="center" />
@@ -184,7 +188,7 @@
 				<listheader label="Proposée" width="100px" sort="auto"
 					align="center" />
 
-				<listheader label="Validée" width="109px" sort="auto"
+				<listheader label="Validée" width="100px" sort="auto"
 					align="center" />
 
 				<listheader label="Programée" width="100px" sort="auto"
@@ -193,59 +197,115 @@
 				<listheader label="Réalisée" width="100px" sort="auto"
 					align="center" />
 
-				<listheader label="idActionCompPost" width="0px" sort="auto"
+				<listheader label="idActionFormEmploye" width="0px" sort="auto"
 					align="center" visible="false" />
 
 			</listhead>
 
-			<listitem self="@{each=listvaleur}">
+			<listitem self="@{each=actionFormationBean}">
 
+				<listcell label="@{actionFormationBean.domaineFormation}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 
-				<listcell>
-					<textbox id="lib_formation" width="400px" height="30px"
-						value="@{listvaleur.libelleFormation}" disabled="false"
-						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-
-				</listcell>
-
-				<listcell>
-					<listbox id="propose" mold="select" width="80px"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;">
-						<listitem label="" />
-						<listitem label="Oui" />
-						<listitem label="Non" />
-					</listbox>
-				</listcell>
-				<listcell>
-					<listbox id="validee" mold="select" width="80px"
-						value="@{listvaleur.validee}"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-				</listcell>
-				<listcell>
-					<listbox id="programmee" mold="select" width="80px"
-						value="@{listvaleur.programmee}"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-				</listcell>
-				<listcell>
-					<listbox id="realisee" mold="select" width="80px"
-						value="@{listvaleur.realisee}"
-						style="font-family: Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-				</listcell>
-				<listcell label="@{listvaleur.idActionCompPost}"
+				<listcell label="@{actionFormationBean.themeFormation}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+				<listcell label="@{actionFormationBean.libelleFormation}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+				<listcell label="@{actionFormationBean.propose}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+				<listcell label="@{actionFormationBean.validee}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				
+				<listcell label="@{actionFormationBean.programmee}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+				<listcell label="@{actionFormationBean.realisee}"
+					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+					
+				
+				<listcell label="@{actionFormationBean.idActionFormEmploye}"
 					style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
 			</listitem>
 		</listbox>
 
-		<include id="iframe" width="200%" height="300%" visible="false" />
+	<grid id="gridDetails" span="true" sizedByContent="true" width="100%" height="150px">
+        <auxhead>
+            <auxheader colspan="7" class="topic">Edition des données</auxheader>
+        </auxhead>
+        <columns sizable="true">
+            <column label="Domaine formation" align="center" width="150px" />
+            <column label="Type formation" align="center" width="150px"/>
+            <column label="Formation" align="center" width="160px"/>
+            <column label="Proposée" align="center" width="50px"/>
+            <column label="Validée" align="center" width="50px"/>
+            <column label="Programmée" align="center" width="50px"/>
+            <column label="Réalisés" align="center" width="50px"/>
+            
 
+        </columns>
+        <rows>
+            <row>
+                <!-- Selected contributor's title value is same as title model's data-->
+               <!-- <textbox id="liste_domaine_formation" value="@{winCtrl.selected.domaineFormation,save-when=none}" sclass="textboxdetail" /> -->
+               <listbox id="liste_domaine_formation" mold="select" selectedItem="@{winCtrl.selected.domaineFormation}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+               <!--  <textbox id="themeFormation" value="@{winCtrl.selected.themeFormation,save-when=none}"  sclass="textboxdetail" /> -->
+                
+                 <listbox id="theme_domaine_formation" mold="select" selectedItem="@{winCtrl.selected.themeFormation}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+						
+
+                <textbox id="formation_" value="@{winCtrl.selected.libelleFormation,save-when=none}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+                
+               
+				<listbox id="propose" mold="select" selectedItem="@{winCtrl.selected.propose}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listbox id="validee" mold="select" selectedItem="@{winCtrl.selected.validee}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listbox id="programmee" mold="select" selectedItem="@{winCtrl.selected.programmee}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+				<listbox id="realisee" mold="select" selectedItem="@{winCtrl.selected.realisee}"
+						style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
+						
+               <!-- <textbox id="idPropose" value="@{winCtrl.selected.propose,save-when=none}" sclass="textboxdetail" />
+                <textbox id="idValide" value="@{winCtrl.selected.validee,save-when=none}" sclass="textboxdetail" />
+                <textbox id="idProgramme" value="@{winCtrl.selected.programmee,save-when=none}" sclass="textboxdetail" />
+                <textbox id="idRealise" value="@{winCtrl.selected.realisee,save-when=none}" sclass="textboxdetail" /> -->
+                
+
+            </row>
+        </rows>
+    </grid>
+
+
+
+		
+	<hbox pack="center" width="100%" spacing="20">
+		<div>
+			<button id="add" image="/image/DITEnabled.gif" height="25px"
+				width="50px" tooltiptext="Ajouter une formation" />
+			<button id="okAdd" image="/image/OkEnabled.gif" height="25px"
+				width="50px" tooltiptext="Valider" />
+			<button id="update" image="/image/EDITREDOEnabled.gif"
+				height="25px" width="50px" tooltiptext="Modifier une formation" />
+			<button id="delete" image="/image/DeleteEnabled.gif" height="25px"
+				width="50px" tooltiptext="Supprimer une formation " />
+			<button id="effacer" image="/image/CancelEnabled.gif" height="25px"
+				width="50px" tooltiptext="Retourner à la selection" />
+		</div>
+
+
+	</hbox>
+		<include id="iframe" width="200%" height="300%" visible="false" />
 		<!-- ************************************* -->
 
 		<hbox pack="center" width="100%" spacing="40">
 
-			<button id="enregistrerAssociation" image="/image/save.png"
-				tooltiptext="Enregister les actions de développement pour cet employé"
-				style="font-family: Verdana, Verdana, Arial,Helvetica,sans-serif; font-size: 10px;font-weight: ;" />
-
+			
 
 			<div>
 

@@ -5,7 +5,9 @@ public class ActionFormationBean {
 
 	
 	private String idEchelle;
-	private String libelleFormation;
+	private String domaineFormation;
+	private String themeFormation;
+	private String libelleFormation; //le libelle saisi par le user
 
 	
 	
@@ -17,11 +19,13 @@ public class ActionFormationBean {
 	private String idCompagne;
 	private String codePosteTravail;
 	
+	private String idTypeFormationExterne;
+	
 	// variable utilisee pour l'ecran perspective fiche individuelle
 	private String evalue;
 	private String idEvalue;
-	private String idActionCompPost;
-	
+	//private String idActionCompPost;
+	private String idActionFormEmploye;
 
 	
 
@@ -31,7 +35,8 @@ public class ActionFormationBean {
 			String libelleFormation,  String propose,
 			String validee, String programmee, String realisee,
 			String idCompagne, String codePosteTravail, 
-			String idEvalue) {
+			String idEvalue,
+			String idTypeFormationExterne) {
 		super();
 		
 		this.idEchelle = idEchelle;
@@ -43,6 +48,7 @@ public class ActionFormationBean {
 		this.idCompagne = idCompagne;
 		this.codePosteTravail = codePosteTravail;
 		this.idEvalue = idEvalue;
+		this.idTypeFormationExterne=idTypeFormationExterne;
 	}
 	public ActionFormationBean(){
 		super();
@@ -63,6 +69,20 @@ public class ActionFormationBean {
 	
 
 
+	public String getDomaineFormation() {
+		return domaineFormation;
+	}
+	public void setDomaineFormation(String domaineFormation) {
+		this.domaineFormation = domaineFormation;
+	}
+	
+	
+	public String getThemeFormation() {
+		return themeFormation;
+	}
+	public void setThemeFormation(String themeFormation) {
+		this.themeFormation = themeFormation;
+	}
 	public String getPropose() {
 		return propose;
 	}
@@ -143,13 +163,25 @@ public class ActionFormationBean {
 	}
 
 
-	public String getIdActionCompPost() {
-		return idActionCompPost;
+//	public String getIdActionCompPost() {
+//		return idActionCompPost;
+//	}
+//
+//
+//	public void setIdActionCompPost(String idActionCompPost) {
+//		this.idActionCompPost = idActionCompPost;
+//	}
+	public String getIdActionFormEmploye() {
+		return idActionFormEmploye;
 	}
-
-
-	public void setIdActionCompPost(String idActionCompPost) {
-		this.idActionCompPost = idActionCompPost;
+	public void setIdActionFormEmploye(String idActionFormEmploye) {
+		this.idActionFormEmploye = idActionFormEmploye;
+	}
+	public String getIdTypeFormationExterne() {
+		return idTypeFormationExterne;
+	}
+	public void setIdTypeFormationExterne(String typeFormationExterne) {
+		this.idTypeFormationExterne = typeFormationExterne;
 	}
 
 	
