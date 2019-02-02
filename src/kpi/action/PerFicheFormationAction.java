@@ -6,9 +6,12 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -537,7 +540,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 	    //render template
 	}
 
-	public void onSelect$liste_domaine_formation()
+	public void onSelect$liste_domaine_formation() throws InterruptedException
 	{
 		String selectedDomaine=liste_domaine_formation.getSelectedItem().getLabel();
 		
@@ -552,7 +555,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 				theme_domaine_formation.removeItemAt(i);
 			}
 		}
-		HashMap<String, String> mapThematique=mapFormationExterne.get(selectedDomaine);
+		HashMap<String, String> mapThematique=(HashMap)sortByComparatorValue(mapFormationExterne.get(selectedDomaine));
 		Set set = mapThematique.entrySet();
 		Iterator i = set.iterator();
 		
@@ -560,7 +563,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 			Map.Entry me = (Map.Entry)i.next();
 			theme_domaine_formation.appendItem((String) me.getValue(),(String)me.getValue());
 		}
-		theme_domaine_formation.renderAll();
+		//theme_domaine_formation.renderAll();
 		
 	}
 	
@@ -890,7 +893,7 @@ public void onClick$update() throws WrongValueException, ParseException, Interru
 		
 	}
 
-	public void onSelect$liste_action_formation() {
+	public void onSelect$liste_action_formation() throws InterruptedException {
 
 		String selectedDomaine=selected.getDomaineFormation();
 		
@@ -906,7 +909,7 @@ public void onClick$update() throws WrongValueException, ParseException, Interru
 			}
 		}
 		
-		HashMap<String, String> mapThematique=mapFormationExterne.get(selectedDomaine);
+		HashMap<String, String> mapThematique=(HashMap)sortByComparatorValue(mapFormationExterne.get(selectedDomaine));
 		Set set = mapThematique.entrySet();
 		Iterator i = set.iterator();
 		int index=0;
@@ -1012,5 +1015,58 @@ public void onClick$update() throws WrongValueException, ParseException, Interru
 	effacer.setVisible(false);
 		//fin correction
 	}
+	
+	private static Map sortByComparatorkey(Map unsortMap) throws InterruptedException {
+
+		Map sortedMap = new LinkedHashMap();
+		try{
+			List list = new LinkedList(unsortMap.entrySet());
+	
+			//sort list based on comparator
+			Collections.sort(list, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					return ((Comparable) ((Map.Entry) (o1)).getKey())
+							.compareTo(((Map.Entry) (o2)).getKey());
+				}
+			});
+	
+			//put sorted list into map again
+			
+			for (Iterator it = list.iterator(); it.hasNext();) {
+				Map.Entry entry = (Map.Entry)it.next();
+				sortedMap.put(entry.getKey(), entry.getValue());
+			}
+			
+		}catch (Exception e){
+		
+				Messagebox.show("Merci de selectionner une compagne! ", "Information",Messagebox.OK, Messagebox.ERROR);
+		
+		}
+		return sortedMap;
+		
+	}	
+	
+	private static Map sortByComparatorValue(Map unsortMap) {
+
+		List list = new LinkedList(unsortMap.entrySet());
+
+		//sort list based on comparator
+		Collections.sort(list, new Comparator() {
+			public int compare(Object o1, Object o2) {
+				return ((Comparable) ((Map.Entry) (o1)).getValue())
+						.compareTo(((Map.Entry) (o2)).getValue());
+			}
+		});
+
+		//put sorted list into map again
+		Map sortedMap = new LinkedHashMap();
+		for (Iterator it = list.iterator(); it.hasNext();) {
+			Map.Entry entry = (Map.Entry)it.next();
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		return sortedMap;
+	}	
+
+
 }
 
