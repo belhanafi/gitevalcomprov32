@@ -1915,7 +1915,7 @@ public class CorrectionPosteModel {
 
 
 
-	public HashMap<String, HashMap<String, String>> getListeTypeFotmation(HashMap<String, HashMap<String, Integer>> listDb)	{
+	public HashMap<String, HashMap<String, String>> getListeTypeFotmation(HashMap<String, HashMap<String, Integer>> listDb) throws InterruptedException	{
 
 		HashMap<String, HashMap<String, String>> retour=new HashMap<String, HashMap<String, String>>();
 
@@ -1940,7 +1940,7 @@ public class CorrectionPosteModel {
 
 					//query="select  distinct e.id_suivi_sort,e.libelle_suivi_sort  from "+entry.getKey()+"."+"suivi_sort e";
 					//uery="select  distinct e.id_type_formation_ext,e.libelle_formation_externe  from "+entry.getKey()+"."+"type_formation_externe e";	
-					query="select  distinct e.id_type_formation_ext,upper(e.domaine_formation) domaine_formation , upper(e.thematique_domaine_formation)  thematique_domaine_formation  from "+entry.getKey()+"."+"type_formation_externe e";
+					query="select  distinct e.id_type_formation_ext,upper(e.domaine_formation) domaine_formation , upper(e.thematique_domaine_formation)  thematique_domaine_formation  from "+entry.getKey()+"."+"type_formation_externe e order by 2";
 					break;
 
 				}
@@ -2011,11 +2011,39 @@ public class CorrectionPosteModel {
 			}
 		}
 
-		return retour;
+		return (HashMap)sortByComparatorkey(retour);
 	}
 
 
+	private static Map sortByComparatorkey(Map unsortMap) throws InterruptedException {
 
+		Map sortedMap = new LinkedHashMap();
+		try{
+			List list = new LinkedList(unsortMap.entrySet());
+	
+			//sort list based on comparator
+			Collections.sort(list, new Comparator() {
+				public int compare(Object o1, Object o2) {
+					return ((Comparable) ((Map.Entry) (o1)).getKey())
+							.compareTo(((Map.Entry) (o2)).getKey());
+				}
+			});
+	
+			//put sorted list into map again
+			
+			for (Iterator it = list.iterator(); it.hasNext();) {
+				Map.Entry entry = (Map.Entry)it.next();
+				sortedMap.put(entry.getKey(), entry.getValue());
+			}
+			
+		}catch (Exception e){
+		
+				Messagebox.show("Merci de selectionner une compagne! ", "Information",Messagebox.OK, Messagebox.ERROR);
+		
+		}
+		return sortedMap;
+		
+	}	
 
 	public String getIdThemeFormation(HashMap<String, HashMap<String, Integer>> listDb, String themeFormation, String domaineFormation)	{
 

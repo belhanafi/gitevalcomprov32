@@ -467,7 +467,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 	}
 
 
-	public void onSelect$direction1() throws SQLException	{
+	public void onSelect$direction1() throws SQLException, InterruptedException	{
 
 		desactiverBoutons();
 		gridDetails.setVisible(false);
