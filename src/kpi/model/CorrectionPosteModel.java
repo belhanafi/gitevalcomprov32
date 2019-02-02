@@ -687,8 +687,8 @@ public class CorrectionPosteModel {
 				actionDevelopment.setIdEchelle(Integer.toString(rs.getInt("id_echelle")));
 				actionDevelopment.setIdTypeFormationExterne(rs.getString("id_type_formation_ext"));
 				actionDevelopment.setIdActionFormEmploye(Integer.toString(rs.getInt("id_action_form_employe")));
-				actionDevelopment.setDomaineFormation(rs.getString("domaine_formation"));
-				actionDevelopment.setThemeFormation(rs.getString("thematique_domaine_formation"));
+				actionDevelopment.setDomaineFormation(rs.getString("domaine_formation").toUpperCase());
+				actionDevelopment.setThemeFormation(rs.getString("thematique_domaine_formation").toUpperCase());
 
 				if(resultat.containsKey(actionDevelopment.getIdEvalue())){
 
@@ -1907,7 +1907,9 @@ public class CorrectionPosteModel {
 		String retour ="N";
 		if("Oui".equalsIgnoreCase(valeur)) 
 			return "O";
-		else return "N";
+		else
+			if("Non".equalsIgnoreCase(valeur))return "N";
+			else return "X";
 
 	}
 
@@ -1938,7 +1940,7 @@ public class CorrectionPosteModel {
 
 					//query="select  distinct e.id_suivi_sort,e.libelle_suivi_sort  from "+entry.getKey()+"."+"suivi_sort e";
 					//uery="select  distinct e.id_type_formation_ext,e.libelle_formation_externe  from "+entry.getKey()+"."+"type_formation_externe e";	
-					query="select  distinct e.id_type_formation_ext,e.domaine_formation, e.thematique_domaine_formation  from "+entry.getKey()+"."+"type_formation_externe e";
+					query="select  distinct e.id_type_formation_ext,upper(e.domaine_formation) domaine_formation , upper(e.thematique_domaine_formation)  thematique_domaine_formation  from "+entry.getKey()+"."+"type_formation_externe e";
 					break;
 
 				}
@@ -2036,10 +2038,8 @@ public class CorrectionPosteModel {
 
 				for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
 					String vague = pair.getKey();
-					Integer idcompagne = pair.getValue();
-
-						
-					query="select  distinct e.id_type_formation_ext from "+entry.getKey()+"."+"type_formation_externe e where thematique_domaine_formation='"+themeFormation+"' and domaine_formation='"+domaineFormation+"'";
+					Integer idcompagne = pair.getValue();					
+					query="select  distinct e.id_type_formation_ext from "+entry.getKey()+"."+"type_formation_externe e where upper(thematique_domaine_formation)=upper('"+themeFormation+"') and upper(domaine_formation)=upper('"+domaineFormation+"')";
 					break;
 
 				}

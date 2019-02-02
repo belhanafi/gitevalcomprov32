@@ -188,50 +188,6 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 	}
 
 
-
-	@SuppressWarnings("deprecation")
-	public void onClick$new_record() throws InterruptedException
-	{
-
-		//initialisation du model associé a liste_action_development
-		ListModelList listModel = new ListModelList();
-		liste_action_formation.setModel(listModel);
-		
-		ActionFormationBean actionFormationBean=new ActionFormationBean();
-
-		modelActionFormation.add(actionFormationBean);	
-
-		
-		listModel = new ListModelList(modelActionFormation);
-		liste_action_formation.setModel(listModel);
-		
-
-		
-		/***************************/
-
-	}
-
-	@SuppressWarnings("deprecation")
-	public void onClick$delete_record() throws InterruptedException
-	{
-		if(modelActionFormation!=null && modelActionFormation.size()>0){
-
-			modelActionFormation.remove(modelActionFormation.size()-1);	
-
-			ListModelList listModel2 = new ListModelList(modelActionFormation);
-			liste_action_formation.setModel(listModel2);
-		}
-
-
-	}
-
-
-
-
-	
-
-
-
 	public List<EchelleMaitrise> getModelEchelle() {
 		return modelEchelle;
 	}
@@ -299,13 +255,9 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 //		
 		liste_evalue.setModel(listModelEvalue);
 		
-		modelActionFormation=new ArrayList<ActionFormationBean>();
-
-		ListModelList listModelActionormation = new ListModelList(modelActionFormation);
+		modelActionFormation.clear();
 		
-		liste_action_formation.setModel(listModelActionormation);
-		
-		 viderListCrud();
+		binder.loadComponent(liste_action_formation);
 
 
 	}
@@ -383,12 +335,9 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 		direction1.setSelectedIndex(0);
 
 		
-		modelActionFormation=new ArrayList<ActionFormationBean>();
-
-		ListModelList listModelActionormation = new ListModelList(modelActionFormation);
+		modelActionFormation.clear();
 		
-		liste_action_formation.setModel(listModelActionormation);
-
+		binder.loadComponent(liste_action_formation);
 
 	}
 
@@ -431,9 +380,9 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 					e.printStackTrace();
 				}
 
+				modelActionFormation.clear();
 				
-				ListModel listModel2 = new ListModelList(new ArrayList<ActionDevelopmentBean>());
-				liste_action_formation.setModel(listModel2);
+				binder.loadComponent(liste_action_formation);
 
 				viderListCrud();
 				
@@ -473,13 +422,8 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 				if(modelActionFormation==null)
 					modelActionFormation=new ArrayList<ActionFormationBean>();
 
-					ListModelList listModel = new ListModelList();
-
-	
-					listModel = new ListModelList(modelActionFormation);
-					liste_action_formation.setModel(listModel);
-					liste_action_formation.renderAll();
 					
+						binder.loadComponent(liste_action_formation);
 
 					viderListCrud();
 					
@@ -489,6 +433,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 					add.setVisible(true);
 					update.setVisible(true);
 					delete.setVisible(true);
+					effacer.setVisible(false);
 					
 			}
 		}else{
@@ -559,8 +504,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 		ListModelList listModel = new ListModelList(modelEchelle);
 		liste_echelle.setModel(listModel);
 
-		ListModelList listModel2 = new ListModelList(new ArrayList<ActionDevelopmentBean>());
-		liste_action_formation.setModel(listModel2);
+		
 		selectedPosteTravail=null;
 		
 
@@ -570,11 +514,10 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 		
 		liste_evalue.setModel(listModelEvalue);
 		
-		modelActionFormation=new ArrayList<ActionFormationBean>();
-
-		ListModelList listModelActionormation = new ListModelList(modelActionFormation);
+	    modelActionFormation.clear();
 		
-		liste_action_formation.setModel(listModelActionormation);
+		binder.loadComponent(liste_action_formation);
+
 
 		//chargement des tpes de formation
 		mapFormationExterne= correctionPosteMoel.getListeTypeFotmation( listDb);
@@ -724,7 +667,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 		if(theme_domaine_formation.getItemCount()>0)
 			theme_domaine_formation.setSelectedIndex(0);
 		
-		List listOuiNon=Arrays.asList("Oui","Non");
+		List listOuiNon=Arrays.asList("Oui","Non","");
 		Iterator i2 = listOuiNon.iterator();
 		while(i2.hasNext()) {
 			String valeur=(String)i2.next();
@@ -741,17 +684,23 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 	}
 	public void onClick$add() throws WrongValueException, ParseException {
 
+		//correction
+		selected=null;
 		formation_.setText("");
 
 		int nbListeDomaine=liste_domaine_formation.getItemCount();
-		if(!liste_domaine_formation.getItemAtIndex(nbListeDomaine-1).getValue().equals("")){
+		if(!liste_domaine_formation.getItemAtIndex(nbListeDomaine-1).getValue().equals(""))
 			liste_domaine_formation.appendItem("", "");
+		if(!theme_domaine_formation.getItemAtIndex(theme_domaine_formation.getItemCount()-1).getValue().equals(""))
 			theme_domaine_formation.appendItem("", "");
-			propose.appendItem("", "");
-			validee.appendItem("", "");
-			programmee.appendItem("", "");
-			realisee.appendItem("", "");
-		}
+//		if(!propose.getItemAtIndex(propose.getItemCount()-1).getValue().equals(""))
+//			propose.appendItem("", "");
+//		if(!validee.getItemAtIndex(validee.getItemCount()-1).getValue().equals(""))
+//			validee.appendItem("", "");
+//		if(!programmee.getItemAtIndex(programmee.getItemCount()-1).getValue().equals(""))
+//			programmee.appendItem("", "");
+//		if(!realisee.getItemAtIndex(realisee.getItemCount()-1).getValue().equals(""))
+//			realisee.appendItem("", "");
 		liste_domaine_formation.setSelectedIndex(liste_domaine_formation.getItemCount()-1);
 		
 		theme_domaine_formation.setSelectedIndex(theme_domaine_formation.getItemCount()-1);
@@ -771,13 +720,16 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 		delete.setVisible(false);
 
 		gridDetails.setVisible(true);
+		selected=null;
 
+//fin correction
 	}
 	
 	/******************/
 	
 	public void onClick$okAdd()throws WrongValueException, ParseException, InterruptedException {
 
+		selected=null;
 		ActionFormationBean actionFormation = new ActionFormationBean();
 		
 		actionFormation.setIdEvalue(selectedRadioEvalue.getContext());
@@ -807,23 +759,13 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 			// raffrechissemet de l'affichage
 			if (donneeAjoute )
 			{
-//				ListModelList listModel = new ListModelList();
-//				liste_action_formation.setModel(listModel);
-//				modelActionFormation.add(actionFormation);	
-//	
-//				
-//				listModel = new ListModelList(modelActionFormation);
-//				liste_action_formation.setModel(listModel);
-//				
-//				
-//	
-//				selected = actionFormation;
-				
-				majAffichageListeFormation();
 	
-				//binder.loadAll();
+				modelActionFormation.add(actionFormation);
+				selected = actionFormation;
+	
+				binder.loadComponent(liste_action_formation);
 			}
-	
+	        //correction
 			okAdd.setVisible(false);
 			effacer.setVisible(false);
 			add.setVisible(true);
@@ -833,7 +775,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 
 	}
 
-	public void onClick$update() throws WrongValueException, ParseException, InterruptedException {
+public void onClick$update() throws WrongValueException, ParseException, InterruptedException {
 		if (selected == null) {
 			alert("Aucune donnée n'a été selectionnée");
 			return;
@@ -845,34 +787,35 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 
 
 		
-		actionFormation.setIdEvalue(selectedRadioEvalue.getContext());
-		actionFormation.setLibelleFormation(formation_.getText());
-		actionFormation.setIdEchelle(selectedRadioEchelle.getContext());
-		actionFormation.setCodePosteTravail(selectedPosteTravail);
-		actionFormation.setIdCompagne(idcompagne.toString());
+		selected.setIdEvalue(selectedRadioEvalue.getContext());
+		selected.setLibelleFormation(formation_.getText());
+		selected.setIdEchelle(selectedRadioEchelle.getContext());
+		selected.setCodePosteTravail(selectedPosteTravail);
+		selected.setIdCompagne(idcompagne.toString());
 		
 		if(checkSelection()){
 
 			String idThemeFormation=correctionPosteMoel.getIdThemeFormation(listDb,theme_domaine_formation.getSelectedItem().getLabel(),liste_domaine_formation.getSelectedItem().getLabel());
-			actionFormation.setIdTypeFormationExterne(idThemeFormation);
+			selected.setIdTypeFormationExterne(idThemeFormation);
 
-			actionFormation.setThemeFormation(theme_domaine_formation.getSelectedItem().getLabel());
-			actionFormation.setDomaineFormation(liste_domaine_formation.getSelectedItem().getLabel());
-			actionFormation.setIdActionFormEmploye(selected.getIdActionFormEmploye());
+			selected.setThemeFormation(theme_domaine_formation.getSelectedItem().getLabel());
+			selected.setDomaineFormation(liste_domaine_formation.getSelectedItem().getLabel());
+			selected.setIdActionFormEmploye(selected.getIdActionFormEmploye());
 
-			actionFormation.setPropose((String) propose.getSelectedItem().getLabel());
-			actionFormation.setValidee((String) validee.getSelectedItem().getLabel());
-			actionFormation.setProgrammee((String) programmee.getSelectedItem().getLabel());
-			actionFormation.setRealisee((String) realisee.getSelectedItem().getLabel());
+			selected.setPropose((String) propose.getSelectedItem().getLabel());
+			selected.setValidee((String) validee.getSelectedItem().getLabel());
+			selected.setProgrammee((String) programmee.getSelectedItem().getLabel());
+			selected.setRealisee((String) realisee.getSelectedItem().getLabel());
 	
 					//insertion de la donnée ajoutée dans la base de donnée
 	
 			if (Messagebox.show("Voulez vous appliquer les modifications?", "Prompt", Messagebox.YES|Messagebox.NO,
 						Messagebox.QUESTION) == Messagebox.YES) {
 	
-				correctionPosteMoel.updateBatchActionForma(listDb, actionFormation);
+				correctionPosteMoel.updateBatchActionForma(listDb, selected);
 				
-				majAffichageListeFormation();
+				//majAffichageListeFormation();
+				binder.loadComponent(liste_action_formation);
 				//binder.loadAll();
 				return;
 			}
@@ -885,6 +828,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 		}
 
 	}
+
 
 	public void onClick$delete() throws InterruptedException {
 		if (selected == null) {
@@ -900,10 +844,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 			correctionPosteMoel.deleteBatchActionForma(listDb, selected);
 			modelActionFormation.remove(selected);
 			
-			ListModelList listModel = new ListModelList();
-			
-			listModel = new ListModelList(modelActionFormation);
-			liste_action_formation.setModel(listModel);
+			binder.loadComponent(liste_action_formation);
 			
 			//majAffichageListeFormation();
 			selected = null;
@@ -925,6 +866,7 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 		add.setVisible(true);
 		update.setVisible(true);
 		delete.setVisible(true);
+		effacer.setVisible(false);
 
 
 	}
@@ -994,12 +936,15 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 	}
 	
 	public void onSelect$theme_domaine_formation() {
+       //correction
 		if("Autre".equalsIgnoreCase(((String)theme_domaine_formation.getSelectedItem().getValue()).trim())||
 				"Autres".equalsIgnoreCase(((String)theme_domaine_formation.getSelectedItem().getValue()).trim())){
 			formation_.setDisabled(false);
 		}else{
+			formation_.setText("");
 			formation_.setDisabled(true);
 		}
+	//fin correction
 	}
 	
 	/******************/
@@ -1025,43 +970,47 @@ public class PerFicheFormationAction extends GenericForwardComposer {
 		this.liste_domaine_formation = liste_domaine_formation;
 	}
 	public boolean checkSelection() throws InterruptedException{
+	//correction
 		
-		if(theme_domaine_formation.getSelectedItem() ==null || StringUtils.isEmpty((String)theme_domaine_formation.getSelectedItem().getLabel())){
-			Messagebox.show("Merci de selectionner un thème de formation ", "Erreur", Messagebox.OK, Messagebox.ERROR);
-						return false;
-		}
 		if(liste_domaine_formation.getSelectedItem()==null || StringUtils.isEmpty((String)liste_domaine_formation.getSelectedItem().getLabel())){
 			Messagebox.show("Merci de selectionner un domaine de formation ", "Erreur", Messagebox.OK, Messagebox.ERROR);
 						return false;
 		}
-		/*if(propose.getSelectedItem() == null || StringUtils.isEmpty((String)propose.getSelectedItem().getLabel())){
+		if(theme_domaine_formation.getSelectedItem() ==null || StringUtils.isEmpty((String)theme_domaine_formation.getSelectedItem().getLabel())){
+			Messagebox.show("Merci de selectionner un type de formation ", "Erreur", Messagebox.OK, Messagebox.ERROR);
+						return false;
+		}
+		if(!propose.isDisabled() && (propose.getSelectedItem() == null || StringUtils.isEmpty((String)propose.getSelectedItem().getLabel()))){
 			Messagebox.show("Merci de spécifier si le formation a été proposée ", "Erreur", Messagebox.OK, Messagebox.ERROR);
 						return false;
 		}
-		if(validee.getSelectedItem()  == null || StringUtils.isEmpty((String)validee.getSelectedItem().getLabel())){
+		if(!validee.isDisabled() &&( validee.getSelectedItem()  == null || StringUtils.isEmpty((String)validee.getSelectedItem().getLabel()))){
 			Messagebox.show("Merci de spécifier si le formation a été validée", "Erreur", Messagebox.OK, Messagebox.ERROR);
 						return false;
 		}
-		if(programmee.getSelectedItem() == null || StringUtils.isEmpty((String)programmee.getSelectedItem().getLabel())){
+		if(!programmee.isDisabled() && ( programmee.getSelectedItem() == null || StringUtils.isEmpty((String)programmee.getSelectedItem().getLabel()))){
 			Messagebox.show("Merci de spécifier si le formation a été programée", "Erreur", Messagebox.OK, Messagebox.ERROR);
 						return false;
 		}
-		if(realisee.getSelectedItem() == null || StringUtils.isEmpty((String)realisee.getSelectedItem().getLabel())){
+		if(!realisee.isDisabled() && (realisee.getSelectedItem() == null || StringUtils.isEmpty((String)realisee.getSelectedItem().getLabel()))){
 			Messagebox.show("Merci de spécifier si le formation a été réalisée", "Erreur", Messagebox.OK, Messagebox.ERROR);
 						return false;
-		}*/
+		}
 		return true;
 
-	
+	//fin correction
 		
 		
 	}
 	
 	public void desactiverBoutons(){
+//correction
 		okAdd.setVisible(false);
 		add.setVisible(false);
 		update.setVisible(false);
 		delete.setVisible(false);
+	effacer.setVisible(false);
+		//fin correction
 	}
 }
 

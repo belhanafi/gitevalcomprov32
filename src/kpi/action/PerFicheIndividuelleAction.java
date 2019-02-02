@@ -19,6 +19,7 @@ import kpi.model.CorrectionPosteModel;
 import kpi.model.KpiSyntheseModel;
 import net.sf.jxls.exception.ParsePropertyException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Sessions;
@@ -119,7 +120,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		//chargement du contenu de la table action_development
 		selectedRadio=new HashMap <String, Radio>();
 
-	
+
 
 		//cas evaluateur colonnes  grisées (validée, programmée et réalisée)
 		if (compteUtilisateur.getId_profile()==3){
@@ -141,17 +142,18 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		// cas sous direction de formation ,colonnes  grisées (proposée, validée) et les colonnes libelleOriProf,libelleDiscipline et libelleMobilite
 		if(compteUtilisateur.getId_profile()==6){
 
+
 			list_propose.setDisabled(true);
 			list_valide.setDisabled(true);
-			
+
 			libelleOriProf.setVisible(false);
 			libelleDiscipline.setVisible(false);
 			libelleMobilite.setVisible(false);
-			
+
 			OrientationProHeader.setVisible(false);
 			DisciplineHeader.setVisible(false);
 			MobilitéHeader.setVisible(false);
-			
+
 			exporterWord.setVisible(false);
 		}
 
@@ -524,6 +526,19 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 
 				modelActionDevelopment=mapEvalueAction.get(selectedRadioEvalue.getContext());
 
+				//dans le cas d'un profile direction formation , les autres action developpement sont masquées
+				//et en supprime les lignes vides
+				if(compteUtilisateur.getId_profile()==6){
+					
+					for(int i=modelActionDevelopment.size()-1;i<=0; i--){
+						if(StringUtils.isEmpty(modelActionDevelopment.get(i).getLibelleFormation()))
+							modelActionDevelopment.remove(i);
+					}
+					
+				}
+				
+				
+
 				ListModelList listModel = new ListModelList();
 				liste_action_development.setModel(listModel);
 
@@ -534,6 +549,7 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 				initListBoxSuivi( listSuiviSort);
 
 				initListBoxSuiviSelection(modelActionDevelopment, selectedRadioEvalue.getContext());
+
 
 
 
@@ -683,18 +699,18 @@ public class PerFicheIndividuelleAction extends GenericForwardComposer {
 		List <String> list_code_dir=(List)map_direction.get(libelle_direction);
 
 		KpiSyntheseModel kpi=new KpiSyntheseModel();
-		
+
 		map_poste=kpi.getListPostTravailValidFicheIndiv(listDb,list_code_dir,compteUtilisateur.getId_profile(),compteUtilisateur.getLogin());
 		Set set = (map_poste).entrySet(); 
 
 		Iterator i = set.iterator();
-		
+
 		while(i.hasNext()) {
 			Map.Entry me = (Map.Entry)i.next();
 			poste_travail.appendItem((String) me.getKey(),(String) me.getValue());
 		}
 
-	
+
 		poste_travail.setSelectedIndex(0);
 
 
