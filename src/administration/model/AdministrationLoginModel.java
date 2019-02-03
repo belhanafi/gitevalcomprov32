@@ -221,12 +221,10 @@ public class AdministrationLoginModel {
 				if (condition1.equalsIgnoreCase("c.val_date_fin")){
 					Date initDate = new SimpleDateFormat("dd/MM/yyyy").parse(valeur_condition1);
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-					String parsedDate = formatter.format(initDate);
-				
-					
+					String parsedDate = formatter.format(initDate);			
 					whereClause1= " and val_date_fin = '"+ parsedDate+"'";
 				}else{
-					whereClause1= " and upper("+condition1+") like upper('%"+valeur_condition1+"%')";
+					whereClause1= " and upper("+condition1+") like upper('"+valeur_condition1+"%')";
 				}
 			}
 			if(valeur_condition2!=null && !"".equals(valeur_condition2))
@@ -238,7 +236,7 @@ public class AdministrationLoginModel {
 					
 					whereClause2= " and val_date_fin = '"+ parsedDate+"'";
 				}else{
-					whereClause2= " and upper("+condition2+") like upper('%"+valeur_condition2+"%')";
+					whereClause2= " and upper("+condition2+") like upper('"+valeur_condition2+"%')";
 				}
 			}
 

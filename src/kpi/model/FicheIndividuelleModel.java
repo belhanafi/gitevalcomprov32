@@ -18,6 +18,7 @@ import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import kpi.bean.FicheIndivFormationBean;
 import kpi.bean.FicheIndivInfoGenBean;
 import kpi.bean.FicheIndivPersDevBean;
 import kpi.bean.ListAdminRHBean;
@@ -982,5 +983,105 @@ public class FicheIndividuelleModel {
 
 		return listmoyfam;
 	}
+	
+	
+	
+	public List getActionFormationEmploye() throws SQLException
+	{
+
+		ApplicationSession applicationSession=(ApplicationSession)Sessions.getCurrent().getAttribute("APPLICATION_ATTRIBUTE");
+		int id_employe=applicationSession.getId_employe();
+
+		HashMap<String, HashMap<String, Integer>> listDb=applicationSession.getListDb();
+
+		CreateDatabaseCon dbcon=new CreateDatabaseCon();
+		Connection conn=(Connection) dbcon.connectToSecondairesDB();
+		Statement stmt = null;
+		ArrayList<FicheIndivFormationBean> listmoyfam = new ArrayList<FicheIndivFormationBean>();
+		ResultSet rs=null;
+		String sql_query="";
+
+		try 
+		{
+			stmt = (Statement) conn.createStatement();
+
+
+
+
+			for (Entry<String, HashMap<String, Integer>> entry : listDb.entrySet()) {
+
+				int map_size=listDb.entrySet().size();
+
+				for (Entry<String, Integer> pair : entry.getValue().entrySet()) {
+					String vague = pair.getKey();
+					Integer idcompagne = pair.getValue();
+					
+					
+					sql_query="select g.libelleechelle,a.domaine_formation,a.thematique_domaine_formation,e.action_formation,"
+							+ " CASE WHEN e.proposee='O' THEN 'OUI' ELSE 'NON' END as proposee,"
+							+ " CASE WHEN  e.validee='O' THEN 'OUI' ELSE 'NON' END as validee,"
+							+ " CASE WHEN   e.programmee='O' THEN 'OUI' ELSE 'NON' END as programmee,"
+							+ " CASE WHEN  e.realisee='O' THEN 'OUI' ELSE 'NON' END as realisee"
+							+ " from "+entry.getKey()+"."+"actionsforma_employe  e, "+entry.getKey()+"."+"type_formation_externe a,"+entry.getKey()+"."+"echelle_maitrise_img g"
+							+ " where e.id_type_formation_ext=a.id_type_formation_ext and e.id_employe=#id_employe and e.id_compagne=#id_compagne"
+							+ " and e.id_echelle=g.id_echelle and validee='O' order by 1";
+
+					
+					sql_query = sql_query.replaceAll("#id_employe", "'"+id_employe+"'");
+					sql_query = sql_query.replaceAll("#id_compagne", "'"+idcompagne+"'");
+
+				}
+			}
+
+
+			rs = (ResultSet) stmt.executeQuery(sql_query);
+
+			while(rs.next()){
+
+				FicheIndivFormationBean bean=new FicheIndivFormationBean();
+				bean.setLibelleechelle((rs.getString("libelleechelle")));	
+				bean.setDomaine_formation(rs.getString("domaine_formation"));	
+
+				bean.setThematique_domaine_formation(rs.getString("thematique_domaine_formation"));	
+				bean.setAction_formation(rs.getString("action_formation"));	
+				bean.setProposee(rs.getString("proposee"));	
+				bean.setValidee(rs.getString("validee"));	
+				bean.setProgrammee(rs.getString("programmee"));	
+				bean.setRealisee(rs.getString("realisee"));	
+
+				listmoyfam.add(bean);
+
+			}
+			//stmt.close();conn.close();
+		} 
+		catch ( SQLException e ) {
+
+		} finally {
+
+			if ( rs != null ) {
+				try {
+					rs.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( stmt != null ) {
+				try {
+					stmt.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+
+			if ( conn != null ) {
+				try {
+					conn.close();
+				} catch ( SQLException ignore ) {
+				}
+			}
+		}
+
+		return listmoyfam;
+	}
+
 
 }
