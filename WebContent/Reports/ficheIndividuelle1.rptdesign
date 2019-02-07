@@ -5678,11 +5678,6 @@ return false;]]></method>
                 </cell>
             </row>
         </grid>
-        <extended-item extensionName="Crosstab" extensionVersion="3.7.0" id="631">
-            <property name="header">
-                <extended-item extensionName="CrosstabCell" id="632"/>
-            </property>
-        </extended-item>
         <grid id="399">
             <property name="marginBottom">50pt</property>
             <column id="400"/>

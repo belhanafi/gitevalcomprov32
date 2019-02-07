@@ -245,7 +245,7 @@
             <column label="Proposée" align="center" width="50px"/>
             <column label="Validée" align="center" width="50px"/>
             <column label="Programmée" align="center" width="50px"/>
-            <column label="Réalisés" align="center" width="50px"/>
+            <column label="Réalisée" align="center" width="50px"/>
             
 
         </columns>
